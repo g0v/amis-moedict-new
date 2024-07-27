@@ -4,13 +4,20 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+# Ignore bundler config.
+/.bundle
+
 # ignore docker consistant data
 /.docker-sync/**
 
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+!/log/.keep
+!/tmp/.keep
 /.unison.tmp*
+
+/public/assets
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
@@ -28,6 +35,3 @@
 *~
 \#*\#
 .\#*
-
-# don't ignore .keep files
-!.keep
