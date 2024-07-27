@@ -1,0 +1,18 @@
+#!/bin/bash
+
+which foreman > /dev/null || gem install --silent foreman
+
+if [ -f Gemfile ]; then
+  echo -n "Checking bundle... "
+  if $(bundle check &> /dev/null); then
+    echo "all good 👌"
+  else
+    echo "Something is missing 💥"
+    echo "Updating bundle now…"
+    BUNDLE_CLEAN=true bundle install --jobs 20 --retry 5
+  fi
+else
+  echo "No Gemfile found. Skipping Ruby dependencies check."
+fi
+
+exec "$@"

@@ -1,0 +1,6 @@
+version: "2"
+syncs:
+  amis-app-sync:
+    src: ./
+    sync_excludes: [log, .git, .bundle]
+    sync_strategy: native_osx
