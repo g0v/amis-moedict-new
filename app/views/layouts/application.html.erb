@@ -6,11 +6,78 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+      @media (max-width: 640px) {
+        .sidebar {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid #e5e7eb;
+        }
+        .main-content {
+          margin-top: 4rem;
+        }
+      }
+    </style>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-white font-sans leading-normal tracking-normal">
+    <div class="bg-gray-800 text-white flex items-center justify-between p-2">
+      <div class="flex items-center space-x-2">
+        <div>阿美語萌典</div>
+        <div>蔡中涵太辭典</div>
+        <div>宇韻紀錄簿</div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button class="bg-green-500 px-2 py-1 rounded">下載</button>
+        <div class="relative group">
+          <button class="flex items-center space-x-1">
+            <span><i class="fas fa-cog"></i></span>
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg hidden group-hover:block">
+            <a href="#" class="block px-4 py-2">Google Play</a>
+            <a href="#" class="block px-4 py-2">App Store</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <div class="sidebar sm:w-1/4 border-r border-gray-200 p-4">
+        <input type="text" id="search" class="w-full p-2 border border-gray-300 rounded" placeholder="Search...">
+        <ul id="autocomplete-list" class="mt-2 space-y-2"></ul>
+      </div>
+      <div class="main-content sm:w-3/4 p-4">
+        <%= yield %>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('search').addEventListener('input', function() {
+        var input = this.value;
+        var autocompleteList = document.getElementById('autocomplete-list');
+        autocompleteList.innerHTML = '';
+
+        if (input.length > 0) {
+          var suggestions = ['a\'ad\'aden', 'a', 'a\'ayaman', 'a\'aca', 'a\'aca\'open', 'a\'acawen', 'a\'adetem', 'a\'adidagen', 'a\'adisa', 'a\'adiyamen', 'a\'adomaxen', 'a\'adopen', 'a\'afalangen', 'a\'afangan', 'a\'afasan', 'a\'afaten', 'a\'afongen'];
+          var filteredSuggestions = suggestions.filter(function(suggestion) {
+            return suggestion.toLowerCase().includes(input.toLowerCase());
+          });
+
+          filteredSuggestions.forEach(function(suggestion) {
+            var li = document.createElement('li');
+            li.textContent = suggestion;
+            li.classList.add('text-gray-600');
+            autocompleteList.appendChild(li);
+          });
+        }
+      });
+    </script>
   </body>
 </html>
