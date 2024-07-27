@@ -1,15 +1,15 @@
-ARG BASE_IMAGE_TAG=3.3-bullseye
-
-FROM ruby:${BASE_IMAGE_TAG}
+# Set RUBY_VERSION
+ARG RUBY_VERSION=3.3.4
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-bullseye as base
 
 # Explicitely define locale
 # as advised in https://github.com/docker-library/docs/blob/master/ruby/content.md#encoding
 ENV LANG="C.UTF-8"
 
 # Define dependencies base versions
-ENV RUBYGEMS_VERSION="3.3.26" \
+ENV RUBYGEMS_VERSION="3.5.16" \
     GOSU_VERSION="1.14" \
-    BUNDLER_VERSION="2.3.26"
+    BUNDLER_VERSION="2.5.16"
 
 # Define some default variables
 ENV PORT="5000" \
@@ -25,8 +25,12 @@ ENV PORT="5000" \
 
 # Install APTdependencies
 RUN sed -i '/bullseye-updates/d' /etc/apt/sources.list \
- && apt-get update \
+ && apt-get update -qq \
  && apt-get install --assume-yes --no-install-recommends --no-install-suggests \
+      build-essential \
+      git \
+      libvips \
+      pkg-config \
       apt-transport-https \
       lsb-release \
       libcap2-bin \
@@ -35,9 +39,10 @@ RUN sed -i '/bullseye-updates/d' /etc/apt/sources.list \
  && apt-get install --assume-yes --no-install-recommends --no-install-suggests \
       jq \
       vim \
-      tmux \
+      curl \
+      libsqlite3-0 \
       ripgrep \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install `gosu`
 RUN export GNUPGHOME="$(mktemp -d)" dpkgArch="$(dpkg --print-architecture | cut -d- -f1)" \
@@ -48,20 +53,6 @@ RUN export GNUPGHOME="$(mktemp -d)" dpkgArch="$(dpkg --print-architecture | cut 
  && curl -sSL "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-${dpkgArch}.asc" | gpg --batch --verify - /usr/local/bin/gosu \
  && chmod +x /usr/local/bin/gosu \
  && rm -rf "${GNUPGHOME}"
-
-# Install `Puma-dev`
-# RUN curl -s "https://api.github.com/repos/puma/puma-dev/releases/latest" \
-#     | grep browser_download_url \
-#     | grep linux-amd64 \
-#     | cut -d '"' -f 4 \
-#     | xargs -I {} curl -sSL {} -o "/tmp/puma-dev.tar.gz" \
-#     && tar zxvf "/tmp/puma-dev.tar.gz" -C "/usr/local/bin/" \
-#     && timeout 3 "/usr/local/bin/puma-dev" || true \
-#     && mkdir -p /usr/local/share/ca-certificates \
-#     && cp ~/.puma-dev-ssl/cert.pem /usr/local/share/ca-certificates/puma-dev-pem.crt \
-#     && update-ca-certificates \
-#     && setcap CAP\_NET\_BIND\_SERVICE=+eip "/usr/local/bin/puma-dev" \
-#     && rm "/tmp/puma-dev.tar.gz"
 
 # Install GEM dependencies
 RUN gem update --system ${RUBYGEMS_VERSION} \
