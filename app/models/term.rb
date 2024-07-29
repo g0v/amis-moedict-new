@@ -2,17 +2,19 @@
 #
 # Table name: terms
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  stem_id    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  repetition :integer
-#  lower_name :string
-#  loanword   :boolean          default(FALSE)
+#  id            :integer          not null, primary key
+#  stem_id       :integer
+#  name          :string
+#  lower_name    :string
+#  repetition    :integer
+#  loanword      :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  dictionary_id :integer
 #
 
 class Term < ApplicationRecord
+  belongs_to :dictionary
   belongs_to :stem
   has_many   :definitions
   has_many   :descriptions
