@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_29_060807) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_29_090135) do
   create_table "definitions", force: :cascade do |t|
     t.integer "term_id"
     t.datetime "created_at", null: false
@@ -26,6 +26,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_060807) do
     t.datetime "updated_at", null: false
     t.index ["definition_id"], name: "index_descriptions_on_definition_id"
     t.index ["term_id"], name: "index_descriptions_on_term_id"
+  end
+
+  create_table "dictionaries", force: :cascade do |t|
+    t.string "name", limit: 50
+    t.string "dialect", limit: 15
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "examples", force: :cascade do |t|
@@ -62,6 +69,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_060807) do
     t.boolean "loanword", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "dictionary_id"
+    t.index ["dictionary_id"], name: "index_terms_on_dictionary_id"
     t.index ["loanword"], name: "index_terms_on_loanword"
     t.index ["lower_name"], name: "index_terms_on_lower_name"
     t.index ["name"], name: "index_terms_on_name"
