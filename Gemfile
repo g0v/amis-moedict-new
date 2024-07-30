@@ -53,6 +53,10 @@ group :development do
   gem 'awesome_print'
   gem 'annotate'
 
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-performance', require: false
+
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
