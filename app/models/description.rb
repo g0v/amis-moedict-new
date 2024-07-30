@@ -4,12 +4,13 @@
 #
 # Table name: descriptions
 #
-#  id            :integer          not null, primary key
-#  definition_id :integer
-#  term_id       :integer
-#  content       :string(500)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id               :integer          not null, primary key
+#  definition_id    :integer
+#  term_id          :integer
+#  content          :string(500)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  description_type :string(3)
 #
 
 class Description < ApplicationRecord
