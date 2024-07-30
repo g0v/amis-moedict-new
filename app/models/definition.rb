@@ -10,5 +10,5 @@
 
 class Definition < ApplicationRecord
   belongs_to :term
-  has_many   :descriptions
+  has_many   :descriptions, dependent: :destroy
 end
