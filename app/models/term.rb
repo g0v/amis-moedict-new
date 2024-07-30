@@ -9,7 +9,7 @@
 #  name          :string
 #  lower_name    :string
 #  repetition    :integer
-#  loanword      :boolean          default(FALSE)
+#  loanword      :boolean          default(FALSE), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  dictionary_id :integer

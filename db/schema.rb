@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_729_090_135) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_29_090135) do
   create_table "definitions", force: :cascade do |t|
     t.integer "term_id"
     t.datetime "created_at", null: false
@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_729_090_135) do
     t.string "name", limit: 40
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_stems_on_name"
+    t.index ["name"], name: "index_stems_on_name", unique: true
   end
 
   create_table "synonyms", force: :cascade do |t|
@@ -66,14 +66,15 @@ ActiveRecord::Schema[7.1].define(version: 20_240_729_090_135) do
     t.string "name"
     t.string "lower_name"
     t.integer "repetition"
-    t.boolean "loanword", default: false
+    t.boolean "loanword", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "dictionary_id"
     t.index ["dictionary_id"], name: "index_terms_on_dictionary_id"
     t.index ["loanword"], name: "index_terms_on_loanword"
     t.index ["lower_name"], name: "index_terms_on_lower_name"
-    t.index ["name"], name: "index_terms_on_name"
+    t.index ["name"], name: "index_terms_on_name", unique: true
     t.index ["stem_id"], name: "index_terms_on_stem_id"
   end
+
 end
