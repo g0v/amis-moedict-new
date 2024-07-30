@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_29_090135) do
+ActiveRecord::Schema[7.1].define(version: 20_240_729_090_135) do
   create_table "definitions", force: :cascade do |t|
     t.integer "term_id"
     t.datetime "created_at", null: false
@@ -76,5 +76,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_090135) do
     t.index ["name"], name: "index_terms_on_name"
     t.index ["stem_id"], name: "index_terms_on_stem_id"
   end
-
 end

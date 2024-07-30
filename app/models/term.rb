@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: terms
@@ -19,7 +21,7 @@ class Term < ApplicationRecord
   has_many   :definitions, dependent: :destroy
   has_many   :descriptions, dependent: :destroy
 
-  validates_uniqueness_of :name
+  validates :name, uniqueness: true
 
   before_save :set_lower_name
 
