@@ -7,12 +7,12 @@ class AllModels < ActiveRecord::Migration[7.1]
       t.string  :name
       t.string  :lower_name
       t.integer :repetition
-      t.boolean :loanword, default: false
+      t.boolean :loanword, default: false, null: false
       t.timestamps
 
       t.index :stem_id
+      t.index :name, unique: true
       t.index :lower_name
-      t.index :name
       t.index :loanword
     end
 
@@ -20,7 +20,7 @@ class AllModels < ActiveRecord::Migration[7.1]
       t.string :name, limit: 40
       t.timestamps
 
-      t.index :name
+      t.index :name, unique: true
     end
 
     create_table :definitions do |t|
