@@ -16,8 +16,8 @@
 class Term < ApplicationRecord
   belongs_to :dictionary
   belongs_to :stem
-  has_many   :definitions
-  has_many   :descriptions
+  has_many   :definitions, dependent: :destroy
+  has_many   :descriptions, dependent: :destroy
 
   validates_uniqueness_of :name
 
