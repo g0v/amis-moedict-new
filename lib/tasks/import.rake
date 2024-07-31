@@ -34,7 +34,7 @@ namespace :import do
 
   desc '從 g0v/amis-moedict 下的 docs/m 檔案匯入博利亞潘世光阿法字典'
   task poinsot: :environment do
-    Dictionary.find_by(name: '博利亞潘世光阿法字典')
+    dictionary = Dictionary.find_by(name: '博利亞潘世光阿法字典')
 
     Dir.glob('tmp/dict/m/*.json').each do |filename|
       # puts filename
@@ -43,12 +43,37 @@ namespace :import do
 
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json['t'].blank?
+
+      term = Term.find_or_create_by(name: json['t'])
+      DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+
+      heteronym = json['h'][0]
+      heteronym['d'].each_with_index do |definition_hash, i|
+        description = term.descriptions[i].presence || term.descriptions.create
+
+        description.update(content: definition_hash['f'],
+                           description_type: definition_hash['type'])
+
+        if definition_hash['e'].present?
+          definition_hash['e'].each_with_index do |example_content, j|
+            example = description.examples[j].presence || description.examples.create
+            example.update(content: example_content)
+          end
+        end
+
+        next if definition_hash['s'].blank?
+
+        definition_hash['s'].each_with_index do |synonym_content, k|
+          synonym = description.synonyms[k].presence || description.synonyms.create
+          synonym.update(content: synonym_content)
+        end
+      end
     end
   end
 
   desc '從 g0v/amis-moedict 下的 docs/p 檔案匯入方敏英字典'
   task fay: :environment do
-    Dictionary.find_by(name: '方敏英字典')
+    dictionary = Dictionary.find_by(name: '方敏英字典')
 
     Dir.glob('tmp/dict/p/*.json').each do |filename|
       # puts filename
@@ -57,6 +82,34 @@ namespace :import do
 
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json['t'].blank?
+
+      term = Term.find_or_create_by(name: json['t'])
+      DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+      if json['stem'].present?
+        stem = Stem.find_or_create_by(name: json['stem'])
+        term.update(stem_id: stem.id)
+      end
+
+      heteronym = json['h'][0]
+      heteronym['d'].each_with_index do |definition_hash, i|
+        description = term.descriptions[i].presence || term.descriptions.create
+
+        description.update(content: definition_hash['f'])
+
+        if definition_hash['e'].present?
+          definition_hash['e'].each_with_index do |example_content, j|
+            example = description.examples[j].presence || description.examples.create
+            example.update(content: example_content)
+          end
+        end
+
+        next if definition_hash['s'].blank?
+
+        definition_hash['s'].each_with_index do |synonym_content, k|
+          synonym = description.synonyms[k].presence || description.synonyms.create
+          synonym.update(content: synonym_content)
+        end
+      end
     end
   end
 end
