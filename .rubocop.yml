@@ -1,0 +1,27 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  SuggestExtensions: false
+  CacheRootDirectory: tmp/rubocop_cache
+  NewCops: enable
+  TargetRubyVersion: 3.3.4
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/20240729060807_all_models.rb
+
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - app/models/dictionary.rb
+    - app/models/stem.rb
