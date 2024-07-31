@@ -23,21 +23,12 @@ class AllModels < ActiveRecord::Migration[7.1]
       t.index :name, unique: true
     end
 
-    create_table :definitions do |t|
-      t.integer :term_id
-      t.timestamps
-
-      t.index :term_id
-    end
-
     create_table :descriptions do |t|
-      t.integer :definition_id
       t.integer :term_id
       t.string  :content, limit: 500
       t.timestamps
 
       t.index :term_id
-      t.index :definition_id
     end
 
     create_table :examples do |t|

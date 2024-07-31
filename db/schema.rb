@@ -11,21 +11,12 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
-  create_table "definitions", force: :cascade do |t|
-    t.integer "term_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["term_id"], name: "index_definitions_on_term_id"
-  end
-
   create_table "descriptions", force: :cascade do |t|
-    t.integer "definition_id"
     t.integer "term_id"
     t.string "content", limit: 500
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description_type", limit: 3
-    t.index ["definition_id"], name: "index_descriptions_on_definition_id"
     t.index ["term_id"], name: "index_descriptions_on_term_id"
   end
 
