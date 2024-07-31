@@ -27,6 +27,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "dictionary_terms", force: :cascade do |t|
+    t.integer "dictionary_id"
+    t.integer "term_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dictionary_id", "term_id"], name: "index_dictionary_terms_on_dictionary_id_and_term_id", unique: true
+  end
+
   create_table "examples", force: :cascade do |t|
     t.integer "description_id"
     t.string "content"
@@ -61,8 +69,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
     t.boolean "loanword", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "dictionary_id"
-    t.index ["dictionary_id"], name: "index_terms_on_dictionary_id"
     t.index ["loanword"], name: "index_terms_on_loanword"
     t.index ["lower_name"], name: "index_terms_on_lower_name"
     t.index ["name"], name: "index_terms_on_name", unique: true
