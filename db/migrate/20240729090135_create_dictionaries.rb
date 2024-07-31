@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDictionaries < ActiveRecord::Migration[7.1]
   def change
     create_table :dictionaries do |t|
@@ -6,7 +8,12 @@ class CreateDictionaries < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_column :terms, :dictionary_id, :integer
-    add_index  :terms, :dictionary_id
+    create_table :dictionary_terms do |t|
+      t.integer :dictionary_id
+      t.integer :term_id
+      t.timestamps
+
+      t.index %i[dictionary_id term_id], unique: true
+    end
   end
 end

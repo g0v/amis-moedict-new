@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AllModels < ActiveRecord::Migration[7.1]
   def change
     create_table :terms do |t|
@@ -5,12 +7,12 @@ class AllModels < ActiveRecord::Migration[7.1]
       t.string  :name
       t.string  :lower_name
       t.integer :repetition
-      t.boolean :loanword, default: false
+      t.boolean :loanword, default: false, null: false
       t.timestamps
 
       t.index :stem_id
+      t.index :name, unique: true
       t.index :lower_name
-      t.index :name
       t.index :loanword
     end
 
@@ -18,24 +20,15 @@ class AllModels < ActiveRecord::Migration[7.1]
       t.string :name, limit: 40
       t.timestamps
 
-      t.index :name
-    end
-
-    create_table :definitions do |t|
-      t.integer :term_id
-      t.timestamps
-
-      t.index :term_id
+      t.index :name, unique: true
     end
 
     create_table :descriptions do |t|
-      t.integer :definition_id
       t.integer :term_id
       t.string  :content, limit: 500
       t.timestamps
 
       t.index :term_id
-      t.index :definition_id
     end
 
     create_table :examples do |t|

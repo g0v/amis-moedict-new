@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: dictionaries
@@ -9,5 +11,6 @@
 #  updated_at :datetime         not null
 #
 class Dictionary < ApplicationRecord
-  has_many :terms
+  has_many :dictionary_terms, dependent: :destroy
+  has_many :terms, through: :dictionary_terms
 end
