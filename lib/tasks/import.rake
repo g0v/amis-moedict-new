@@ -65,7 +65,7 @@ namespace :import do
 
         definition_hash['s'].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
-          synonym.update(content: synonym_content)
+          synonym.update(content: synonym_content, term_type: '同')
         end
       end
     end
@@ -107,7 +107,7 @@ namespace :import do
 
         definition_hash['s'].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
-          synonym.update(content: synonym_content)
+          synonym.update(content: synonym_content, term_type: '同')
         end
       end
     end
