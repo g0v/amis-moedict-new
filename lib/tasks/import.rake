@@ -20,7 +20,7 @@ namespace :import do
 
   desc '從 g0v/amis-moedict 下的 docs/s 檔案匯入蔡中涵大辭典'
   task safolu: :environment do
-    Dictionary.find_by(name: '蔡中涵大辭典')
+    dictionary = Dictionary.find_by(name: '蔡中涵大辭典')
 
     Dir.glob('tmp/dict/s/*.json').each do |filename|
       # puts filename
@@ -29,6 +29,42 @@ namespace :import do
 
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json['t'].blank?
+
+      term = Term.find_or_create_by(name: json['t'])
+      DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+      if json['stem'].present?
+        stem = Stem.find_or_create_by(name: json['stem'])
+        term.update(stem_id: stem.id)
+      end
+
+      json['h'].each do |heteronym|
+        heteronym['d'].each_with_index do |definition_hash, i|
+          description = term.descriptions[i].presence || term.descriptions.create
+
+          description.update(content: definition_hash['f'])
+
+          if definition_hash['e'].present?
+            definition_hash['e'].each_with_index do |example_content, j|
+              example = description.examples[j].presence || description.examples.create
+              example.update(content: example_content)
+            end
+          end
+
+          if definition_hash['r'].present?
+            definition_hash['r'].each_with_index do |reference_content, x|
+              reference = description.synonyms[x].presence || description.synonyms.create
+              reference.update(content: reference_content, term_type: '參見')
+            end
+          end
+
+          next if definition_hash['s'].blank?
+
+          definition_hash['s'].each_with_index do |synonym_content, k|
+            synonym = description.synonyms[k].presence || description.synonyms.create
+            synonym.update(content: synonym_content, term_type: '同')
+          end
+        end
+      end
     end
   end
 
