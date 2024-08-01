@@ -48,22 +48,22 @@ namespace :import do
       DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
 
       heteronym = json['h'][0]
-      heteronym['d'].each_with_index do |definition_hash, i|
+      heteronym['d'].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: definition_hash['f'],
-                           description_type: definition_hash['type'])
+        description.update(content: description_hash['f'],
+                           description_type: description_hash['type'])
 
-        if definition_hash['e'].present?
-          definition_hash['e'].each_with_index do |example_content, j|
+        if description_hash['e'].present?
+          description_hash['e'].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
             example.update(content: example_content)
           end
         end
 
-        next if definition_hash['s'].blank?
+        next if description_hash['s'].blank?
 
-        definition_hash['s'].each_with_index do |synonym_content, k|
+        description_hash['s'].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
           synonym.update(content: synonym_content, term_type: '同')
         end
@@ -91,21 +91,21 @@ namespace :import do
       end
 
       heteronym = json['h'][0]
-      heteronym['d'].each_with_index do |definition_hash, i|
+      heteronym['d'].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: definition_hash['f'])
+        description.update(content: description_hash['f'])
 
-        if definition_hash['e'].present?
-          definition_hash['e'].each_with_index do |example_content, j|
+        if description_hash['e'].present?
+          description_hash['e'].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
             example.update(content: example_content)
           end
         end
 
-        next if definition_hash['s'].blank?
+        next if description_hash['s'].blank?
 
-        definition_hash['s'].each_with_index do |synonym_content, k|
+        description_hash['s'].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
           synonym.update(content: synonym_content, term_type: '同')
         end
