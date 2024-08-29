@@ -20,15 +20,71 @@ namespace :import do
 
   desc '從 g0v/amis-moedict 下的 docs/s 檔案匯入蔡中涵大辭典'
   task safolu: :environment do
-    Dictionary.find_by(name: '蔡中涵大辭典')
+    dictionary = Dictionary.find_by(name: '蔡中涵大辭典')
 
-    Dir.glob('tmp/dict/s/*.json').each do |filename|
+    total = Dir.glob('tmp/dict/s/*.json').size
+    Dir.glob('tmp/dict/s/*.json').each_with_index do |filename, num|
+      puts "#{num}/#{total}"
       # puts filename
       file = File.read(filename)
       next if file.blank?
 
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json['t'].blank?
+
+      json['h'].each { |el| el.delete('name') if el['name'].blank? }
+
+      term_upper_name = json['h'].pluck('name').uniq.join
+      if term_upper_name.present?
+        json_with_upper_name = {}
+        json_with_upper_name['t'] = term_upper_name
+        json_with_upper_name['stem'] = json['stem'] if json['stem'].present?
+        json_with_upper_name['h'] = json['h'].select { |el| el.key?('name') }
+
+        json['h'].delete_if { |el| el.key?('name') }
+        json_with_upper_name['h'].each { |el| el.delete('name') }
+      end
+
+      [json, json_with_upper_name].compact.each do |json_object|
+        next if json_object['h'].empty?
+
+        puts filename if Term.find_by(name: json_object['t']).nil?
+        term = Term.find_or_create_by(name: json_object['t'])
+        DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+        if json_object['stem'].present?
+          stem = Stem.find_or_create_by(name: json_object['stem'])
+          term.update(stem_id: stem.id)
+        end
+
+        json_object['descriptions'] = []
+        json_object['h'].each { |h| json_object['descriptions'] += h['d'] }
+        json_object['descriptions'].each_with_index do |description_hash, i|
+          description = term.descriptions[i].presence || term.descriptions.create
+
+          description.update(content: description_hash['f'])
+
+          if description_hash['e'].present?
+            description_hash['e'].each_with_index do |example_content, j|
+              example = description.examples[j].presence || description.examples.create
+              example.update(content: example_content)
+            end
+          end
+
+          if description_hash['r'].present?
+            description_hash['r'].each_with_index do |reference_content, x|
+              reference = description.synonyms[x].presence || description.synonyms.create
+              reference.update(content: reference_content, term_type: '參見')
+            end
+          end
+
+          next if description_hash['s'].blank?
+
+          description_hash['s'].each_with_index do |synonym_content, k|
+            synonym = description.synonyms[k].presence || description.synonyms.create
+            synonym.update(content: synonym_content, term_type: '同')
+          end
+        end
+      end
     end
   end
 
@@ -48,22 +104,22 @@ namespace :import do
       DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
 
       heteronym = json['h'][0]
-      heteronym['d'].each_with_index do |definition_hash, i|
+      heteronym['d'].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: definition_hash['f'],
-                           description_type: definition_hash['type'])
+        description.update(content: description_hash['f'],
+                           description_type: description_hash['type'])
 
-        if definition_hash['e'].present?
-          definition_hash['e'].each_with_index do |example_content, j|
+        if description_hash['e'].present?
+          description_hash['e'].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
             example.update(content: example_content)
           end
         end
 
-        next if definition_hash['s'].blank?
+        next if description_hash['s'].blank?
 
-        definition_hash['s'].each_with_index do |synonym_content, k|
+        description_hash['s'].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
           synonym.update(content: synonym_content, term_type: '同')
         end
@@ -91,21 +147,21 @@ namespace :import do
       end
 
       heteronym = json['h'][0]
-      heteronym['d'].each_with_index do |definition_hash, i|
+      heteronym['d'].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: definition_hash['f'])
+        description.update(content: description_hash['f'])
 
-        if definition_hash['e'].present?
-          definition_hash['e'].each_with_index do |example_content, j|
+        if description_hash['e'].present?
+          description_hash['e'].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
             example.update(content: example_content)
           end
         end
 
-        next if definition_hash['s'].blank?
+        next if description_hash['s'].blank?
 
-        definition_hash['s'].each_with_index do |synonym_content, k|
+        description_hash['s'].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
           synonym.update(content: synonym_content, term_type: '同')
         end

@@ -21,7 +21,7 @@ class Term < ApplicationRecord
   belongs_to :stem, optional: true
   has_many   :descriptions, dependent: :destroy
 
-  validates :name, uniqueness: true
+  validates :name, presence: true
 
   before_save :set_lower_name
 
