@@ -78,4 +78,4 @@ ENTRYPOINT ["gosu-wrapper", "bundler-wrapper", "rails-wrapper"]
 # ENTRYPOINT ["gosu-wrapper", "bundler-wrapper", "rails-wrapper", "zsh"] # for debugging development
 
 # The main command to run when the container starts is to start whatever the Procfile defines
-CMD ["foreman", "start", "-f", "Procfile", "-m", "all=1,release=0"]
+CMD ["foreman", "start", "-f", "Procfile.dev", "-m", "all=1,release=0"]
