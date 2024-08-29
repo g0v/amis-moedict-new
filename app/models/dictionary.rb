@@ -11,6 +11,5 @@
 #  updated_at :datetime         not null
 #
 class Dictionary < ApplicationRecord
-  has_many :dictionary_terms, dependent: :destroy
-  has_many :terms, through: :dictionary_terms
+  has_many :terms
 end
