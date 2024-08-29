@@ -17,7 +17,6 @@
 
 class Term < ApplicationRecord
   belongs_to :dictionary
-
   belongs_to :stem, optional: true
   has_many   :descriptions, dependent: :destroy
 
