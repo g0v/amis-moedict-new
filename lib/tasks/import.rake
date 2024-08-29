@@ -24,7 +24,7 @@ namespace :import do
 
     total = Dir.glob('tmp/dict/s/*.json').size
     Dir.glob('tmp/dict/s/*.json').each_with_index do |filename, num|
-      puts "#{num}/#{total}"
+      puts "#{num}/#{total}" if num % 500 == 0
       # puts filename
       file = File.read(filename)
       next if file.blank?
@@ -49,8 +49,7 @@ namespace :import do
         next if json_object['h'].empty?
 
         puts filename if Term.find_by(name: json_object['t']).nil?
-        term = Term.find_or_create_by(name: json_object['t'])
-        DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+        term = dictionary.terms.find_or_create_by(name: json_object['t'])
         if json_object['stem'].present?
           stem = Stem.find_or_create_by(name: json_object['stem'])
           term.update(stem_id: stem.id)
@@ -100,8 +99,7 @@ namespace :import do
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json['t'].blank?
 
-      term = Term.find_or_create_by(name: json['t'])
-      DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+      term = dictionary.terms.find_or_create_by(name: json['t'])
 
       heteronym = json['h'][0]
       heteronym['d'].each_with_index do |description_hash, i|
@@ -139,8 +137,7 @@ namespace :import do
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json['t'].blank?
 
-      term = Term.find_or_create_by(name: json['t'])
-      DictionaryTerm.find_or_create_by(dictionary_id: dictionary.id, term_id: term.id)
+      term = dictionary.terms.find_or_create_by(name: json['t'])
       if json['stem'].present?
         stem = Stem.find_or_create_by(name: json['stem'])
         term.update(stem_id: stem.id)

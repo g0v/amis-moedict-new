@@ -11,6 +11,13 @@
 #  updated_at :datetime         not null
 #
 class Dictionary < ApplicationRecord
-  has_many :dictionary_terms, dependent: :destroy
-  has_many :terms, through: :dictionary_terms
+  has_many :terms
+
+  def color
+    case name
+    when '蔡中涵大辭典' then 'blue'
+    when '博利亞潘世光阿法字典' then 'gray'
+    when '方敏英字典' then 'green'
+    end
+  end
 end

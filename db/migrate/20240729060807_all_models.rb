@@ -3,6 +3,7 @@
 class AllModels < ActiveRecord::Migration[7.1]
   def change
     create_table :terms do |t|
+      t.integer :dictionary_id
       t.integer :stem_id
       t.string  :name
       t.string  :lower_name
@@ -10,8 +11,9 @@ class AllModels < ActiveRecord::Migration[7.1]
       t.boolean :loanword, default: false, null: false
       t.timestamps
 
+      t.index :dictionary_id
       t.index :stem_id
-      t.index :name, unique: true
+      t.index :name
       t.index :lower_name
       t.index :loanword
     end
