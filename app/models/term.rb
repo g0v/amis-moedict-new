@@ -4,20 +4,19 @@
 #
 # Table name: terms
 #
-#  id         :integer          not null, primary key
-#  stem_id    :integer
-#  name       :string
-#  lower_name :string
-#  repetition :integer
-#  loanword   :boolean          default(FALSE), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :integer          not null, primary key
+#  dictionary_id :integer
+#  stem_id       :integer
+#  name          :string
+#  lower_name    :string
+#  repetition    :integer
+#  loanword      :boolean          default(FALSE), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
 class Term < ApplicationRecord
-  has_many :dictionary_terms, dependent: :destroy
-  has_many :dictionaries, through: :dictionary_terms
-
+  belongs_to :dictionary
   belongs_to :stem, optional: true
   has_many   :descriptions, dependent: :destroy
 
