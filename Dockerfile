@@ -18,3 +18,7 @@ RUN update-rc.d -f apache2 remove
 RUN update-rc.d -f php7.4-fpm remove
 RUN mkdir /run/php/
 COPY config/ /
+
+RUN mkdir -p /srv/web
+ENV PATH="/opt/rubies/ruby-3.3.4/bin:${PATH}"
+WORKDIR /srv/web
