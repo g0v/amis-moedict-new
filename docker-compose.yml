@@ -12,7 +12,7 @@ services:
       - ${WEB_PORT}:${WEB_PORT}
     volumes:
       # - /etc/localtime:/etc/localtime:ro
-      - amis-app-sync:/app:nocopy
+      - amis-app-sync:/srv/web:nocopy
       - bundle:/bundle
       - config:/config
     networks:
