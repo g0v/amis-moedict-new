@@ -3,6 +3,8 @@ export RUBY_VERSION="3.3.4"
 export BUNDLER_VERSION="2.5.16"
 export PATH="/opt/rubies/ruby-$RUBY_VERSION/bin:$PATH"
 
+# 確認 Ruby 版本，如果不是 $RUBY_VERSION，就用 ruby-build 安裝
+# $RUBY_VERSION 應該要跟 Gemfile 同步
 current_ruby_version=$(ruby -v | awk '{print $2}')
 
 if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
@@ -34,6 +36,7 @@ if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
       uuid-dev \
       libffi-dev
 
+  # 沒有 /tmp/ruby-build 時，跑 git clone 下載
   if [ ! -d "/tmp/ruby-build" ]; then
     set -eux; \
       git clone "https://github.com/rbenv/ruby-build.git" /tmp/ruby-build
@@ -52,7 +55,7 @@ else
   echo "Ruby version is already $RUBY_VERSION."
 fi
 
-# middle2 上是用 sh -c 執行，因此要把 * 放在字串外才能生效
+# middle2 不知道怎麼設定 PATH，因此把 ruby 的執行檔 symlink 到 /usr/local/bin
 if [ ! -e /usr/local/bin/gem ]; then
   set -eux; \
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundle"          /usr/local/bin/; \
@@ -65,17 +68,13 @@ if [ ! -e /usr/local/bin/gem ]; then
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/ruby"            /usr/local/bin/
 fi
 
+# 確認 bundler 版本並安裝
+# $BUNDLER_VERSION 版本應該和 Gemfile.lock 同步
 current_bundler_version=$(bundle -v | awk '{print $3}')
 if [ "$current_bundler_version" != "$BUNDLER_VERSION" ]; then
   set -eux; \
     gem update --system; \
-    gem i bundler -v="$BUNDLER_VERSION"; \
-    gem i foreman
+    gem i bundler -v="$BUNDLER_VERSION"
 else
   echo "Bundler version is already $BUNDLER_VERSION."
-fi
-
-if [ ! -e /usr/local/bin/foreman ]; then
-  set -eux; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/foreman" /usr/local/bin/
 fi
