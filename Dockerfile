@@ -19,6 +19,27 @@ RUN update-rc.d -f php7.4-fpm remove
 RUN mkdir /run/php/
 COPY config/ /
 
-RUN mkdir -p /srv/web
-ENV PATH="/opt/rubies/ruby-3.3.4/bin:${PATH}"
+# 以上是來自 middle2 dockerfile
+# https://github.com/middle2tw/middle2/blob/master/dockers/Dockerfile
+
+# 目錄設定同 middle2
+# https://github.com/middle2tw/middle2/blob/master/webdata/models/GitHelper.php#L112-L115
 WORKDIR /srv/web
+
+ENV PORT="8889" \
+    BUNDLE_PATH="/bundle" \
+    BUNDLE_BIN="/bundle/bin" \
+    BUNDLE_APP_CONFIG="/bundle" \
+    GEM_HOME="/bundle/global" \
+    PATH="/bundle/bin:/bundle/global/bin:${PATH}"
+EXPOSE ${PORT}
+
+# git push middle2 後會先執行 m2-build.sh，安裝 Ruby 3.3
+# https://github.com/middle2tw/middle2/blob/master/webdata/models/GitHelper.php#L131
+COPY m2-build.sh /usr/local/bin/
+RUN m2-build.sh
+
+COPY docker-bin/* /usr/local/bin/
+ENTRYPOINT ["bundler-wrapper", "rails-wrapper"]
+
+CMD bundle exec rdbg -O -n -c -- bin/rails s -p ${PORT} --binding 0.0.0.0
