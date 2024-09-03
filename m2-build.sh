@@ -36,6 +36,10 @@ if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
       uuid-dev \
       libffi-dev
 
+  set -eux; \
+    vim \
+    ripgrep
+
   # 沒有 /tmp/ruby-build 時，跑 git clone 下載
   if [ ! -d "/tmp/ruby-build" ]; then
     set -eux; \
