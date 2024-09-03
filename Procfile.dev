@@ -1,0 +1,2 @@
+web: bundle exec rdbg -O -n -c -- bin/rails s -p ${PORT} --binding 0.0.0.0
+css: bin/rails dartsass:watch
