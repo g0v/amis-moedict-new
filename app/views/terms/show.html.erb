@@ -12,7 +12,7 @@
     <div>
       <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
       <% if term.descriptions.present? %>
-        <ol class="list-decimal list-inside space-y-2 mt-2">
+        <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
           <% term.descriptions.each do |description| %>
             <li>
               <%= description.content %>
