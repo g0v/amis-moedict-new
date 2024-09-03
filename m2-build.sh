@@ -37,6 +37,7 @@ if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
       libffi-dev
 
   set -eux; \
+    apt-get install -y --no-install-recommends \
     vim \
     ripgrep
 
