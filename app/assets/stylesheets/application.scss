@@ -13,3 +13,16 @@
  *= require_tree .
  *= require_self
  */
+
+@font-face {
+  font-family: EBAS;
+  src: url("EBAS-Subset.woff") format("woff"),
+       url("EBAS-Subset.otf") format("opentype"),
+       url("EBAS-Subset.ttf") format("truetype")
+}
+
+.ebas {
+  font-family: EBAS, serif;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+}
