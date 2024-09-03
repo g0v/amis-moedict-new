@@ -24,7 +24,7 @@ namespace :import do
 
     total = Dir.glob('tmp/dict/s/*.json').size
     Dir.glob('tmp/dict/s/*.json').each_with_index do |filename, num|
-      puts "#{num}/#{total}" if num % 500 == 0
+      puts "#{num}/#{total}" if (num % 500).zero?
       # puts filename
       file = File.read(filename)
       next if file.blank?
