@@ -24,28 +24,20 @@
       }
     </style>
 
-    <%#= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%#= javascript_importmap_tags %>
   </head>
 
   <body class="bg-white font-sans leading-normal tracking-normal">
     <div class="bg-gray-800 text-white flex items-center justify-between p-2">
       <div class="flex items-center space-x-2">
-        <div>阿美語萌典</div>
-        <div>蔡中涵太辭典</div>
-        <div>宇韻紀錄簿</div>
-      </div>
-      <div class="flex items-center space-x-2">
-        <button class="bg-green-500 px-2 py-1 rounded">下載</button>
-        <div class="relative group">
-          <button class="flex items-center space-x-1">
-            <span><i class="fas fa-cog"></i></span>
-          </button>
-          <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg hidden group-hover:block">
-            <a href="#" class="block px-4 py-2">Google Play</a>
-            <a href="#" class="block px-4 py-2">App Store</a>
-          </div>
+        <div>
+          <a href="/" class="logo ebas"> 阿美語萌典</a>
         </div>
+        <div>
+          <i class="fas fa-book">&nbsp;</i> 所有辭典
+        </div>
+        <!-- <div>宇詞紀錄簿</div> -->
       </div>
     </div>
     <div class="flex flex-col sm:flex-row">

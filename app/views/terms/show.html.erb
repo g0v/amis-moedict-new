@@ -12,14 +12,28 @@
     <div>
       <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
       <% if term.descriptions.present? %>
-        <ol class="list-decimal list-inside space-y-2 mt-2">
+        <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
           <% term.descriptions.each do |description| %>
             <li>
               <%= description.content %>
               <% if description.examples.present? %>
                 <ul class="list-disc list-inside space-y-1">
                   <% description.examples.each do |example| %>
-                    <li><%= example.content %></li>
+                    <li>
+                      <% content = example.content.gsub("\xEF\xBF\xB9", "") %>
+                      <% parts = content.split(/[`~]/).reject(&:empty?) %>
+                      <%== parts.each_with_index.map do |part, i|
+                            if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
+                              if i == 0
+                                "<a href=\"/terms/#{part.downcase}\" class=\"term\">#{part}</a>"
+                              else
+                                "<a href=\"/terms/#{part}\" class=\"term\">#{part}</a>"
+                              end
+                            else
+                              part
+                            end
+                          end.join(' ') %>
+                    </li>
                   <% end %>
                 </ul>
               <% end %>
