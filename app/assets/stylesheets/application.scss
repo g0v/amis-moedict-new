@@ -26,15 +26,3 @@
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
 }
-
-.term {
-  font-weight: 400;
-  border-bottom: 1px solid #ddd;
-  color: #333;
-  &:hover, &:focus {
-    background: #ddd;
-    background-image: #ddd;
-    color: #0070a3;
-    outline: 1px solid #69d2fc
-  }
-}
