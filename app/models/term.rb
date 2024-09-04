@@ -24,9 +24,6 @@ class Term < ApplicationRecord
 
   before_save :set_lower_name
 
-  scope :amis,      -> { where(loanword: false) }
-  scope :loanwords, -> { where(loanword: true) }
-
   def short_description
     descriptions.first&.content&.[](0..20)
   end
