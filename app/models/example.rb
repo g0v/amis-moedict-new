@@ -14,4 +14,6 @@
 
 class Example < ApplicationRecord
   belongs_to :description
+
+  validates :content, presence: true
 end
