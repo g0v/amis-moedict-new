@@ -17,4 +17,6 @@ class Synonym < ApplicationRecord
 
   scope :alts, -> { where(term_type: '同') }
   scope :refs, -> { where(term_type: '參見') }
+
+  validates :content, presence: true
 end
