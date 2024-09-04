@@ -42,4 +42,4 @@ RUN m2-build.sh
 COPY docker-bin/* /usr/local/bin/
 ENTRYPOINT ["bundler-wrapper", "rails-wrapper"]
 
-CMD ["foreman", "start", "-f", "Procfile.dev"]
+CMD ["bash"]
