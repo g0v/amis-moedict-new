@@ -13,11 +13,13 @@
 class Dictionary < ApplicationRecord
   has_many :terms
 
+  COLOR = {
+    '蔡中涵大辭典' => 'blue',
+    '博利亞潘世光阿法字典' => 'gray',
+    '方敏英字典' => 'green'
+  }.freeze
+
   def color
-    case name
-    when '蔡中涵大辭典' then 'blue'
-    when '博利亞潘世光阿法字典' then 'gray'
-    when '方敏英字典' then 'green'
-    end
+    COLOR[name]
   end
 end
