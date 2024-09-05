@@ -21,7 +21,7 @@ class Term < ApplicationRecord
 
   validates :name, presence: true
 
-  before_save :set_lower_name
+  before_save :clean_name_and_set_lower_name
 
   def short_description
     descriptions.first&.content&.[](0..20)
@@ -29,7 +29,11 @@ class Term < ApplicationRecord
 
   private
 
-  def set_lower_name
+  def clean_name_and_set_lower_name
+    name.gsub!(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, '')
+    name.strip!
+
+    self.name = name
     self.lower_name = name.downcase
   end
 end
