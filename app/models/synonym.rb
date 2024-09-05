@@ -19,4 +19,12 @@ class Synonym < ApplicationRecord
   scope :refs, -> { where(term_type: '參見') }
 
   validates :content, presence: true
+
+  before_save :clean_content
+
+  private
+
+  def clean_content
+    self.content = content.gsub(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, '').strip
+  end
 end
