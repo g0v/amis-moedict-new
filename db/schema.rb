@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
   create_table "examples", force: :cascade do |t|
     t.integer "description_id"
     t.string "content"
-    t.string "linked_content", limit: 500
+    t.string "content_zh"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["description_id"], name: "index_examples_on_description_id"
@@ -47,7 +47,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
     t.integer "description_id"
     t.string "term_type", limit: 5
     t.string "content"
-    t.string "linked_content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["description_id"], name: "index_synonyms_on_description_id"
@@ -59,11 +58,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
     t.string "name"
     t.string "lower_name"
     t.integer "repetition"
-    t.boolean "loanword", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dictionary_id"], name: "index_terms_on_dictionary_id"
-    t.index ["loanword"], name: "index_terms_on_loanword"
     t.index ["lower_name"], name: "index_terms_on_lower_name"
     t.index ["name"], name: "index_terms_on_name"
     t.index ["stem_id"], name: "index_terms_on_stem_id"
