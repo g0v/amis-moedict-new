@@ -6,11 +6,10 @@
 #
 #  id             :integer          not null, primary key
 #  description_id :integer
+#  term_type      :string(5)
 #  content        :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  term_type      :string(5)
-#  linked_content :string
 #
 
 class Synonym < ApplicationRecord

@@ -7,9 +7,9 @@
 #  id             :integer          not null, primary key
 #  description_id :integer
 #  content        :string
+#  content_zh     :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  linked_content :string(500)
 #
 
 class Example < ApplicationRecord
