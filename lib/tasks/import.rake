@@ -61,6 +61,9 @@ namespace :import do
           description.update(content: clean(text: description_hash['f']))
 
           if description_hash['e'].present?
+            description_hash['e'].select! do |example_content|
+              clean(text: example_content).present?
+            end
             description_hash['e'].each_with_index do |example_content, j|
               example = description.examples[j].presence || description.examples.create
               example.update(content: clean(text: example_content))
