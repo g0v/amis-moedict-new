@@ -58,7 +58,6 @@ namespace :import do
         json_object['h'].each { |h| json_object['descriptions'] += h['d'] }
         json_object['descriptions'].each_with_index do |description_hash, i|
           description = term.descriptions[i].presence || term.descriptions.create
-
           description.update(content: clean(text: description_hash['f']))
 
           if description_hash['e'].present?
@@ -70,7 +69,7 @@ namespace :import do
 
           if description_hash['r'].present?
             description_hash['r'].each_with_index do |reference_content, x|
-              reference = description.synonyms[x].presence || description.synonyms.create
+              reference = description.synonyms.refs[x].presence || description.synonyms.create
               reference.update(content: clean(text: reference_content), term_type: '參見')
             end
           end
@@ -78,7 +77,7 @@ namespace :import do
           next if description_hash['s'].blank?
 
           description_hash['s'].each_with_index do |synonym_content, k|
-            synonym = description.synonyms[k].presence || description.synonyms.create
+            synonym = description.synonyms.alts[k].presence || description.synonyms.create
             synonym.update(content: clean(text: synonym_content), term_type: '同')
           end
         end
