@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_06_050047) do
   create_table "descriptions", force: :cascade do |t|
     t.integer "term_id"
     t.string "content", limit: 500
@@ -57,13 +57,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_143743) do
     t.integer "stem_id"
     t.string "name"
     t.string "lower_name"
-    t.integer "repetition"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "customized_text", limit: 500
     t.index ["dictionary_id"], name: "index_terms_on_dictionary_id"
     t.index ["lower_name"], name: "index_terms_on_lower_name"
     t.index ["name"], name: "index_terms_on_name"
     t.index ["stem_id"], name: "index_terms_on_stem_id"
   end
-
 end
