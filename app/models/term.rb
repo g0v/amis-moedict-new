@@ -24,7 +24,7 @@ class Term < ApplicationRecord
 
   validates :name, presence: true
 
-  before_save :clean_name_and_set_lower_name
+  before_save :clean_name_and_set_lower_name, :set_is_stem
 
   def short_description
     descriptions.first&.content&.[](0..20)
@@ -42,5 +42,9 @@ class Term < ApplicationRecord
 
     self.name = name
     self.lower_name = name.downcase
+  end
+
+  def set_is_stem
+    self.is_stem = Stem.exists?(name: name)
   end
 end
