@@ -10,9 +10,14 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  description_type :string(3)
+#  glossary_serial  :string(10)
+#  glossary_level   :string(10)
+#  customized_text  :string(500)
 #
 
 class Description < ApplicationRecord
+  store :customized_text, accessors: %i[image]
+
   belongs_to :term
   has_many   :examples, dependent: :destroy
   has_many   :synonyms, dependent: :destroy

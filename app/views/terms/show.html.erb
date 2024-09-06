@@ -1,21 +1,37 @@
 <div class="flex items-center space-x-2">
-  <h1 class="text-2xl"><%= params[:id] %></h1>
-  <span class="text-gray-500">
-    <% if @stems.present? %>
-      (詞幹: <%= @stems.join("、") %>)
+  <h1 class="text-2xl">
+    <%= params[:id] %>
+    <% if @terms.first.is_stem %>
+      <span class="text-base">（詞幹）</span>
     <% end %>
-  </span>
-  <button><i class="fas fa-volume-up"></i></button>
+  </h1>
 </div>
 <div class="mt-4 space-y-4">
   <% @terms.each do |term| %>
     <div>
       <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
       <% if term.descriptions.present? %>
+        <div>
+          <span class="text-gray-500">
+            <% stem = term.stem %>
+            <% if stem.present? %>
+              （詞幹: <%= link_to(stem.name, term_path(stem.name)) %>）
+            <% end %>
+          </span>
+          <% if term.audio.present? %>
+            <button>
+              <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
+            </button>
+            <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
+          <% end %>
+        </div>
         <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
           <% term.descriptions.each do |description| %>
             <li>
-              <%= description.content %>
+              <%= simple_format(description.content) %>
+              <% if description.image.present? %>
+                <p><%= image_tag description.image, alt: description.content, width: '100' %></p>
+              <% end %>
               <% if description.examples.present? %>
                 <ul class="list-disc list-inside space-y-1">
                   <% description.examples.each do |example| %>
