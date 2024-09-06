@@ -29,6 +29,10 @@ class Term < ApplicationRecord
     descriptions.first&.content&.[](0..20)
   end
 
+  def audio_id
+    audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join('-')
+  end
+
   private
 
   def clean_name_and_set_lower_name
