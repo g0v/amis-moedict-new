@@ -43,20 +43,24 @@
                 <ul class="list-disc list-inside space-y-1">
                   <% description.examples.each do |example| %>
                     <li>
-                      <% parts = example.content.split(/[`~]/).reject(&:empty?) %>
-                      <%== parts.each_with_index.map do |part, i|
-                            if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
-                              term_path = if i == 0
-                                            "/terms/#{part.downcase}"
-                                          else
-                                            "/terms/#{part}"
-                                          end
+                      <%
+                        term_html = ''
+                        parts = example.content.split(/[`~]/).reject(&:empty?)
+                        parts.each_with_index do |part, i|
+                          if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
+                            term_path = if i == 0
+                                          "/terms/#{part.downcase}"
+                                        else
+                                          "/terms/#{part}"
+                                        end
 
-                              "<a href=\"#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
-                            else
-                              part
-                            end
-                          end.join %>
+                            term_html += "<a href=\"#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
+                          else
+                            term_html += part
+                          end
+                        end
+                      %>
+                      <%= term_html.html_safe %>
                     </li>
                   <% end %>
                 </ul>
