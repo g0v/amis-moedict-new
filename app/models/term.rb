@@ -12,6 +12,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  customized_text :string(500)
+#  is_stem         :boolean          default(FALSE)
 #
 
 class Term < ApplicationRecord
