@@ -12,6 +12,7 @@
 #  description_type :string(3)
 #  glossary_serial  :string(10)
 #  glossary_level   :string(10)
+#  customized_text  :string(500)
 #
 
 class Description < ApplicationRecord

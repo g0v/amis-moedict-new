@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_06_063350) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_06_123225) do
   create_table "descriptions", force: :cascade do |t|
     t.integer "term_id"
     t.string "content", limit: 500
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_06_063350) do
     t.string "description_type", limit: 3
     t.string "glossary_serial", limit: 10
     t.string "glossary_level", limit: 10
+    t.string "customized_text", limit: 500
     t.index ["glossary_level"], name: "index_descriptions_on_glossary_level"
     t.index ["glossary_serial"], name: "index_descriptions_on_glossary_serial"
     t.index ["term_id"], name: "index_descriptions_on_term_id"
