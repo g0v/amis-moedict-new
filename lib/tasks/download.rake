@@ -20,7 +20,6 @@ namespace :download do
         term.descriptions.each do |description|
           wav_url   = "https://ilrdc.tw/tow/2022/audio/word/#{i+1}/#{description.glossary_serial.sub('-', '_')}.wav"
           check_and_download(wav_url,   "public/glossary/wav/#{i+1}")
-          term.update(audio: "public/glossary/wav/#{i+1}/#{description.glossary_serial.sub('-', '_')}.wav")
 
           image_url = "https://glossary-api.ilrdf.org.tw/glossary_2022/images/#{description.glossary_serial}.jpg"
           check_and_download(image_url, "public/glossary/images")
@@ -37,6 +36,26 @@ namespace :download do
         description.update(image: file_path.sub('public', ''))
       else
         description.update(image: nil)
+      end
+    end
+  end
+
+  desc "更新 glossary wav 網址"
+  task description_glossary_wav: :environment do
+    %w[
+      南勢阿美語
+      秀姑巒阿美語
+      海岸阿美語
+      馬蘭阿美語
+      恆春阿美語
+    ].each_with_index do |dict_name, i|
+      dictionary = Dictionary.find_by(name: "學習詞表－#{dict_name}")
+
+      dictionary.terms.each do |term|
+        term.descriptions.each do |description|
+          file_path = "/glossary/wav/#{i+1}/#{description.glossary_serial.sub('-', '_')}.wav"
+          term.update(audio: file_path)
+        end
       end
     end
   end
