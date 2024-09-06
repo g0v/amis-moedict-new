@@ -16,6 +16,8 @@
 #
 
 class Description < ApplicationRecord
+  store :customized_text, accessors: %i[image]
+
   belongs_to :term
   has_many   :examples, dependent: :destroy
   has_many   :synonyms, dependent: :destroy
