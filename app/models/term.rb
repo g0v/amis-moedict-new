@@ -15,7 +15,7 @@
 #
 
 class Term < ApplicationRecord
-  store :customized_text, accessors: %i[repetition]
+  store :customized_text, accessors: %i[repetition audio]
 
   belongs_to :dictionary
   belongs_to :stem, optional: true
