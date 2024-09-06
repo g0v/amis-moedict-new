@@ -4,14 +4,14 @@
 #
 # Table name: terms
 #
-#  id            :integer          not null, primary key
-#  dictionary_id :integer
-#  stem_id       :integer
-#  name          :string
-#  lower_name    :string
-#  repetition    :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id              :integer          not null, primary key
+#  dictionary_id   :integer
+#  stem_id         :integer
+#  name            :string
+#  lower_name      :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  customized_text :string(500)
 #
 
 class Term < ApplicationRecord
