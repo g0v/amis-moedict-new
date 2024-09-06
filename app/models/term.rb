@@ -15,6 +15,8 @@
 #
 
 class Term < ApplicationRecord
+  store :customized_text, accessors: %i[repetition]
+
   belongs_to :dictionary
   belongs_to :stem, optional: true
   has_many   :descriptions, dependent: :destroy
