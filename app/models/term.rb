@@ -26,6 +26,10 @@ class Term < ApplicationRecord
 
   before_save :clean_name_and_set_lower_name, :set_is_stem
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[lower_name]
+  end
+
   def short_description
     descriptions.first&.content&.[](0..20)
   end

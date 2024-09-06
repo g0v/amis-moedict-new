@@ -24,6 +24,10 @@ class Description < ApplicationRecord
 
   before_save :clean_content
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[content]
+  end
+
   private
 
   def clean_content
