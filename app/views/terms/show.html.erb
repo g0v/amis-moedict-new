@@ -16,6 +16,9 @@
           <% term.descriptions.each do |description| %>
             <li>
               <%= simple_format(description.content) %>
+              <% if description.image.present? %>
+                <p><%= image_tag description.image, alt: description.content, width: '100' %></p>
+              <% end %>
               <% if description.examples.present? %>
                 <ul class="list-disc list-inside space-y-1">
                   <% description.examples.each do |example| %>
