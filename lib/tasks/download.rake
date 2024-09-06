@@ -22,8 +22,8 @@ namespace :download do
           check_and_download(wav_url,   "public/glossary/wav/#{i+1}")
           term.update(audio: "public/glossary/wav/#{i+1}/#{description.glossary_serial.sub('-', '_')}.wav")
 
-          # image_url = "https://glossary-api.ilrdf.org.tw/glossary_2022/images/#{description.glossary_serial}.jpg"
-          # check_and_download(image_url, "public/glossary/images")
+          image_url = "https://glossary-api.ilrdf.org.tw/glossary_2022/images/#{description.glossary_serial}.jpg"
+          check_and_download(image_url, "public/glossary/images")
         end
       end
     end
