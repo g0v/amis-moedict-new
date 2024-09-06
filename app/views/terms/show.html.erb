@@ -14,7 +14,10 @@
             <% end %>
           </span>
           <% if term.audio.present? %>
-            <button><i class="fas fa-volume-up"></i></button>
+            <button>
+              <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
+            </button>
+            <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
           <% end %>
         </div>
         <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
