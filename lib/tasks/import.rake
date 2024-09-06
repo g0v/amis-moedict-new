@@ -166,6 +166,44 @@ namespace :import do
       end
     end
   end
+
+  desc '從 https://glossary.ilrdf.org.tw/resources 學習詞表匯入'
+  task glossary: :environment do
+    %w[
+      南勢阿美語
+      秀姑巒阿美語
+      海岸阿美語
+      馬蘭阿美語
+      恆春阿美語
+    ].each_with_index do |dict_name, i|
+      puts dict_name
+      dictionary = Dictionary.find_by(name: "學習詞表－#{dict_name}")
+
+      CSV.foreach("tmp/dict/2022學習詞表-0#{i+1}#{dict_name}.csv") do |row|
+        id, serial, description_content, term_names, note_content, level = row
+        next if clean(text: id) == '類別'
+
+        serial              = clean(text: serial)
+        description_content = clean(text: description_content)
+        term_names          = clean(text: term_names)
+        note_content        = clean(text: note_content) if note_content.present?
+        level               = clean(text: level)
+
+        term_names.split("/").each do |term_name|
+          term_name.strip!
+          term = dictionary.terms.find_or_create_by(name: term_name)
+
+          description = term.descriptions.find_or_create_by(glossary_serial: serial)
+          content = if note_content.present?
+                      [description_content, note_content].join("\n")
+                    else
+                      description_content
+                    end
+          description.update(content: content, glossary_level: level)
+        end
+      end
+    end
+  end
 end
 
 def clean(text:)
