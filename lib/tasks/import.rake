@@ -49,6 +49,10 @@ namespace :import do
         next if json_object["h"].empty?
 
         term = dictionary.terms.find_or_create_by(name: clean(text: json_object["t"]))
+        if json_object["tag"].present?
+          repetition = json_object["tag"].match(/[疊 ](\d)/)[1]
+          term.update(repetition: repetition)
+        end
         if json_object["stem"].present?
           stem = Stem.find_or_create_by(name: json_object["stem"])
           term.update(stem_id: stem.id)
