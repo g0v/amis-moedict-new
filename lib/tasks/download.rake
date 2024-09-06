@@ -28,6 +28,18 @@ namespace :download do
       end
     end
   end
+
+  desc "更新 glossary image 網址"
+  task description_glossary_image: :environment do
+    Description.where.not(glossary_serial: nil).each do |description|
+      file_path = "public/glossary/images/#{description.glossary_serial}.jpg"
+      if File.exist?(file_path)
+        description.update(image: file_path.sub('public', ''))
+      else
+        description.update(image: nil)
+      end
+    end
+  end
 end
 
 def check_and_download(url, folder)
