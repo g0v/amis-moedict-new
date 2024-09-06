@@ -12,6 +12,11 @@
       <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
       <% if term.descriptions.present? %>
         <div>
+          <% if term.repetition.present? %>
+            <span class="bg-rose-600 text-white p-0.5">
+              [疊 <%= term.repetition %>]
+            </span>
+          <% end %>
           <span class="text-gray-500">
             <% stem = term.stem %>
             <% if stem.present? %>
