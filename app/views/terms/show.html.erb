@@ -24,7 +24,7 @@
               （詞幹: <%= link_to(stem.name, term_path(stem.name)) %>）
             </span>
           <% end %>
-          
+
           <% if term.audio.present? %>
             <button>
               <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
@@ -43,8 +43,7 @@
                 <ul class="list-disc list-inside space-y-1">
                   <% description.examples.each do |example| %>
                     <li>
-                      <% content = example.content.gsub("\xEF\xBF\xB9", "") %>
-                      <% parts = content.split(/[`~]/).reject(&:empty?) %>
+                      <% parts = example.content.split(/[`~]/).reject(&:empty?) %>
                       <%== parts.each_with_index.map do |part, i|
                             if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
                               term_path = if i == 0
