@@ -17,12 +17,14 @@
               [疊 <%= term.repetition %>]
             </span>
           <% end %>
-          <span class="text-gray-500">
-            <% stem = term.stem %>
-            <% if stem.present? %>
+
+          <% stem = term.stem %>
+          <% if stem.present? %>
+            <span class="text-gray-500">
               （詞幹: <%= link_to(stem.name, term_path(stem.name)) %>）
-            <% end %>
-          </span>
+            </span>
+          <% end %>
+          
           <% if term.audio.present? %>
             <button>
               <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
