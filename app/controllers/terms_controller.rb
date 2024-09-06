@@ -5,5 +5,6 @@ class TermsController < ApplicationController
 
   def show
     @terms = Term.includes(:stem, descriptions: %i[examples synonyms]).where(name: params[:id]).order(:dictionary_id)
+    return redirect_back(fallback_location: "/") if @terms.empty?
   end
 end
