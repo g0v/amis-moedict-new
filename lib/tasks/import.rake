@@ -131,7 +131,7 @@ namespace :import do
   end
 
   desc "從 g0v/amis-moedict 下的 docs/p 檔案匯入方敏英字典"
-  task fay: :environment do
+  task fey: :environment do
     dictionary = Dictionary.find_by(name: "方敏英字典")
 
     Dir.glob("tmp/dict/p/*.json").each do |filename|
