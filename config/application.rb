@@ -25,5 +25,7 @@ module AmisMoedict
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.web_console.permissions = "172.17.0.1"
   end
 end
