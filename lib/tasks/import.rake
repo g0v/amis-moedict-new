@@ -199,7 +199,7 @@ namespace :import do
 
           description = term.descriptions.find_or_create_by(glossary_serial: serial)
           content = if note_content.present?
-                      [description_content, note_content].join("\n")
+                      [ description_content, note_content ].join("\n")
                     else
                       description_content
                     end
