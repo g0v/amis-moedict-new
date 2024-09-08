@@ -24,7 +24,9 @@
   <% @terms.each do |term| %>
     <div>
       <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
+      <% dictionary = term.dictionary %>
       <div>
+        <span class="text-slate-400 p-0.5"><%= dictionary.dialect %></span>
         <% if term.repetition.present? %>
           <span class="bg-rose-600 text-white p-0.5">
             [疊 <%= term.repetition %>]
