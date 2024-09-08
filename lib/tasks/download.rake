@@ -33,7 +33,7 @@ namespace :download do
     Description.where.not(glossary_serial: nil).each do |description|
       file_path = "public/glossary/images/#{description.glossary_serial}.jpg"
       if File.exist?(file_path)
-        description.update(image: file_path.sub('public', ''))
+        description.update(image: file_path.sub("public", ""))
       else
         description.update(image: nil)
       end

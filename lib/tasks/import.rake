@@ -110,7 +110,7 @@ namespace :import do
       heteronym["d"].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: clean(text: description_hash["f"]),
+        description.update(content:          clean(text: description_hash["f"]),
                            description_type: description_hash["type"])
 
         if description_hash["e"].present?
@@ -171,7 +171,7 @@ namespace :import do
     end
   end
 
-  desc '從 https://glossary.ilrdf.org.tw/resources 學習詞表匯入'
+  desc "從 https://glossary.ilrdf.org.tw/resources 學習詞表匯入"
   task glossary: :environment do
     %w[
       南勢阿美語
@@ -185,7 +185,7 @@ namespace :import do
 
       CSV.foreach("tmp/dict/2022學習詞表-0#{i+1}#{dict_name}.csv") do |row|
         id, serial, description_content, term_names, note_content, level = row
-        next if clean(text: id) == '類別'
+        next if clean(text: id) == "類別"
 
         serial              = clean(text: serial)
         description_content = clean(text: description_content)
@@ -199,7 +199,7 @@ namespace :import do
 
           description = term.descriptions.find_or_create_by(glossary_serial: serial)
           content = if note_content.present?
-                      [description_content, note_content].join("\n")
+                      [ description_content, note_content ].join("\n")
                     else
                       description_content
                     end
