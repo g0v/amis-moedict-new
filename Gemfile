@@ -31,6 +31,9 @@ gem "csv"
 # sql LIKE search
 gem "ransack"
 
+# API
+gem "grape"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
