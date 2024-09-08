@@ -110,7 +110,7 @@ namespace :import do
       heteronym["d"].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: clean(text: description_hash["f"]),
+        description.update(content:          clean(text: description_hash["f"]),
                            description_type: description_hash["type"])
 
         if description_hash["e"].present?
