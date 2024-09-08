@@ -1,3 +1,17 @@
+<%
+  if @terms.size > 1
+    title params[:id]
+    description @terms.first.short_description
+  else
+    term = @terms.first
+    dictionary = term.dictionary
+
+    title "#{params[:id]} - #{dictionary.name}"
+    description term.descriptions.map(&:content).join[0..200]
+  end
+%>
+
+
 <div class="flex items-center space-x-2">
   <h1 class="text-2xl">
     <%= params[:id] %>
