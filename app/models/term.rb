@@ -35,7 +35,7 @@ class Term < ApplicationRecord
   end
 
   def audio_id
-    audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join('-')
+    audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join("-")
   end
 
   private
