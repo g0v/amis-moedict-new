@@ -35,18 +35,18 @@ class Term < ApplicationRecord
   end
 
   def audio_id
-    audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join('-')
+    audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join("-")
   end
 
   private
 
-  def clean_name_and_set_lower_name
-    name.gsub!(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "")
-    name.strip!
+    def clean_name_and_set_lower_name
+      name.gsub!(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "")
+      name.strip!
 
-    self.name = name
-    self.lower_name = name.downcase
-  end
+      self.name = name
+      self.lower_name = name.downcase
+    end
 
   def set_is_stem
     self.is_stem = Stem.exists?(name: name)
