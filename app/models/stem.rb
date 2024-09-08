@@ -19,7 +19,7 @@ class Stem < ApplicationRecord
 
   private
 
-  def downcase_name
-    self.name = name.downcase
-  end
+    def downcase_name
+      self.name = name.downcase
+    end
 end
