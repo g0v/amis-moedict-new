@@ -3,6 +3,10 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # Use command below to check grape routes
+  # $ bin/rails grape:routes
+  mount ApplicationAPI => "/api"
+
   resources :terms, only: %i[index show]
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
