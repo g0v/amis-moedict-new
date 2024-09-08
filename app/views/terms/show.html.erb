@@ -1,3 +1,17 @@
+<%
+  if @terms.size > 1
+    title params[:id]
+    description @terms.first.short_description
+  else
+    term = @terms.first
+    dictionary = term.dictionary
+
+    title "#{params[:id]} - #{dictionary.name}"
+    description term.descriptions.map(&:content).join[0..200]
+  end
+%>
+
+
 <div class="flex items-center space-x-2">
   <h1 class="text-2xl">
     <%= params[:id] %>
@@ -10,28 +24,30 @@
   <% @terms.each do |term| %>
     <div>
       <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
+      <% dictionary = term.dictionary %>
+      <div>
+        <span class="text-slate-400 p-0.5"><%= dictionary.dialect %></span>
+        <% if term.repetition.present? %>
+          <span class="bg-sky-500 text-white p-0.5">
+            [疊 <%= term.repetition %>]
+          </span>
+        <% end %>
+
+        <% stem = term.stem %>
+        <% if stem.present? %>
+          <span class="text-gray-500">
+            （詞幹: <%= link_to(stem.name, term_path(stem.name)) %>）
+          </span>
+        <% end %>
+
+        <% if term.audio.present? %>
+          <button>
+            <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
+          </button>
+          <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
+        <% end %>
+      </div>
       <% if term.descriptions.present? %>
-        <div>
-          <% if term.repetition.present? %>
-            <span class="bg-rose-600 text-white p-0.5">
-              [疊 <%= term.repetition %>]
-            </span>
-          <% end %>
-
-          <% stem = term.stem %>
-          <% if stem.present? %>
-            <span class="text-gray-500">
-              （詞幹: <%= link_to(stem.name, term_path(stem.name)) %>）
-            </span>
-          <% end %>
-
-          <% if term.audio.present? %>
-            <button>
-              <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
-            </button>
-            <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
-          <% end %>
-        </div>
         <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
           <% term.descriptions.each do |description| %>
             <li>
