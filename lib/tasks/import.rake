@@ -171,7 +171,7 @@ namespace :import do
     end
   end
 
-  desc '從 https://glossary.ilrdf.org.tw/resources 學習詞表匯入'
+  desc "從 https://glossary.ilrdf.org.tw/resources 學習詞表匯入"
   task glossary: :environment do
     %w[
       南勢阿美語
@@ -185,7 +185,7 @@ namespace :import do
 
       CSV.foreach("tmp/dict/2022學習詞表-0#{i+1}#{dict_name}.csv") do |row|
         id, serial, description_content, term_names, note_content, level = row
-        next if clean(text: id) == '類別'
+        next if clean(text: id) == "類別"
 
         serial              = clean(text: serial)
         description_content = clean(text: description_content)
