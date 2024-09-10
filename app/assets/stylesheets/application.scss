@@ -35,6 +35,7 @@
   }
 }
 
+// logo fonts and styles
 @font-face {
   font-family: EBAS;
   src: url("EBAS-Subset.woff") format("woff"),
@@ -46,4 +47,20 @@
   font-family: EBAS, serif;
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
+}
+
+// jQuery UI styles
+.ui-state-active {
+  background-color: rgb(229 231 235 / 1);
+}
+
+.ui-helper-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
