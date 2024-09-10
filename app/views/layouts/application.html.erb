@@ -42,27 +42,5 @@
         <%= yield %>
       </div>
     </div>
-
-    <script>
-      document.getElementById('search').addEventListener('input', function() {
-        var input = this.value;
-        var autocompleteList = document.getElementById('autocomplete-list');
-        autocompleteList.innerHTML = '';
-
-        if (input.length > 0) {
-          var suggestions = ['a\'ad\'aden', 'a', 'a\'ayaman', 'a\'aca', 'a\'aca\'open', 'a\'acawen', 'a\'adetem', 'a\'adidagen', 'a\'adisa', 'a\'adiyamen', 'a\'adomaxen', 'a\'adopen', 'a\'afalangen', 'a\'afangan', 'a\'afasan', 'a\'afaten', 'a\'afongen'];
-          var filteredSuggestions = suggestions.filter(function(suggestion) {
-            return suggestion.toLowerCase().includes(input.toLowerCase());
-          });
-
-          filteredSuggestions.forEach(function(suggestion) {
-            var li = document.createElement('li');
-            li.textContent = suggestion;
-            li.classList.add('text-gray-600');
-            autocompleteList.appendChild(li);
-          });
-        }
-      });
-    </script>
   </body>
 </html>
