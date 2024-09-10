@@ -1,3 +1,3 @@
 #!/bin/bash
 rm -rf public/assets
-bin/rails assets:precompile
+RAILS_ENV=production bin/rails assets:precompile
