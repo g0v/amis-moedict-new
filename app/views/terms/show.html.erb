@@ -73,7 +73,7 @@
                                         else
                                           "terms/#{part}"
                                         end
-                            term_path = "dictionaries/#{dictionary.id}/#{term_path}" if dictionary.present?
+                            term_path = "dictionaries/#{@dictionary.id}/#{term_path}" if @dictionary.present?
 
                             term_html += "<a href=\"/#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
                           else
@@ -104,7 +104,7 @@
                                       else
                                         "terms/#{part}"
                                       end
-                          term_path = "dictionaries/#{dictionary.id}/#{term_path}" if dictionary.present?
+                          term_path = "dictionaries/#{@dictionary.id}/#{term_path}" if @dictionary.present?
 
                           alt_html += "<a href=\"/#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
                         else
@@ -136,7 +136,7 @@
                                       else
                                         "terms/#{part}"
                                       end
-                          term_path = "dictionaries/#{dictionary.id}/#{term_path}" if dictionary.present?
+                          term_path = "dictionaries/#{@dictionary.id}/#{term_path}" if @dictionary.present?
 
                           ref_html += "<a href=\"/#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
                         else
