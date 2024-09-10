@@ -66,6 +66,9 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # The public path that Sprockets uses by default is /assets.
+  config.assets.prefix = "/dev-assets"
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
