@@ -11,21 +11,6 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-      @media (max-width: 640px) {
-        .sidebar {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          border-right: none;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        .main-content {
-          margin-top: 4rem;
-        }
-      }
-    </style>
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
@@ -37,7 +22,7 @@
   </head>
 
   <body class="bg-white font-sans leading-normal tracking-normal">
-    <div class="bg-gray-800 text-white flex items-center justify-between p-2">
+    <div class="navbar bg-gray-800 text-white flex items-center justify-between p-2">
       <div class="flex items-center space-x-2">
         <div>
           <a href="/" class="logo ebas mr-5"> 阿美語萌典</a>
@@ -49,11 +34,11 @@
       </div>
     </div>
     <div class="flex flex-col sm:flex-row">
-      <div class="sidebar sm:w-1/4 border-r border-gray-200 p-4">
+      <div id="sidebar" class="sidebar border-r border-gray-200 p-4 sm:w-1/4">
         <input type="text" id="search" class="w-full p-2 border border-gray-300 rounded" placeholder="請輸入欲查詢的字詞">
         <ul id="autocomplete-list" class="mt-2 space-y-2"></ul>
       </div>
-      <div class="main-content sm:w-3/4 p-4">
+      <div id="main-content" class="main-content sm:w-3/4 p-4">
         <%= yield %>
       </div>
     </div>
