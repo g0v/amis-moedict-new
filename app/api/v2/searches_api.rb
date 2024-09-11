@@ -25,7 +25,14 @@ module V2
           end
         end
 
-        result.sort_by { |element| element[:term].size }
+        if result.present?
+          result.sort_by { |element| element[:term].size }
+        else
+          [{
+            term: "Awaay to. 找不到",
+            description: ""
+          }]
+        end
       end
     end
   end
