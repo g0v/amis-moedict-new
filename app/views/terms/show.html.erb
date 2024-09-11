@@ -68,9 +68,7 @@
 
               <% if description.synonyms.alts.present? %>
                 <p>
-                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">
-                    同
-                  </span>
+                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">同</span>
                   <%= description.synonyms.alts.map do |synonym_alt|
                         linked_term(record: synonym_alt, dictionary: @dictionary)
                       end.join("、").html_safe %>
@@ -79,9 +77,7 @@
 
               <% if description.synonyms.refs.present? %>
                 <p>
-                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">
-                    參見
-                  </span>
+                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">參見</span>
                   <%= description.synonyms.refs.map do |synonym_ref|
                         linked_term(record: synonym_ref, dictionary: @dictionary)
                       end.join("、").html_safe %>
