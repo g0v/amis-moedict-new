@@ -12,7 +12,7 @@ class TermsController < ApplicationController
 
   def show
     @terms = Term.includes(:dictionary, :stem, descriptions: %i[examples synonyms]).where(name: params[:id]).order(:dictionary_id)
-    redirect_back(fallback_location: "/") if @terms.empty?
+    return redirect_back(fallback_location: "/") if @terms.empty?
 
     session[:last_page] = request.url
   end
