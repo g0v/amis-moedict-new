@@ -27,4 +27,3 @@ $( "#search" ).autocomplete({
 };
 
 $( "#sidebar" ).append( $( "#ui-id-1.ui-autocomplete" ) );
-$( "#ui-id-1.ui-autocomplete" ).addClass( "bg-white" );
