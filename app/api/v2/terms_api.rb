@@ -5,7 +5,9 @@ module V2
         requires :name, type: String, desc: "所有字典的詞彙，對應 Term#name"
       end
       get ":name" do
-        terms = Term.includes(:dictionary, :stem, descriptions: %i[examples synonyms]).where(name: params[:name])
+        terms = Term.includes(:dictionary, :stem, descriptions: %i[examples synonyms])
+                    .where(name: params[:name])
+                    .order(:dictionary_id)
 
         if terms.exists?
           result = []
