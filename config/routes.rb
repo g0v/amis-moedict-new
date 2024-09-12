@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :terms, only: %i[index show]
 
   resources :dictionaries, only: [] do
-    get "terms/:id" => "dictionary_terms#show"
+    get "terms/:id" => "dictionary_terms#show", as: :term
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
