@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "jquery"
 import "jquery-ui"
+import "sv-hover-intent"
 
 $( "#search" ).autocomplete({
   source: function( request, response ) {
@@ -70,4 +71,18 @@ $( ".hoverable-term" ).tooltip({
     } );
   },
   content: "讀取中……"
+});
+
+new SV.HoverIntent( $( ".hoverable-term" ), {
+  onEnter: function(targetItem) {
+    $(targetItem).tooltip( "open" );
+  },
+  onExit: function(targetItem) {
+    $(targetItem).tooltip( "close" );
+  },
+
+  // default options
+  exitDelay: 400,
+  interval: 250,
+  sensitivity: 7,
 });
