@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export LANG="C.UTF-8"
 export RUBY_VERSION="3.3.4"
 export BUNDLER_VERSION="2.5.16"
