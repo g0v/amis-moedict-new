@@ -13,6 +13,13 @@ module V2
             Term.includes(:descriptions).select(:id, :name).where(lower_name: params[:q]).group(:name).each do |term|
               result << { term: term.name, description: term.short_description }
             end
+
+            if result.blank?
+              result << {
+                term:        "族語長度 4 以下是精確搜尋，結果較少。繼續輸入，開始模糊搜尋。",
+                description: ""
+              }
+            end
           else
             Term.select(:id, :name).ransack(lower_name_cont: params[:q]).result.group(:name).each do |term|
               result << { term: term.name, description: term.short_description }
