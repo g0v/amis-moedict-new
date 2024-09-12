@@ -28,10 +28,10 @@ module V2
         if result.present?
           result.sort_by { |element| element[:term].size }
         else
-          [{
-            term: "Awaay to. 找不到",
+          [ {
+            term:        "Awaay to. 找不到",
             description: ""
-          }]
+          } ]
         end
       end
     end
