@@ -14,16 +14,16 @@ $( "#search" ).autocomplete({
     return false;
   },
   select: function( event, ui ) {
-    if (ui.item.term !== "Awaay to. 找不到") {
+    if ((ui.item.term !== "Awaay to. 找不到") && (ui.item.term.indexOf("精確搜尋，結果較少") === -1)) {
       this.value = ui.item.term;
+      window.location.href = `/terms/${ui.item.term}`;
     }
-    window.location.href = `/terms/${ui.item.term}`;
     return false;
   }
 }).autocomplete( "instance" )._renderItem = function( ul, item ) {
   var divHtml;
 
-  if (item.term !== "Awaay to. 找不到") {
+  if ((item.term !== "Awaay to. 找不到") && (item.term.indexOf("精確搜尋，結果較少") === -1)) {
     divHtml = `<div class="flex justify-between ui-menu-item-wrapper px-2 py-0.5 text-gray-600 hover:bg-gray-200">
                 <div class"text-sm font-medium text-indigo-600">${item.term}</div>
                 <div class="text-sm text-gray-500 mt-1 sm:mt-0">${item.description}</div>
