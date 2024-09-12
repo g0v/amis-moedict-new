@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "jquery"
 import "jquery-ui"
+import "sv-hover-intent"
 
 $( "#search" ).autocomplete({
   source: function( request, response ) {
@@ -37,3 +38,51 @@ $( "#search" ).autocomplete({
 };
 
 $( "#sidebar" ).append( $( "#ui-id-1.ui-autocomplete" ) );
+
+$( ".hoverable-term" ).tooltip({
+  disabled: true, // 交給 hoverintent 處理 show/hide
+  show: 200,
+  items: "a",
+  classes: {
+    "ui-tooltip": "shadow-xl rounded-lg bg-gray-100 max-w-xs w-fit p-2"
+  },
+  open: function( event, ui ) {
+    var term, $this = $(this);
+    term = $(this).data('term');
+    $.getJSON( `/api/v2/terms/${term}`, {}, function(data) {
+      if (data.length !== undefined) {
+        var content = `<h3 class="text-xl">${term}</h3>
+                       <hr class="h-px border-0 dark:bg-gray-400">
+                       <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">`;
+
+        data.slice(0, 3).forEach(function(termData) {
+          termData.descriptions.forEach(function(descriptionData) {
+            content += `<li class="text-sm">${descriptionData.content.replace(/[`~]/g, "")}</li>`;
+          });
+        });
+        content += "</ol>";
+
+        $this.tooltip("option", {
+          content: content,
+        });
+      } else {
+        $this.tooltip( "close" );
+      }
+    } );
+  },
+  content: "讀取中……"
+});
+
+new SV.HoverIntent( $( ".hoverable-term" ), {
+  onEnter: function(targetItem) {
+    $(targetItem).tooltip( "open" );
+  },
+  onExit: function(targetItem) {
+    $(targetItem).tooltip( "close" );
+  },
+
+  // default options
+  exitDelay: 400,
+  interval: 250,
+  sensitivity: 7,
+});
