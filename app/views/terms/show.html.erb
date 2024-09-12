@@ -11,7 +11,6 @@
   end
 %>
 
-
 <div class="flex items-center space-x-2">
   <h1 class="text-2xl">
     <%= params[:id] %>
@@ -62,99 +61,30 @@
               <% if description.examples.present? %>
                 <ul class="list-disc list-inside space-y-1">
                   <% description.examples.each do |example| %>
-                    <li>
-                      <%
-                        term_html = ''
-                        parts = example.content.split(/[`~]/).reject(&:empty?)
-                        parts.each_with_index do |part, i|
-                          if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
-                            term_path = if i == 0
-                                          "terms/#{part.downcase}"
-                                        else
-                                          "terms/#{part}"
-                                        end
-                            term_path = "dictionaries/#{@dictionary.id}/#{term_path}" if @dictionary.present?
-
-                            term_html += "<a href=\"/#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
-                          else
-                            term_html += part
-                          end
-                        end
-                      %>
-                      <%= term_html.html_safe %>
-                    </li>
+                    <li><%= linked_term(record: example, dictionary: @dictionary).html_safe %></li>
                   <% end %>
                 </ul>
               <% end %>
 
               <% if description.synonyms.alts.present? %>
                 <p>
-                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">
-                    同
-                  </span>
-                  <% alt_array = [] %>
-                  <% description.synonyms.alts.each do |synonym_alt| %>
-                    <%
-                      alt_html = ''
-                      parts = synonym_alt.content.split(/[`~]/).reject(&:empty?)
-                      parts.each_with_index do |part, i|
-                        if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
-                          term_path = if i == 0
-                                        "terms/#{part.downcase}"
-                                      else
-                                        "terms/#{part}"
-                                      end
-                          term_path = "dictionaries/#{@dictionary.id}/#{term_path}" if @dictionary.present?
-
-                          alt_html += "<a href=\"/#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
-                        else
-                          alt_html += part
-                        end
-                      end
-
-                      alt_array << alt_html
-                    %>
-                  <% end %>
-                  <%= alt_array.join("、").html_safe %>
+                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">同</span>
+                  <%= description.synonyms.alts.map do |synonym_alt|
+                        linked_term(record: synonym_alt, dictionary: @dictionary)
+                      end.join("、").html_safe %>
                 </p>
               <% end %>
 
               <% if description.synonyms.refs.present? %>
                 <p>
-                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">
-                    參見
-                  </span>
-                  <% ref_array = [] %>
-                  <% description.synonyms.refs.each do |synonym_ref| %>
-                    <%
-                      ref_html = ''
-                      parts = synonym_ref.content.split(/[`~]/).reject(&:empty?)
-                      parts.each_with_index do |part, i|
-                        if part.match(/^[\p{Alnum}]+$/) && part != params[:id]
-                          term_path = if i == 0
-                                        "terms/#{part.downcase}"
-                                      else
-                                        "terms/#{part}"
-                                      end
-                          term_path = "dictionaries/#{@dictionary.id}/#{term_path}" if @dictionary.present?
-
-                          ref_html += "<a href=\"/#{term_path}\" class=\"border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{part}</a>"
-                        else
-                          ref_html += part
-                        end
-                      end
-
-                      ref_array << ref_html
-                    %>
-                  <% end %>
-                  <%= ref_array.join("、").html_safe %>
+                  <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">參見</span>
+                  <%= description.synonyms.refs.map do |synonym_ref|
+                        linked_term(record: synonym_ref, dictionary: @dictionary)
+                      end.join("、").html_safe %>
                 </p>
               <% end %>
             </li>
           <% end %>
-          <!-- <li>捉獵物，獵獲的（獵物）。
-            <p>O 'adopen niyam a <span class="relative group"><span class="underline">fafoy</span><span class="absolute bg-gray-200 p-1 border rounded hidden group-hover:block">fafoy<br>野豬。</span></span>。</p>
-          </li> -->
         </ol>
       <% end %>
     </div>
