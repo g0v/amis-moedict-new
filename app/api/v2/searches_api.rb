@@ -36,7 +36,7 @@ module V2
           result.sort_by { |element| element[:term].size }
         else
           [ {
-            term:        "Awaay to. 找不到",
+            term:        "Awaay. 找不到。",
             description: ""
           } ]
         end
