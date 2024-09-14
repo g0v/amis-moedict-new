@@ -22,7 +22,7 @@
   </head>
 
   <body class="bg-white font-sans leading-normal tracking-normal">
-    <div class="navbar bg-gray-800 text-white flex items-center justify-between p-2">
+    <div id="navbar" class="h-[42px] bg-gray-800 text-white flex items-center justify-between p-2">
       <div class="flex items-center space-x-2">
         <div>
           <a href="/" class="logo ebas mr-5"> 阿美語萌典</a>
@@ -34,10 +34,10 @@
       </div>
     </div>
     <div class="flex flex-col sm:flex-row">
-      <div id="sidebar" class="sidebar border-r border-gray-200 p-4 sm:w-1/4">
+      <div id="sidebar" class="mt-[42px] p-4 absolute top-0 left-0 w-full h-[75px] border-r-0 border-b border-gray-200 sm:static sm:border-r sm:border-b-0 sm:w-1/4 sm:h-auto sm:mt-0">
         <input type="text" id="search" class="w-full p-2 border border-gray-300 rounded" placeholder="請輸入欲查詢的字詞">
       </div>
-      <div id="main-content" class="main-content sm:w-3/4 p-4">
+      <div id="main-content" class="mt-[75px] p-4 sm:mt-0 sm:w-3/4">
         <%= yield %>
       </div>
     </div>
