@@ -94,3 +94,22 @@ new SV.HoverIntent( $( ".hoverable-term" ), {
 });
 
 // 游標 hover 顯示詞義 END
+
+// PWA 手機版複製網址功能 START
+$( "#copy-url" ).tooltip({
+  disabled: true,
+  items: "button",
+  classes: {
+    "ui-tooltip": "shadow-xl rounded bg-gray-200 text-sm w-fit p-1"
+  },
+  content: "網址已複製"
+});
+
+$( "#copy-url" ).on( "click", function(){
+  navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
+  $(this).tooltip( "option", { disabled: false }).tooltip( "open" );
+  setTimeout( function(){
+    $( "#copy-url" ).tooltip( "option", { disabled: true }).tooltip( "close" );
+  }, "500");
+});
+// PWA 手機版複製網址功能 START
