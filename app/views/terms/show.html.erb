@@ -49,7 +49,7 @@
           <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
         <% end %>
 
-        <button class="float-right">
+        <button class="float-right block sm:hidden">
           <i class="fas fa-share-alt-square text-gray-400 hover:text-gray-800 text-xl mr-2" onclick="navigator.share({url: '<%= request.base_url %>/dictionaries/<%= dictionary.id %>/terms/<%= params[:id] %>'})"></i>
         </button>
       </div>
