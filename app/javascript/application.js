@@ -21,6 +21,9 @@ $( "#search" ).autocomplete({
       window.location.href = `/terms/${ui.item.term}`;
     }
     return false;
+  },
+  classes: {
+    "ui-autocomplete": "border border-gray-200 bg-gray-200 sm:border-0 sm:bg-inherit"
   }
 }).autocomplete( "instance" )._renderItem = function( ul, item ) {
   var divHtml;
