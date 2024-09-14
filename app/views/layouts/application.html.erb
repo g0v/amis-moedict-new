@@ -27,10 +27,15 @@
         <div>
           <a href="/" class="logo ebas mr-5"> 阿美語萌典</a>
         </div>
-        <div>
+        <div class="cursor-pointer">
           <i class="fa-solid fa-book">&nbsp;</i> 所有辭典
         </div>
         <!-- <div>宇詞紀錄簿</div> -->
+        <div>
+          <%= link_to(about_path, class: "bg-lime-600 rounded px-2 py-1 text-xs") do %>
+            <i class="fa-solid fa-info"></i>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="flex flex-col sm:flex-row">
