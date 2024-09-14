@@ -5,6 +5,8 @@ import "jquery"
 import "jquery-ui"
 import "sv-hover-intent"
 
+// 搜尋功能 START
+
 $( "#search" ).autocomplete({
   source: function( request, response ) {
     $.getJSON( `/api/v2/searches/${request.term}`, {}, response );
@@ -38,6 +40,10 @@ $( "#search" ).autocomplete({
 };
 
 $( "#sidebar" ).append( $( "#ui-id-1.ui-autocomplete" ) );
+
+// 搜尋功能 END
+
+// 游標 hover 顯示詞義 START
 
 $( ".hoverable-term" ).tooltip({
   disabled: true, // 交給 hoverintent 處理 show/hide
@@ -86,3 +92,5 @@ new SV.HoverIntent( $( ".hoverable-term" ), {
   interval: 250,
   sensitivity: 7,
 });
+
+// 游標 hover 顯示詞義 END
