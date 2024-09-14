@@ -13,27 +13,7 @@
  *= require_tree .
  *= require_self
  */
-
-.navbar {
-  height: 42px;
-}
-
 @media (max-width: 640px) {
-  .sidebar {
-    margin-top: 42px; // navbar 42
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 75px;
-    border-right: none;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .main-content {
-    margin-top: 75px; // sidebar 75
-  }
-
   #ui-id-1.ui-autocomplete {
     border: 1px solid #e5e7eb;
     background-color: #e5e7eb;
