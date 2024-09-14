@@ -11,13 +11,16 @@
   end
 %>
 
-<div class="flex items-center space-x-2">
+<div class="flex justify-between space-x-2">
   <h1 class="text-2xl">
     <%= params[:id] %>
     <% if @terms.first.is_stem %>
       <span class="text-base">（詞幹）</span>
     <% end %>
   </h1>
+  <button id="copy-url" class="block sm:hidden">
+    <i class="far fa-copy text-gray-500 mr-2 pt-1"></i>
+  </button>
 </div>
 <div class="mt-4 space-y-4">
   <% @terms.each do |term| %>
@@ -46,7 +49,7 @@
           <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
         <% end %>
 
-        <button class="float-right">
+        <button class="float-right block sm:hidden">
           <i class="fas fa-share-alt-square text-gray-400 hover:text-gray-800 text-xl mr-2" onclick="navigator.share({url: '<%= request.base_url %>/dictionaries/<%= dictionary.id %>/terms/<%= params[:id] %>'})"></i>
         </button>
       </div>
