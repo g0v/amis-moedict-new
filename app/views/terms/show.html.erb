@@ -23,7 +23,7 @@
       <% end %>
     </h1>
     <button id="copy-url" class="block sm:hidden">
-      <i class="far fa-copy text-gray-500 mr-2 pt-1"></i>
+      <i class="fa-regular fa-copy text-gray-500 mr-2 pt-1"></i>
     </button>
   </div>
   <div class="mt-4 space-y-4">
@@ -48,13 +48,13 @@
 
           <% if term.audio.present? %>
             <button>
-              <i class="fas fa-volume-up" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
+              <i class="fa-solid fa-volume-high" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
             </button>
             <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
           <% end %>
 
           <button class="float-right block sm:hidden">
-            <i class="fas fa-share-alt-square text-gray-400 hover:text-gray-800 text-xl mr-2" onclick="navigator.share({url: '<%= request.base_url %>/dictionaries/<%= dictionary.id %>/terms/<%= params[:id] %>'})"></i>
+            <i class="fa-solid fa-square-share-nodes text-gray-400 hover:text-gray-800 text-xl mr-2" onclick="navigator.share({url: '<%= request.base_url %>/dictionaries/<%= dictionary.id %>/terms/<%= params[:id] %>'})"></i>
           </button>
         </div>
         <% if term.descriptions.present? %>
