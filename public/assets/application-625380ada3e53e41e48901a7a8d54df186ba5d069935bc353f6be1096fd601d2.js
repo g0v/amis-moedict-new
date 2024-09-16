@@ -25,7 +25,7 @@ $( "#search" ).autocomplete({
   classes: {
     "ui-autocomplete": "border border-gray-200 bg-gray-200 sm:border-0 sm:bg-inherit"
   }
-}).autocomplete( "instance" )._renderItem = function( ul, item ) {
+}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
   var divHtml;
 
   if ((item.term !== "Awaay. 找不到。") && (item.term.indexOf("精確搜尋，結果較少") === -1)) {
