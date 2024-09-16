@@ -1,13 +1,15 @@
 <%
   if @terms.size > 1
-    title params[:id]
+    title       params[:id]
     description @terms.first.short_description
+    canonical   term_url(params[:id])
   else
-    term = @terms.first
+    term       = @terms.first
     dictionary = term.dictionary
 
-    title "#{params[:id]} - #{dictionary.name}"
+    title       "#{params[:id]} - #{dictionary.name}"
     description term.descriptions.map(&:content).join[0..200]
+    canonical   dictionary_term_url(dictionary.id, params[:id])
   end
 %>
 
