@@ -28,7 +28,7 @@ module TermsHelper
               term_path = term_path(term_part_for_url)
             end
 
-            html += "<a href=\"#{term_path}\" data-term=\"#{term_part}\" class=\"hoverable-term border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{term_part}</a>"
+            html += "<a href=\"#{term_path}\" data-term=\"#{term_part_for_url}\" class=\"hoverable-term border-b border-gray-300 text-gray-800 hover:bg-gray-300 focus:bg-gray-300 hover:text-[#0070a3] focus:text-[#0070a3] focus:outline focus:outline-1 focus:outline-[#69d2fc]\">#{term_part}</a>"
           else
             html += term_part
           end
