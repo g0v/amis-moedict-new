@@ -19,10 +19,10 @@ namespace :download do
       dictionary.terms.each do |term|
         term.descriptions.each do |description|
           wav_url   = "https://ilrdc.tw/tow/2022/audio/word/#{i+1}/#{description.glossary_serial.sub('-', '_')}.wav"
-          check_and_download(wav_url,   "public/glossary/wav/#{i+1}")
+          check_and_download(wav_url,   "tmp/glossary/wav/#{i+1}")
 
           image_url = "https://glossary-api.ilrdf.org.tw/glossary_2022/images/#{description.glossary_serial}.jpg"
-          check_and_download(image_url, "public/glossary/images")
+          check_and_download(image_url, "tmp/glossary/images")
         end
       end
     end
@@ -31,9 +31,9 @@ namespace :download do
   desc "更新 glossary image 網址"
   task description_glossary_image: :environment do
     Description.where.not(glossary_serial: nil).each do |description|
-      file_path = "public/glossary/images/#{description.glossary_serial}.jpg"
+      file_path = "tmp/glossary/images/#{description.glossary_serial}.jpg"
       if File.exist?(file_path)
-        description.update(image: file_path.sub("public", ""))
+        description.update(image: file_path.sub("tmp", ""))
       else
         description.update(image: nil)
       end
