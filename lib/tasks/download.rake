@@ -59,6 +59,28 @@ namespace :download do
       end
     end
   end
+
+  desc "下載原住民族語言線上辭典的 mp3"
+  task ilrdf_mp3: :environment do
+    i = 0
+    ilrdf_array = File.read("tmp/dict/ilrdf.txt").split("\n")
+    ilrdf_array.each_with_index do |row, i|
+      data = eval(row)["GenericData"]["DATA"]
+
+      # mp3 download
+      if data.is_a? Array
+        data.each do |datum|
+          if datum["File"].present?
+            check_and_download(datum["File"]["Path"], "tmp/ilrdf/mp3")
+          end
+        end
+      end
+
+      if data.is_a?(Hash) && data["File"].present?
+        check_and_download(data["File"]["Path"], "tmp/ilrdf/mp3")
+      end
+    end
+  end
 end
 
 def check_and_download(url, folder)
