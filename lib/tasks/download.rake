@@ -62,8 +62,7 @@ namespace :download do
 end
 
 def check_and_download(url, folder)
-  uri = URI.parse(url)
-  filename  = File.basename(uri.path)
+  filename  = url.split("/").last
   file_path = File.join(folder, filename)
 
   return if %w[
@@ -562,6 +561,9 @@ def check_and_download(url, folder)
   ].include?(filename)
 
   unless File.exist?(file_path)
-    spawn("curl -O --output-dir #{folder} #{url}")
+    # puts file_path
+    download_url = url.gsub(/({|})/) { "\\#{$1}" }
+    spawn("curl -O --output-dir #{folder} \"#{download_url}\"")
+    # sleep(1)
   end
 end
