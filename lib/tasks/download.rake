@@ -81,6 +81,66 @@ namespace :download do
       end
     end
   end
+
+  desc "下載原住民族語言線上辭典的圖片"
+  task ilrdf_images: :environment do
+    ilrdf_array = File.read("tmp/dict/ilrdf.txt").split("\n")
+    ilrdf_array.each do |row|
+      data = eval(row)["GenericData"]["DATA"]
+
+      if data.is_a? Hash
+        if data["Explanation"].is_a? Array
+          data["Explanation"].each do |ex|
+            if ex["Img"].is_a? Array
+              ex["Img"].each do |img|
+                check_and_download(img["Src"], "tmp/ilrdf/images")
+              end
+            end
+
+            if ex["Img"].is_a? String
+              check_and_download(ex["Img"]["Src"], "tmp/ilrdf/images")
+            end
+
+            if ex["Sentence"].is_a? Array
+              ex["Sentence"].each do |sentence|
+                if sentence["File"].present?
+                  check_and_download(sentence["File"]["Path"], "tmp/ilrdf/mp3")
+                end
+              end
+            end
+
+            if ex["Sentence"].is_a?(Hash) && ex["Sentence"]["File"].present?
+              check_and_download(ex["Sentence"]["File"]["Path"], "tmp/ilrdf/mp3")
+            end
+          end
+        end
+
+        if data["Explanation"].is_a? Hash
+          if data["Explanation"]["Img"].is_a? Array
+            data["Explanation"]["Img"].each do |img|
+              check_and_download(img["Src"], "tmp/ilrdf/images")
+            end
+          end
+
+          if data["Explanation"]["Img"].is_a? String
+            check_and_download(data["Explanation"]["Img"]["Src"], "tmp/ilrdf/images")
+          end
+
+          if data["Explanation"]["Sentence"].is_a? Array
+            data["Explanation"]["Sentence"].each do |sentence|
+              if sentence["File"].present?
+                check_and_download(sentence["File"]["Path"], "tmp/ilrdf/mp3")
+              end
+            end
+          end
+
+          if data["Explanation"]["Sentence"].is_a?(Hash) && data["Explanation"]["Sentence"]["File"].present?
+            check_and_download(data["Explanation"]["Sentence"]["File"]["Path"], "tmp/ilrdf/mp3")
+          end
+        end
+      end
+    end
+  end
 end
 
 def check_and_download(url, folder)
