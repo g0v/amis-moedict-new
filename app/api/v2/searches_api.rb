@@ -21,13 +21,52 @@ module V2
               }
             end
           else
-            Term.select(:id, :name).ransack(lower_name_cont: params[:q]).result.group(:name).each do |term|
+            searched_terms = Term.ransack(lower_name_cont: params[:q]).result.distinct.pluck(:name)
+
+            if searched_terms.include?(params[:q])
+              searched_terms -= [ params[:q] ]
+
+              # TODO: 未來要把 dictionary_id 改成吃參數
+              q_term = Term.where(name: params[:q]).order(:dictionary_id).first
+
+              if q_term.is_stem
+                q_stem = q_term.stem
+                stem_terms = q_stem.terms.distinct.pluck(:name)
+                if stem_terms.present?
+                  stem_terms.sort!
+                  searched_terms -= stem_terms
+
+                  arel_term = Term.arel_table
+                  stem_case_statement = Arel::Nodes::Case.new(arel_term[:name])
+                  stem_terms.each_with_index do |stem_term, i|
+                    stem_case_statement.when(stem_term).then(i+1)
+                  end
+                  stem_case_statement.else(10000)
+
+                  Term.select(:id, :name).includes(:descriptions).where(lower_name: stem_terms).group(:name).order(stem_case_statement).each do |term|
+                    result << { term: term.name, description: term.short_description }
+                  end
+                end
+              else
+                result << { term: q_term.name, description: q_term.short_description }
+              end
+            end
+
+            searched_terms.sort!
+            arel_term = Term.arel_table
+            searched_case_statement = Arel::Nodes::Case.new(arel_term[:name])
+            searched_terms.each_with_index do |searched_term, i|
+              searched_case_statement.when(searched_term).then(i+1)
+            end
+            searched_case_statement.else(10000)
+
+            Term.select(:id, :name).includes(:descriptions).where(name: searched_terms).group(:name).order(searched_case_statement).each do |term|
               result << { term: term.name, description: term.short_description }
             end
           end
         else # 漢語搜尋
           term_ids = Description.ransack(content_cont: params[:q]).result.pluck(:term_id)
-          Term.includes(:descriptions).select(:id, :name).where(id: term_ids).group(:name).each do |term|
+          Term.includes(:descriptions).select(:id, :name).where(id: term_ids).group(:name).order(:dictionary_id).each do |term|
             result << { term: term.name, description: term.short_description }
           end
         end
