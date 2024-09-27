@@ -67,7 +67,7 @@ class Term < ApplicationRecord
     stem_record = Stem.find_by(name: name)
     if stem_record.present?
       self.is_stem = true
-      self.stem_id = stem_record.id
+      self.stem_id = stem_record.id if stem_id.blank?
     end
   end
 end
