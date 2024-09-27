@@ -31,7 +31,18 @@ class Term < ApplicationRecord
   end
 
   def short_description
-    descriptions.first&.content&.[](0..20)
+    Rails.cache.fetch("term-#{name}-#{Date.today}", expires_in: 6.hours) do
+      term_ids = Term.select(:id).where(name: name).order(:dictionary_id).pluck(:id)
+
+      arel_description = Description.arel_table
+      case_statement = Arel::Nodes::Case.new(arel_description[:term_id])
+      term_ids.each_with_index do |_term_id, i|
+        case_statement.when(_term_id).then(i+1)
+      end
+      case_statement.else(10000)
+
+      Description.where(term_id: term_ids).order(case_statement).map(&:content).first&.[](0..20)
+    end
   end
 
   def audio_id
