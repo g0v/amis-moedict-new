@@ -49,6 +49,10 @@ class Term < ApplicationRecord
     end
 
   def set_is_stem
-    self.is_stem = Stem.exists?(name: name)
+    stem_record = Stem.find_by(name: name)
+    if stem_record.present?
+      self.is_stem = true
+      self.stem_id = stem_record.id
+    end
   end
 end
