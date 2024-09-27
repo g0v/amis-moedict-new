@@ -27,7 +27,7 @@ module V2
           end
         else # 漢語搜尋
           term_ids = Description.ransack(content_cont: params[:q]).result.pluck(:term_id)
-          Term.includes(:descriptions).select(:id, :name).where(id: term_ids).group(:name).each do |term|
+          Term.includes(:descriptions).select(:id, :name).where(id: term_ids).group(:name).order(:dictionary_id).each do |term|
             result << { term: term.name, description: term.short_description }
           end
         end
