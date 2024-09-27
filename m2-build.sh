@@ -1,12 +1,11 @@
 #!/bin/bash
 
 export LANG="C.UTF-8"
-export RUBY_VERSION="3.3.4"
-export BUNDLER_VERSION="2.5.16"
+export RUBY_VERSION="3.3.4" # $RUBY_VERSION 應該要跟 Gemfile 同步
+export BUNDLER_VERSION="2.5.16" # $BUNDLER_VERSION 應該要跟 Gemfile.lock 同步
 export PATH="/opt/rubies/ruby-$RUBY_VERSION/bin:$PATH"
 
 # 確認 Ruby 版本，如果不是 $RUBY_VERSION，就用 ruby-build 安裝
-# $RUBY_VERSION 應該要跟 Gemfile 同步
 current_ruby_version=$(ruby -v | awk '{print $2}')
 
 if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
@@ -65,14 +64,14 @@ fi
 # middle2 不知道怎麼設定 PATH，因此把 ruby 的執行檔 symlink 到 /usr/local/bin
 if [ ! -e /usr/local/bin/gem ]; then
   set -eux; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundle"          /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundler"         /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/erb"             /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/gem"             /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/irb"             /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/racc"            /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/rake"            /usr/local/bin/; \
-    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/ruby"            /usr/local/bin/
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundle"  /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundler" /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/erb"     /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/gem"     /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/irb"     /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/racc"    /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/rake"    /usr/local/bin/; \
+    ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/ruby"    /usr/local/bin/
 fi
 
 # 確認 bundler 版本並安裝
