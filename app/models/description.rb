@@ -16,7 +16,7 @@
 #
 
 class Description < ApplicationRecord
-  store :customized_text, accessors: %i[image]
+  store :customized_text, accessors: %i[image focus category]
 
   belongs_to :term
   has_many   :examples, dependent: :destroy
