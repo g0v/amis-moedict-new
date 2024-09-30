@@ -50,9 +50,9 @@
 
           <% if term.audio.present? %>
             <button>
-              <i class="fa-solid fa-volume-high" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
+              <i class="fa-solid fa-volume-high" onclick="document.getElementById('audio-<%= term.id %>').play()"></i>
             </button>
-            <%= audio_tag term.audio_url, id: "audio-#{term.audio_id}" %>
+            <%= audio_tag term.audio_url, id: "audio-#{term.id}" %>
           <% end %>
 
           <button class="float-right block">
