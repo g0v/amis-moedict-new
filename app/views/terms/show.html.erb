@@ -66,12 +66,20 @@
                 <%= simple_format(description.content) %>
                 <% if description.image1.present? %>
                   <p>
-                    <%= image_tag description.image1_url, alt: description.image1_text, width: '100' %>
+                    <% providers = [description.image1_provider] %>
+                    <%= image_tag description.image1_url, alt: description.image1_text, width: "100", class: "inline" %>
                     <% if description.image2.present? %>
-                      <%= image_tag description.image2_url, alt: description.image2_text, width: '100' %>
+                      <% providers << description.image2_provider %>
+                      <%= image_tag description.image2_url, alt: description.image2_text, width: "100", class: "inline" %>
                     <% end %>
                     <% if description.image3.present? %>
-                      <%= image_tag description.image3_url, alt: description.image3_text, width: '100' %>
+                      <% providers << description.image3_provider %>
+                      <%= image_tag description.image3_url, alt: description.image3_text, width: "100", class: "inline" %>
+                    <% end %>
+                    <% providers.uniq! %>
+                    <% providers.compact! %>
+                    <% if providers.present? %>
+                      <span class="text-gray-400">（圖片提供：<%= providers.join("、") %>）</span>
                     <% end %>
                   </p>
                 <% end %>
