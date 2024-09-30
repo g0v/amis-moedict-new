@@ -19,8 +19,10 @@
 #
 
 class Description < ApplicationRecord
-  store :customized_text, accessors: %i[image1 image1_alt image2 image2_alt
-                                        image3 image3_alt focus category]
+  store :customized_text, accessors: %i[image1 image1_alt image1_provider
+                                        image2 image2_alt image2_provider
+                                        image3 image3_alt image3_provider
+                                        focus category]
 
   belongs_to :term
   has_many   :examples, dependent: :destroy
