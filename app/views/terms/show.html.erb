@@ -52,7 +52,7 @@
             <button>
               <i class="fa-solid fa-volume-high" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
             </button>
-            <%= audio_tag term.audio, id: "audio-#{term.audio_id}" %>
+            <%= audio_tag term.audio_url, id: "audio-#{term.audio_id}" %>
           <% end %>
 
           <button class="float-right block">
@@ -64,8 +64,16 @@
             <% term.descriptions.each do |description| %>
               <li>
                 <%= simple_format(description.content) %>
-                <% if description.image.present? %>
-                  <p><%= image_tag description.image, alt: description.content, width: '100' %></p>
+                <% if description.image1.present? %>
+                  <p>
+                    <%= image_tag description.image1_url, alt: description.image1_text, width: '100' %>
+                    <% if description.image2.present? %>
+                      <%= image_tag description.image2_url, alt: description.image2_text, width: '100' %>
+                    <% end %>
+                    <% if description.image3.present? %>
+                      <%= image_tag description.image3_url, alt: description.image3_text, width: '100' %>
+                    <% end %>
+                  </p>
                 <% end %>
                 <% if description.examples.present? %>
                   <ul class="list-disc list-inside space-y-1">
