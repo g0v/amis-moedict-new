@@ -13,6 +13,9 @@
 #  glossary_serial  :string(10)
 #  glossary_level   :string(10)
 #  customized_text  :string(500)
+#  content_zh       :string
+#  content_en       :string
+#  content_fr       :string
 #
 
 class Description < ApplicationRecord
