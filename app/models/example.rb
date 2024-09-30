@@ -10,6 +10,9 @@
 #  content_zh     :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  content_amis   :string
+#  content_en     :string
+#  content_fr     :string
 #
 
 class Example < ApplicationRecord
