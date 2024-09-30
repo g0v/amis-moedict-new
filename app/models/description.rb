@@ -41,6 +41,18 @@ class Description < ApplicationRecord
     "https://g0v.github.io/amis-moedict-static#{image3}" if image3.present?
   end
 
+  def image1_text
+    image1_alt.present? ? image1_alt : content
+  end
+
+  def image2_text
+    image2_alt.present? ? image2_alt : content
+  end
+
+  def image3_text
+    image3_alt.present? ? image3_alt : content
+  end
+
   private
 
     def clean_content
