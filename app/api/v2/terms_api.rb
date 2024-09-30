@@ -24,7 +24,7 @@ module V2
             term_hash[:stem] = term.stem.name if term.stem.present?
             term_hash[:lower_name] = term.lower_name if term.name != term.lower_name
             term_hash[:repetition] = term.repetition if term.repetition.present?
-            term_hash[:audio] = term.audio if term.audio.present?
+            term_hash[:audio] = term.audio_url
 
             term.descriptions.each do |description|
               description_hash = {
