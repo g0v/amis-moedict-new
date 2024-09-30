@@ -49,6 +49,10 @@ class Term < ApplicationRecord
     audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join("-")
   end
 
+  def audio_url
+    "https://g0v.github.io/amis-moedict-static#{audio}" if audio.present?
+  end
+
   private
 
     def clean_name_and_set_lower_name

@@ -16,7 +16,8 @@
 #
 
 class Description < ApplicationRecord
-  store :customized_text, accessors: %i[image]
+  store :customized_text, accessors: %i[image1 image1_alt image2 image2_alt
+                                        image3 image3_alt focus category]
 
   belongs_to :term
   has_many   :examples, dependent: :destroy
@@ -26,6 +27,30 @@ class Description < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     %w[content]
+  end
+
+  def image1_url
+    "https://g0v.github.io/amis-moedict-static#{image1}" if image1.present?
+  end
+
+  def image2_url
+    "https://g0v.github.io/amis-moedict-static#{image2}" if image2.present?
+  end
+
+  def image3_url
+    "https://g0v.github.io/amis-moedict-static#{image3}" if image3.present?
+  end
+
+  def image1_text
+    image1_alt.present? ? image1_alt : content
+  end
+
+  def image2_text
+    image2_alt.present? ? image2_alt : content
+  end
+
+  def image3_text
+    image3_alt.present? ? image3_alt : content
   end
 
   private
