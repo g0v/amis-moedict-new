@@ -247,6 +247,28 @@ def ilref_hash(data)
   end
 
   if data["File"].present? && data["File"]["Path"].present?
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/matayalay_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Matayalay_{1}.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/anini_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Anini_{1}.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/fanaw_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Fanaw_{1}.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/kolas_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Kolas_{1}.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/macidal_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Macidal_{1}.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/malalok_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Malalok_{1}.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/mamaan_{1}.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Mamaan_{1}.mp3"
+    end
+
     path = data["File"]["Path"].sub("https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami", "")
     if term.audio.blank? || (term.audio.exclude?(path) && %w[cidek cifar feded macahiw cahid].exclude?(data["Name"]))
       term.audio = "/ilrdf/mp3#{path}"
@@ -272,9 +294,9 @@ def ilref_hash(data)
 
     if data["Note"]["#text"].is_a? Array
       if term.note.present?
-        term.note += "\n#{data["Note"]["#text"].map{|text| clean(text: text)}.join("\n")}" unless term.note.include?(clean(text: data["Note"]["#text"][0]))
+        term.note += "\n#{data["Note"]["#text"].map { |text| clean(text: text) }.join("\n")}" unless term.note.include?(clean(text: data["Note"]["#text"][0]))
       else
-        term.note = data["Note"]["#text"].map{|text| clean(text: text)}.join("\n")
+        term.note = data["Note"]["#text"].map { |text| clean(text: text) }.join("\n")
       end
     end
   end
@@ -456,7 +478,7 @@ def ilrdf_sentence(description:, data:)
       end
     else
       if clean(text: data["Chinese"]) == "你們要用扁擔平衡扛起豬隻來。"
-        data["File"] = {"Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3"}
+        data["File"] = { "Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3" }
         data["Original"] = "Pa'onocen a malalilid to fafoy a midadoy."
       end
     end
@@ -466,6 +488,25 @@ def ilrdf_sentence(description:, data:)
   example.content_zh = clean(text: data["Chinese"]) if data["Chinese"].present? && (example.content_zh != clean(text: data["Chinese"]))
   example.content = "#{example.content_amis}#{example.content_zh}"
   if data["File"].present? && data["File"]["Path"].present?
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/anini_{1}_@_1.1.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Anini_{1}_@_1.1.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/fanaw_{1}_@_1.1.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Fanaw_{1}_@_1.1.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/kolas_{1}_@_1.1.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Kolas_{1}_@_1.1.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/macidal_{1}_@_1.1.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Macidal_{1}_@_1.1.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/malalok_{1}_@_1.1.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Malalok_{1}_@_1.1.mp3"
+    end
+    if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/mamaan_{1}_@_1.1.mp3"
+      data["File"]["Path"] = "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/Mamaan_{1}_@_1.1.mp3"
+    end
+
     path = data["File"]["Path"].split("/").last
     if example.audio.blank? || example.audio.exclude?(path)
       example.audio = "/ilrdf/mp3/#{path}"
