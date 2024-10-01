@@ -3,7 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "jquery"
 import "jquery-ui"
-import "sv-hover-intent"
 
 document.addEventListener( "turbo:load", function() {
   // 搜尋功能 START
