@@ -4,15 +4,16 @@
 #
 # Table name: examples
 #
-#  id             :integer          not null, primary key
-#  description_id :integer
-#  content        :string
-#  content_zh     :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  content_amis   :string
-#  content_en     :string
-#  content_fr     :string
+#  id              :integer          not null, primary key
+#  description_id  :integer
+#  content         :string
+#  content_zh      :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  content_amis    :string
+#  content_en      :string
+#  content_fr      :string
+#  customized_text :string(500)
 #
 
 class Example < ApplicationRecord
