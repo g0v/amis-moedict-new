@@ -272,9 +272,9 @@ def ilref_hash(data)
 
     if data["Note"]["#text"].is_a? Array
       if term.note.present?
-        term.note += "\n#{data["Note"]["#text"].map{|text| clean(text: text)}.join("\n")}" unless term.note.include?(clean(text: data["Note"]["#text"][0]))
+        term.note += "\n#{data["Note"]["#text"].map { |text| clean(text: text) }.join("\n")}" unless term.note.include?(clean(text: data["Note"]["#text"][0]))
       else
-        term.note = data["Note"]["#text"].map{|text| clean(text: text)}.join("\n")
+        term.note = data["Note"]["#text"].map { |text| clean(text: text) }.join("\n")
       end
     end
   end
@@ -456,7 +456,7 @@ def ilrdf_sentence(description:, data:)
       end
     else
       if clean(text: data["Chinese"]) == "你們要用扁擔平衡扛起豬隻來。"
-        data["File"] = {"Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3"}
+        data["File"] = { "Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3" }
         data["Original"] = "Pa'onocen a malalilid to fafoy a midadoy."
       end
     end
