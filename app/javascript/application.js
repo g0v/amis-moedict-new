@@ -77,6 +77,18 @@ document.addEventListener( "turbo:load", function() {
   });
   // 游標 hover 顯示詞義 END
 
+  // 字典設定 modal START
+  $( "#select-dictionary-modal" ).on( "click", function() {
+    $( "#overlay" ).removeClass( "hidden" );
+    $( "#select-dictionary" ).removeClass( "hidden" );
+  });
+
+  $(" .close-modal ").on( "click", function() {
+    $( "#select-dictionary" ).addClass( "hidden" );
+    $( "#overlay" ).addClass( "hidden" );
+  });
+  // 字典設定 modal END
+
   // PWA 手機版複製網址功能 START
   $( "#copy-url" ).tooltip({
     disabled: true,
