@@ -45,8 +45,7 @@ document.addEventListener( "turbo:load", function() {
 
   // 游標 hover 顯示詞義 START
   $( ".hoverable-term" ).tooltip({
-    disabled: true, // 交給 hoverintent 處理 show/hide
-    show: 200,
+    show: { delay: 400, duration: 0 },
     items: "a",
     classes: {
       "ui-tooltip": "shadow-xl rounded-lg bg-gray-100 max-w-xs w-fit p-2"
@@ -76,20 +75,6 @@ document.addEventListener( "turbo:load", function() {
       } );
     },
     content: "讀取中……"
-  });
-
-  new SV.HoverIntent( $( ".hoverable-term" ), {
-    onEnter: function(targetItem) {
-      $(targetItem).tooltip( "open" );
-    },
-    onExit: function(targetItem) {
-      $(targetItem).tooltip( "close" );
-    },
-
-    // default options
-    exitDelay: 400,
-    interval: 250,
-    sensitivity: 7,
   });
   // 游標 hover 顯示詞義 END
 
