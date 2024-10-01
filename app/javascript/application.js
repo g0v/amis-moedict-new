@@ -4,6 +4,30 @@ import "controllers"
 import "jquery"
 import "jquery-ui"
 
+// 辭典設定初始化 START
+function saveSettings(newSettings = {}) {
+  var defaultSettings = {
+        mainDictionary: "1", // 預設主辭典為蔡中涵大辭典
+        displayList:   ["1", "2", "3", "4", "5", "6", "7", "8", "9"], // 預設顯示所有字典
+        displayOrder:  ["1", "3", "9", "2", "4", "5", "6", "7", "8"] // 預設字典顯示排序
+      };
+
+  var settings = {
+        mainDictionary: newSettings.mainDictionary || localStorage.getItem('mainDictionary')           || defaultSettings.mainDictionary,
+        displayList:    newSettings.displayList    || JSON.parse(localStorage.getItem('displayList'))  || defaultSettings.displayList,
+        displayOrder:   newSettings.displayOrder   || JSON.parse(localStorage.getItem('displayOrder')) || defaultSettings.displayOrder
+      };
+
+  localStorage.setItem('mainDictionary', settings.mainDictionary);
+  localStorage.setItem('displayList',    JSON.stringify(settings.displayList));
+  localStorage.setItem('displayOrder',   JSON.stringify(settings.displayOrder));
+
+  return settings;
+}
+
+window.settings = saveSettings();
+// 辭典設定初始化 END
+
 document.addEventListener( "turbo:load", function() {
   // 搜尋功能 START
   $( "#search" ).autocomplete({
