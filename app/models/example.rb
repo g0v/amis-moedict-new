@@ -17,6 +17,8 @@
 #
 
 class Example < ApplicationRecord
+  store :customized_text, accessors: %i[audio]
+
   belongs_to :description
 
   validates :content, presence: true
