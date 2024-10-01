@@ -19,10 +19,10 @@ namespace :download do
       dictionary.terms.each do |term|
         term.descriptions.each do |description|
           wav_url   = "https://ilrdc.tw/tow/2022/audio/word/#{i+1}/#{description.glossary_serial.sub('-', '_')}.wav"
-          check_and_download(wav_url,   "public/glossary/wav/#{i+1}")
+          check_and_download(wav_url,   "tmp/glossary/wav/#{i+1}")
 
           image_url = "https://glossary-api.ilrdf.org.tw/glossary_2022/images/#{description.glossary_serial}.jpg"
-          check_and_download(image_url, "public/glossary/images")
+          check_and_download(image_url, "tmp/glossary/images")
         end
       end
     end
@@ -31,9 +31,9 @@ namespace :download do
   desc "更新 glossary image 網址"
   task description_glossary_image: :environment do
     Description.where.not(glossary_serial: nil).each do |description|
-      file_path = "public/glossary/images/#{description.glossary_serial}.jpg"
+      file_path = "tmp/glossary/images/#{description.glossary_serial}.jpg"
       if File.exist?(file_path)
-        description.update(image: file_path.sub("public", ""))
+        description.update(image: file_path.sub("tmp", ""))
       else
         description.update(image: nil)
       end
@@ -59,11 +59,92 @@ namespace :download do
       end
     end
   end
+
+  desc "下載原住民族語言線上辭典的 mp3"
+  task ilrdf_mp3: :environment do
+    i = 0
+    ilrdf_array = File.read("tmp/dict/ilrdf.txt").split("\n")
+    ilrdf_array.each_with_index do |row, i|
+      data = eval(row)["GenericData"]["DATA"]
+
+      # mp3 download
+      if data.is_a? Array
+        data.each do |datum|
+          if datum["File"].present?
+            check_and_download(datum["File"]["Path"], "tmp/ilrdf/mp3")
+          end
+        end
+      end
+
+      if data.is_a?(Hash) && data["File"].present?
+        check_and_download(data["File"]["Path"], "tmp/ilrdf/mp3")
+      end
+    end
+  end
+
+  desc "下載原住民族語言線上辭典的圖片"
+  task ilrdf_images: :environment do
+    ilrdf_array = File.read("tmp/dict/ilrdf.txt").split("\n")
+    ilrdf_array.each do |row|
+      data = eval(row)["GenericData"]["DATA"]
+
+      if data.is_a? Hash
+        if data["Explanation"].is_a? Array
+          data["Explanation"].each do |ex|
+            if ex["Img"].is_a? Array
+              ex["Img"].each do |img|
+                check_and_download(img["Src"], "tmp/ilrdf/images")
+              end
+            end
+
+            if ex["Img"].is_a? String
+              check_and_download(ex["Img"]["Src"], "tmp/ilrdf/images")
+            end
+
+            if ex["Sentence"].is_a? Array
+              ex["Sentence"].each do |sentence|
+                if sentence["File"].present?
+                  check_and_download(sentence["File"]["Path"], "tmp/ilrdf/mp3")
+                end
+              end
+            end
+
+            if ex["Sentence"].is_a?(Hash) && ex["Sentence"]["File"].present?
+              check_and_download(ex["Sentence"]["File"]["Path"], "tmp/ilrdf/mp3")
+            end
+          end
+        end
+
+        if data["Explanation"].is_a? Hash
+          if data["Explanation"]["Img"].is_a? Array
+            data["Explanation"]["Img"].each do |img|
+              check_and_download(img["Src"], "tmp/ilrdf/images")
+            end
+          end
+
+          if data["Explanation"]["Img"].is_a? String
+            check_and_download(data["Explanation"]["Img"]["Src"], "tmp/ilrdf/images")
+          end
+
+          if data["Explanation"]["Sentence"].is_a? Array
+            data["Explanation"]["Sentence"].each do |sentence|
+              if sentence["File"].present?
+                check_and_download(sentence["File"]["Path"], "tmp/ilrdf/mp3")
+              end
+            end
+          end
+
+          if data["Explanation"]["Sentence"].is_a?(Hash) && data["Explanation"]["Sentence"]["File"].present?
+            check_and_download(data["Explanation"]["Sentence"]["File"]["Path"], "tmp/ilrdf/mp3")
+          end
+        end
+      end
+    end
+  end
 end
 
 def check_and_download(url, folder)
-  uri = URI.parse(url)
-  filename  = File.basename(uri.path)
+  filename  = url.split("/").last
   file_path = File.join(folder, filename)
 
   return if %w[
@@ -562,6 +643,9 @@ def check_and_download(url, folder)
   ].include?(filename)
 
   unless File.exist?(file_path)
-    spawn("curl -O --output-dir #{folder} #{url}")
+    # puts file_path
+    download_url = url.gsub(/({|})/) { "\\#{$1}" }
+    spawn("curl -O --output-dir #{folder} \"#{download_url}\"")
+    # sleep(1)
   end
 end

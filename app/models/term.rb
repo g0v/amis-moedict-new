@@ -16,7 +16,7 @@
 #
 
 class Term < ApplicationRecord
-  store :customized_text, accessors: %i[repetition audio]
+  store :customized_text, accessors: %i[repetition audio frequency variant note]
 
   belongs_to :dictionary
   belongs_to :stem, optional: true
@@ -45,10 +45,6 @@ class Term < ApplicationRecord
     end
   end
 
-  def audio_id
-    audio.match(%r{/(\d+)/(\d+_\d+)\.wav$})[1..2].join("-")
-  end
-
   def audio_url
     "https://g0v.github.io/amis-moedict-static#{audio}" if audio.present?
   end
@@ -67,7 +63,7 @@ class Term < ApplicationRecord
     stem_record = Stem.find_by(name: name)
     if stem_record.present?
       self.is_stem = true
-      self.stem_id = stem_record.id
+      self.stem_id = stem_record.id if stem_id.blank?
     end
   end
 end
