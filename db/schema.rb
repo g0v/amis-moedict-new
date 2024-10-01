@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_30_145937) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_01_023038) do
   create_table "descriptions", force: :cascade do |t|
     t.integer "term_id"
     t.string "content", limit: 500
@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_145937) do
     t.string "content_amis"
     t.string "content_en"
     t.string "content_fr"
+    t.string "customized_text", limit: 500
     t.index ["description_id"], name: "index_examples_on_description_id"
   end
 

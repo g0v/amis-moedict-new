@@ -32,9 +32,10 @@
     <% @terms.each do |term| %>
       <div>
         <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
+
         <% dictionary = term.dictionary %>
         <div>
-          <span class="text-slate-400 p-0.5"><%= dictionary.dialect %></span>
+          <span class="text-slate-400"><%= dictionary.dialect %></span>
           <% if term.repetition.present? %>
             <span class="bg-sky-500 text-white p-0.5">
               [疊 <%= term.repetition %>]
@@ -50,15 +51,38 @@
 
           <% if term.audio.present? %>
             <button>
-              <i class="fa-solid fa-volume-high" onclick="document.getElementById('audio-<%= term.audio_id %>').play()"></i>
+              <i class="fa-solid fa-volume-high" onclick="document.getElementById('audio-<%= term.id %>').play()"></i>
             </button>
-            <%= audio_tag term.audio_url, id: "audio-#{term.audio_id}" %>
+            <%= audio_tag term.audio_url, id: "audio-#{term.id}" %>
           <% end %>
 
           <button class="float-right block">
             <i class="fa-solid fa-square-share-nodes text-gray-400 hover:text-gray-800 text-xl mr-2" onclick="navigator.share({url: '<%= request.base_url %>/dictionaries/<%= dictionary.id %>/terms/<%= params[:id] %>'})"></i>
           </button>
         </div>
+
+        <% if dictionary.name == "原住民族語言線上辭典" %>
+          <div>
+            <% if term.frequency.present? %>
+              <span class="text-sm text-gray-500">
+                詞頻：（<%= term.frequency %>）
+              </span>
+            <% end %>
+
+            <% if term.variant.present? %>
+              <span class="text-sm text-gray-500">
+                變體：<%= term.variant %>
+              </span>
+            <% end %>
+
+            <% if term.note.present? %>
+              <p class="text-sm text-gray-500">
+                備註：<%= term.note %>
+              </p>
+            <% end %>
+          </div>
+        <% end %>
+
         <% if term.descriptions.present? %>
           <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
             <% term.descriptions.each do |description| %>
@@ -66,19 +90,35 @@
                 <%= simple_format(description.content) %>
                 <% if description.image1.present? %>
                   <p>
-                    <%= image_tag description.image1_url, alt: description.image1_text, width: '100' %>
+                    <% providers = [description.image1_provider] %>
+                    <%= image_tag description.image1_url, alt: description.image1_text, width: "100", class: "inline" %>
                     <% if description.image2.present? %>
-                      <%= image_tag description.image2_url, alt: description.image2_text, width: '100' %>
+                      <% providers << description.image2_provider %>
+                      <%= image_tag description.image2_url, alt: description.image2_text, width: "100", class: "inline" %>
                     <% end %>
                     <% if description.image3.present? %>
-                      <%= image_tag description.image3_url, alt: description.image3_text, width: '100' %>
+                      <% providers << description.image3_provider %>
+                      <%= image_tag description.image3_url, alt: description.image3_text, width: "100", class: "inline" %>
+                    <% end %>
+                    <% providers.uniq! %>
+                    <% providers.compact! %>
+                    <% if providers.present? %>
+                      <span class="text-gray-400">（圖片提供：<%= providers.join("、") %>）</span>
                     <% end %>
                   </p>
                 <% end %>
                 <% if description.examples.present? %>
                   <ul class="list-disc list-inside space-y-1">
                     <% description.examples.each do |example| %>
-                      <li><%= linked_term(record: example, dictionary: @dictionary).html_safe %></li>
+                      <li>
+                        <% if example.audio.present? %>
+                          <button>
+                            <i class="fa-solid fa-volume-high text-sm" onclick="document.getElementById('audio-example-<%= example.id %>').play()"></i>
+                          </button>
+                          <%= audio_tag example.audio_url, id: "audio-example-#{example.id}" %>
+                        <% end %>
+                        <%= linked_term(record: example, dictionary: @dictionary).html_safe %>
+                      </li>
                     <% end %>
                   </ul>
                 <% end %>
