@@ -29,6 +29,10 @@ class Example < ApplicationRecord
     %w[content content_zh]
   end
 
+  def audio_url
+    "https://g0v.github.io/amis-moedict-static#{audio}" if audio.present?
+  end
+
   private
 
     def clean_content

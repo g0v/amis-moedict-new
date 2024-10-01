@@ -110,7 +110,15 @@
                 <% if description.examples.present? %>
                   <ul class="list-disc list-inside space-y-1">
                     <% description.examples.each do |example| %>
-                      <li><%= linked_term(record: example, dictionary: @dictionary).html_safe %></li>
+                      <li>
+                        <% if example.audio.present? %>
+                          <button>
+                            <i class="fa-solid fa-volume-high text-sm" onclick="document.getElementById('audio-example-<%= example.id %>').play()"></i>
+                          </button>
+                          <%= audio_tag example.audio_url, id: "audio-example-#{example.id}" %>
+                        <% end %>
+                        <%= linked_term(record: example, dictionary: @dictionary).html_safe %>
+                      </li>
                     <% end %>
                   </ul>
                 <% end %>
