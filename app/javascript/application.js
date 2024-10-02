@@ -4,6 +4,18 @@ import "controllers"
 import "jquery"
 import "jquery-ui"
 
+const DICTIONARY = {
+  "1": "蔡中涵大辭典",
+  "2": "博利亞潘世光阿法字典",
+  "3": "方敏英字典",
+  "4": "學習詞表－秀姑巒阿美語",
+  "5": "學習詞表－海岸阿美語",
+  "6": "學習詞表－馬蘭阿美語",
+  "7": "學習詞表－恆春阿美語",
+  "8": "學習詞表－南勢阿美語",
+  "9": "原住民族語言線上辭典"
+}
+
 // 辭典設定初始化 START
 function saveSettings(newSettings = {}) {
   var defaultSettings = {
@@ -29,6 +41,21 @@ window.settings = saveSettings();
 // 辭典設定初始化 END
 
 document.addEventListener( "turbo:load", function() {
+  // 根據 settings 設定辭典畫面 START
+  $( "#dictionary-name" ).html( DICTIONARY[settings.mainDictionary] );
+  Object.keys(DICTIONARY).forEach(function(el){
+    if (!settings.displayList.includes(el)) {
+      $( `#dictionary-${el}` ).hide();
+    }
+  });
+  $( "#main-dictionary" ).val( settings.mainDictionary );
+  $( "#display-dictionary input" ).removeAttr( "disabled" );
+  $( "#display-dictionary input" ).each(function() {
+    $(this).prop( { checked: settings.displayList.includes($(this).val()) } );
+  })
+  $( `#display-dictionary input[value="${settings.mainDictionary}"]` ).prop( { checked: "checked", disabled: "disabled"} );
+  // 根據 settings 設定辭典畫面 END
+
   // 搜尋功能 START
   $( "#search" ).autocomplete({
     source: function( request, response ) {
