@@ -111,6 +111,23 @@ document.addEventListener( "turbo:load", function() {
     $( "#select-dictionary" ).addClass( "hidden" );
     $( "#overlay" ).addClass( "hidden" );
   });
+
+  $( "#main-dictionary" ).on( "change", function() {
+    $( "#display-dictionary input" ).removeAttr( "disabled" );
+    $( `#display-dictionary input[value="${$(this).val()}"]` ).prop( { checked: "checked", disabled: "disabled"} );
+  });
+
+  $(" #modal-submit ").on( "click", function() {
+    var mainDictionary = $( "#main-dictionary" ).val(),
+        displayList    = $( "#display-dictionary input:checked" ).map(function (_, el){ return el.value}).get();
+
+    displayList.sort();
+    saveSettings({ mainDictionary: mainDictionary, displayList: displayList });
+
+    window.location.reload();
+    $( "#select-dictionary" ).addClass( "hidden" );
+    $( "#overlay" ).addClass( "hidden" );
+  });
   // 字典設定 modal END
 
   // PWA 手機版複製網址功能 START
