@@ -4,7 +4,58 @@ import "controllers"
 import "jquery"
 import "jquery-ui"
 
+const DICTIONARY = {
+  "1": "蔡中涵大辭典",
+  "2": "博利亞潘世光阿法字典",
+  "3": "方敏英字典",
+  "4": "學習詞表－秀姑巒阿美語",
+  "5": "學習詞表－海岸阿美語",
+  "6": "學習詞表－馬蘭阿美語",
+  "7": "學習詞表－恆春阿美語",
+  "8": "學習詞表－南勢阿美語",
+  "9": "原住民族語言線上辭典"
+}
+
+// 辭典設定初始化 START
+function saveSettings(newSettings = {}) {
+  var defaultSettings = {
+        mainDictionary: "1", // 預設主辭典為蔡中涵大辭典
+        displayList:   ["1", "2", "3", "4", "5", "6", "7", "8", "9"], // 預設顯示所有字典
+        displayOrder:  ["1", "3", "9", "2", "4", "5", "6", "7", "8"] // 預設字典顯示排序
+      };
+
+  var settings = {
+        mainDictionary: newSettings.mainDictionary || localStorage.getItem('mainDictionary')           || defaultSettings.mainDictionary,
+        displayList:    newSettings.displayList    || JSON.parse(localStorage.getItem('displayList'))  || defaultSettings.displayList,
+        displayOrder:   newSettings.displayOrder   || JSON.parse(localStorage.getItem('displayOrder')) || defaultSettings.displayOrder
+      };
+
+  localStorage.setItem('mainDictionary', settings.mainDictionary);
+  localStorage.setItem('displayList',    JSON.stringify(settings.displayList));
+  localStorage.setItem('displayOrder',   JSON.stringify(settings.displayOrder));
+
+  return settings;
+}
+
+window.settings = saveSettings();
+// 辭典設定初始化 END
+
 document.addEventListener( "turbo:load", function() {
+  // 根據 settings 設定辭典畫面 START
+  $( "#dictionary-name" ).html( DICTIONARY[settings.mainDictionary] );
+  Object.keys(DICTIONARY).forEach(function(el){
+    if (!settings.displayList.includes(el)) {
+      $( `#dictionary-${el}` ).hide();
+    }
+  });
+  $( "#main-dictionary" ).val( settings.mainDictionary );
+  $( "#display-dictionary input" ).removeAttr( "disabled" );
+  $( "#display-dictionary input" ).each(function() {
+    $(this).prop( { checked: settings.displayList.includes($(this).val()) } );
+  })
+  $( `#display-dictionary input[value="${settings.mainDictionary}"]` ).prop( { checked: "checked", disabled: "disabled"} );
+  // 根據 settings 設定辭典畫面 END
+
   // 搜尋功能 START
   $( "#search" ).autocomplete({
     source: function( request, response ) {
@@ -76,6 +127,35 @@ document.addEventListener( "turbo:load", function() {
     content: "讀取中……"
   });
   // 游標 hover 顯示詞義 END
+
+  // 字典設定 modal START
+  $( "#select-dictionary-modal" ).on( "click", function() {
+    $( "#overlay" ).removeClass( "hidden" );
+    $( "#select-dictionary" ).removeClass( "hidden" );
+  });
+
+  $(" .close-modal ").on( "click", function() {
+    $( "#select-dictionary" ).addClass( "hidden" );
+    $( "#overlay" ).addClass( "hidden" );
+  });
+
+  $( "#main-dictionary" ).on( "change", function() {
+    $( "#display-dictionary input" ).removeAttr( "disabled" );
+    $( `#display-dictionary input[value="${$(this).val()}"]` ).prop( { checked: "checked", disabled: "disabled"} );
+  });
+
+  $(" #modal-submit ").on( "click", function() {
+    var mainDictionary = $( "#main-dictionary" ).val(),
+        displayList    = $( "#display-dictionary input:checked" ).map(function (_, el){ return el.value}).get();
+
+    displayList.sort();
+    saveSettings({ mainDictionary: mainDictionary, displayList: displayList });
+
+    window.location.reload();
+    $( "#select-dictionary" ).addClass( "hidden" );
+    $( "#overlay" ).addClass( "hidden" );
+  });
+  // 字典設定 modal END
 
   // PWA 手機版複製網址功能 START
   $( "#copy-url" ).tooltip({
