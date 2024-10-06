@@ -13,6 +13,25 @@
   end
 %>
 
+<script>
+  function saveHistory(term) {
+    var termsHistory = new Set(JSON.parse(localStorage.getItem( "termsHistory" )) || []);
+
+    termsHistory.delete(term);
+    termsHistory.add(term);
+
+    // 最多儲存 1000 筆 history
+    if (termsHistory.size > 1000) {
+      termsHistory = new Set([...termsHistory].slice(-1000));
+    }
+
+    localStorage.setItem('termsHistory', JSON.stringify([...termsHistory]));
+  }
+
+  var term = window.location.pathname.split( "/" ).slice(-1)[0];
+  saveHistory(term);
+</script>
+
 <div id="sidebar" class="mt-[42px] p-4 absolute top-0 left-0 w-full h-[75px] border-r-0 border-b border-gray-200 sm:static sm:border-r sm:border-b-0 sm:w-1/4 sm:h-auto sm:mt-0">
   <input type="text" id="search" class="w-full p-2 border border-gray-300 rounded" placeholder="請輸入欲查詢的字詞">
 </div>
