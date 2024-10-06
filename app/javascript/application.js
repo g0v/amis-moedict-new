@@ -41,6 +41,14 @@ window.settings = saveSettings();
 // 辭典設定初始化 END
 
 document.addEventListener( "turbo:load", function() {
+  var currentPath = window.location.pathname;
+
+  if (currentPath.indexOf( "/about") !== -1 ) {
+    $( "#select-dictionary-modal" ).on( "click", function() {
+      window.location.href = "/";
+    });
+  }
+
   // 根據 settings 設定辭典畫面 START
   $( "#dictionary-name" ).html( DICTIONARY[settings.mainDictionary] );
   Object.keys(DICTIONARY).forEach(function(el){
