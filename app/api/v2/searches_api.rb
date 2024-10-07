@@ -4,7 +4,7 @@ module V2
       params do
         requires :q, type: String, desc: "搜尋族語/漢語關鍵字，族語 1~3 字使用精確搜尋，超過 3 字用 sql LIKE 搜尋。漢語一律用 sql LIKE 搜尋 Description#content。"
       end
-      get ":q" do
+      get ":q", requirements: { q: /.*/ } do
         result = []
 
         if params[:q].match?(/\A[a-zA-Z'’ʼ^ ,….:;\-\(\)]+\z/) # 族語搜尋
