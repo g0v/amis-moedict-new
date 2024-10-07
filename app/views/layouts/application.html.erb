@@ -36,16 +36,22 @@
   </head>
 
   <body class="bg-white font-sans leading-normal tracking-normal">
-    <div id="navbar" class="h-[42px] bg-gray-800 text-white flex items-center justify-between px-4 py-2">
-      <div class="flex items-center space-x-2">
+    <div id="navbar" class="h-[42px] bg-gray-800 text-slate-300 flex items-center justify-between px-4 py-2">
+      <div class="flex items-center space-x-4">
         <div>
-          <a href="/" class="logo ebas mr-5"> 阿美語萌典</a>
+          <a href="/" class="logo ebas mr-2"> 阿美語萌典</a>
         </div>
-        <div id="select-dictionary-modal" class="cursor-pointer">
-          <i class="fa-solid fa-book">&nbsp;</i> <h2 id="dictionary-name" class="inline">蔡中涵大辭典</h2>
-          <i class="fa-solid fa-caret-down ml-1"></i>
+        <div id="select-dictionary-modal" class="cursor-pointer mr-5">
+          <i class="fa-solid fa-book">&nbsp;</i>
+          <h2 id="dictionary-name" class="inline">蔡中涵大辭典</h2>
+          <i class="fa-solid fa-caret-down ml-1 mr-2 hidden sm:inline"></i>
         </div>
-        <!-- <div>宇詞紀錄簿</div> -->
+        <div>
+          <a href="/bookmarks" class="mr-2">
+            <i class="fa-solid fa-bookmark text-lg sm:text-base">&nbsp;</i>
+            <span class="hidden sm:inline">字詞紀錄簿</span>
+          </a>
+        </div>
       </div>
       <div>
         <%= link_to(about_path, class: "bg-lime-600 rounded px-2 py-1 text-xs") do %>
