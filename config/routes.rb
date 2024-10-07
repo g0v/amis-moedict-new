@@ -7,10 +7,10 @@ Rails.application.routes.draw do
   # $ bin/rails grape:routes
   mount ApplicationAPI => "/api"
 
-  resources :terms, only: %i[index show]
+  resources :terms, only: %i[index show], constraints: { id: /.*/ }
 
   resources :dictionaries, only: [] do
-    get "terms/:id" => "dictionary_terms#show", as: :term
+    get "terms/:id" => "dictionary_terms#show", as: :term, constraints: { id: /.*/ }
   end
 
   get "bookmarks" => "pages#bookmarks", as: :bookmarks
