@@ -18,7 +18,8 @@
 <script>
   var termsHistory = new Set(JSON.parse(localStorage.getItem( "termsHistory" )) || []),
       bookmarks    = new Set(JSON.parse(localStorage.getItem( "bookmarks" ))    || []),
-      termsHistoryUl = document.getElementById( "terms-history" );;
+      termsHistoryUl = document.getElementById( "terms-history" ),
+      bookmarksUl    = document.getElementById( "bookmarks-list" );
 
   termsHistory.forEach(function(term){
     var li = document.createElement( "li" ),
@@ -31,5 +32,18 @@
 
     li.appendChild(a);
     termsHistoryUl.appendChild(li);
+  });
+
+  bookmarks.forEach(function(term){
+    var li = document.createElement( "li" ),
+        a  = document.createElement( "a" );
+
+    a.href = `/terms/${term}`;
+    a.textContent = term;
+    a.classList.add( "hoverable-term", "border-b", "border-gray-300", "text-gray-800", "hover:bg-gray-300", "focus:bg-gray-300", "hover:text-[#0070a3]", "focus:text-[#0070a3]", "focus:outline", "focus:outline-1", "focus:outline-[#69d2fc]" );
+    a.setAttribute( "data-term", term );
+
+    li.appendChild(a);
+    bookmarksUl.appendChild(li);
   });
 </script>
