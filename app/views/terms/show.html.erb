@@ -29,7 +29,7 @@
   }
 
   var term = window.location.pathname.split( "/" ).slice(-1)[0];
-  saveHistory(term);
+  saveHistory(unescape(term));
 </script>
 
 <div id="sidebar" class="mt-[42px] p-4 absolute top-0 left-0 w-full h-[75px] border-r-0 border-b border-gray-200 sm:static sm:border-r sm:border-b-0 sm:w-1/4 sm:h-auto sm:mt-0">
