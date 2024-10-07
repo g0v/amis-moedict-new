@@ -42,6 +42,9 @@
       <% if @terms.first.is_stem %>
         <span class="text-base">（詞幹）</span>
       <% end %>
+      <button id="bookmark" class="inline-block" data-term="<%= params[:id] %>">
+        <i class="text-gray-500 text-base mr-2"></i>
+      </button>
     </h1>
     <button id="copy-url" class="block sm:hidden">
       <i class="fa-regular fa-copy text-gray-500 mr-2 pt-1"></i>
