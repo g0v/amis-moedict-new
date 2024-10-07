@@ -7,7 +7,7 @@ module V2
       get ":q" do
         result = []
 
-        if params[:q].match?(/\A[a-zA-Z'’ʼ^ ]+\z/) # 族語搜尋
+        if params[:q].match?(/\A[a-zA-Z'’ʼ^ ,….:;\-\(\)]+\z/) # 族語搜尋
           case params[:q].size
           when 1, 2, 3
             Term.includes(:descriptions).select(:id, :name).where(lower_name: params[:q]).group(:name).each do |term|
