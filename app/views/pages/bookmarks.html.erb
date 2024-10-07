@@ -21,7 +21,7 @@
       termsHistoryUl = document.getElementById( "terms-history" ),
       bookmarksUl    = document.getElementById( "bookmarks-list" );
 
-  termsHistory.forEach(function(term){
+  Array.from(termsHistory).reverse().forEach(function(term){
     var li = document.createElement( "li" ),
         a  = document.createElement( "a" );
 
@@ -34,7 +34,7 @@
     termsHistoryUl.appendChild(li);
   });
 
-  bookmarks.forEach(function(term){
+  Array.from(bookmarks).reverse().forEach(function(term){
     var li = document.createElement( "li" ),
         a  = document.createElement( "a" );
 
