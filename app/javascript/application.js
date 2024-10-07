@@ -189,5 +189,48 @@ document.addEventListener( "turbo:load", function() {
     });
     // PWA 手機版複製網址功能 START
 
+    // 字詞記錄簿 START
+    var bookmarks = new Set(JSON.parse(localStorage.getItem( "bookmarks" )) || []);
+
+    if ( bookmarks.has( $( "#bookmark" ).data( "term" ) ) ) {
+      $( "#bookmark i" ).addClass( "fa-solid fa-bookmark" );
+      $( "#bookmark" ).prop( "title", "已從字詞記錄簿移除" );
+    } else {
+      $( "#bookmark i" ).addClass( "fa-regular fa-bookmark" );
+      $( "#bookmark" ).prop( "title", "已加入字詞記錄簿" );
+    }
+
+    $( "#bookmark" ).tooltip({
+      disabled: true,
+      items: "button",
+      classes: {
+        "ui-tooltip": "shadow-xl rounded bg-gray-200 text-sm w-fit p-1"
+      }
+    });
+
+    $( "#bookmark" ).on( "click", function(){
+      var bookmarks = new Set(JSON.parse(localStorage.getItem( "bookmarks" )) || []),
+          term = $(this).data( "term" );
+      if ( bookmarks.has( term ) ) {
+        bookmarks.delete( term );
+        $( "#bookmark i" ).removeClass( "fa-regular fa-solid fa-bookmark" ).addClass( "fa-regular fa-bookmark" );
+        $( this ).tooltip( "option", { content: "已從字詞記錄簿移除" } );
+      } else {
+        bookmarks.add( term );
+        $( "#bookmark i" ).removeClass( "fa-regular fa-solid fa-bookmark" ).addClass( "fa-solid fa-bookmark" );
+        $( this ).tooltip( "option", { content: "已加入字詞記錄簿" } );
+      }
+
+      localStorage.setItem('bookmarks', JSON.stringify([...bookmarks]));
+
+      $(this).tooltip( "option", { disabled: false }).tooltip( "open" );
+      setTimeout( function(){
+        $( "#bookmark" ).tooltip( "option", { disabled: true }).tooltip( "close" );
+      }, "500");
+
+      return false;
+    });
+    // 字詞記錄簿 END
+
   }
 });
