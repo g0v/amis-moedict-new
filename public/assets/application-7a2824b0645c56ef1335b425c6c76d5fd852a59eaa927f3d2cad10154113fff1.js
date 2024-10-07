@@ -234,3 +234,10 @@ document.addEventListener( "turbo:load", function() {
 
   }
 });
+
+document.addEventListener( "turbo:render", function() {
+  var uiTooltips = document.querySelectorAll('.ui-tooltip');
+  uiTooltips.forEach( function(el){
+    el.remove();
+  });
+});
