@@ -14,7 +14,7 @@ namespace :import do
       [ "學習詞表－南勢阿美語", "南勢阿美語" ],
       [ "原住民族語言線上辭典", "" ]
     ].each do |name, dialect|
-      Dictionary.find_or_create_by(name:, dialect:)
+      Dictionary.find_or_create_by(name: name, dialect: dialect)
     end
   end
 
