@@ -50,6 +50,7 @@ namespace :import do
 
         term = dictionary.terms.find_or_create_by(name: clean(text: json_object["t"]))
         if json_object["tag"].present?
+          puts filename if json_object["tag"].match(/[疊 ](\d)/).blank?
           repetition = json_object["tag"].match(/[疊 ](\d)/)[1]
           term.update(repetition: repetition)
         end
