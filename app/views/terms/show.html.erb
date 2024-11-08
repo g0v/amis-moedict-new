@@ -109,6 +109,12 @@
           <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
             <% term.descriptions.each do |description| %>
               <li>
+                <% if description.focus.present? %>
+                  <span class="text-gray-500 text-sm">(焦點：<%= description.focus %>)</span>
+                <% end %>
+                <% if description.category.present? %>
+                  <span class="text-gray-500 text-sm">(範疇分類：<%= description.category %>)</span>
+                <% end %>
                 <%= simple_format(description.content) %>
                 <% if description.image1.present? %>
                   <p>
