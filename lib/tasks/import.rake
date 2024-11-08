@@ -303,13 +303,13 @@ def ilref_hash(data)
   end
 
   if term.changed?
-    binding.irb
+    # binding.irb
     term.save
   end
 
   # 字典的詞幹（來源）衝突時，以字數少的為主
   if data["Source"].is_a? String
-    binding.irb unless Stem.exists?(name: clean(text: data["Source"]))
+    # binding.irb unless Stem.exists?(name: clean(text: data["Source"]))
     stem = Stem.find_or_create_by(name: clean(text: data["Source"]))
     if term.stem.blank?
       term.update(stem_id: stem.id)
@@ -321,7 +321,7 @@ def ilref_hash(data)
   end
 
   if data["Source"].is_a? Hash
-    binding.irb unless Stem.exists?(name: clean(text: data["Source"]["#text"]))
+    # binding.irb unless Stem.exists?(name: clean(text: data["Source"]["#text"]))
     stem = Stem.find_or_create_by(name: clean(text: data["Source"]["#text"]))
     if term.stem.blank?
       term.update(stem_id: stem.id)
@@ -334,7 +334,7 @@ def ilref_hash(data)
 
   if data["Explanation"].is_a? Hash
     explanation = data["Explanation"]
-    binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
+    # binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
     description = term.descriptions.find_or_create_by(content: clean(text: explanation["Chinese"]))
 
     if explanation["Focus"].present? && description.focus.blank?
@@ -366,9 +366,14 @@ def ilref_hash(data)
     end
   end
 
+  if description.present? && description.changed?
+    # binding.irb
+    description.save
+  end
+
   if data["Explanation"].is_a? Array
     data["Explanation"].each_with_index do |explanation, i|
-      binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
+      # binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
       description = term.descriptions.find_or_create_by(content: clean(text: explanation["Chinese"]))
 
       if explanation["Focus"].present? && description.focus.blank?
@@ -377,6 +382,11 @@ def ilref_hash(data)
 
       if explanation["TC"].present? && description.category.blank?
         description.category = clean(text: explanation["TC"])
+      end
+
+      if description.changed?
+        # binding.irb
+        description.save
       end
 
       if explanation["Img"].is_a? Hash
@@ -399,11 +409,6 @@ def ilref_hash(data)
         end
       end
     end
-  end
-
-  if description.changed?
-    binding.irb
-    description.save
   end
 end
 
@@ -429,38 +434,43 @@ def ilrdf_image(description:, data:)
       description.image3_provider = clean(text: data["Provider"]) if data["Provider"].present?
       description.image3 = data["Src"].sub("https://e-dictionary.ilrdf.org.tw/MultiMedia/Images", "/ilrdf/images")
     else
-      binding.irb
+      # binding.irb
     end
   when 1
     if data["Name"].present? && (description.image1_alt != clean(text: data["Name"]))
-      binding.irb
+      # binding.irb
       description.image1_alt = clean(text: data["Name"])
     end
 
     if data["Provider"].present? && (description.image1_provider != clean(text: data["Provider"]))
-      binding.irb
+      # binding.irb
       description.image1_provider = clean(text: data["Provider"])
     end
   when 2
     if data["Name"].present? && (description.image2_alt != clean(text: data["Name"]))
-      binding.irb
+      # binding.irb
       description.image2_alt = clean(text: data["Name"])
     end
 
     if data["Provider"].present? && (description.image2_provider != clean(text: data["Provider"]))
-      binding.irb
+      # binding.irb
       description.image2_provider = clean(text: data["Provider"])
     end
   when 3
     if data["Name"].present? && (description.image3_alt != clean(text: data["Name"]))
-      binding.irb
+      # binding.irb
       description.image3_alt = clean(text: data["Name"])
     end
 
     if data["Provider"].present? && (description.image3_provider != clean(text: data["Provider"]))
-      binding.irb
+      # binding.irb
       description.image3_provider = clean(text: data["Provider"])
     end
+  end
+
+  if description.changed?
+    # binding.irb
+    description.save
   end
 end
 
@@ -478,13 +488,27 @@ def ilrdf_sentence(description:, data:)
         data["Original"] = "O rengos a maemin ko malengaway i padatengan ni ina."
       end
     else
-      if clean(text: data["Chinese"]) == "你們要用扁擔平衡扛起豬隻來。"
-        data["File"] = { "Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3" }
-        data["Original"] = "Pa'onocen a malalilid to fafoy a midadoy."
+      if data["Chinese"].blank?
+        puts description.id
+        puts description.content
+        puts "================"
+      else
+
+        if clean(text: data["Chinese"]) == "你們要用扁擔平衡扛起豬隻來。"
+          data["File"] = { "Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3" }
+          data["Original"] = "Pa'onocen a malalilid to fafoy a midadoy."
+        end
+
       end
     end
   end
 
+  if data["Original"].blank?
+    puts description.id
+    puts description.content
+    puts "================"
+    return
+  end
   example = description.examples.find_or_create_by(content_amis: clean(text: data["Original"]))
   example.content_zh = clean(text: data["Chinese"]) if data["Chinese"].present? && (example.content_zh != clean(text: data["Chinese"]))
   example.content = "#{example.content_amis}#{example.content_zh}"
@@ -515,7 +539,7 @@ def ilrdf_sentence(description:, data:)
   end
 
   if example.changed?
-    binding.irb
+    # binding.irb
     example.save
   end
 end
