@@ -366,6 +366,11 @@ def ilref_hash(data)
     end
   end
 
+  if description.present? && description.changed?
+    # binding.irb
+    description.save
+  end
+
   if data["Explanation"].is_a? Array
     data["Explanation"].each_with_index do |explanation, i|
       # binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
@@ -377,6 +382,11 @@ def ilref_hash(data)
 
       if explanation["TC"].present? && description.category.blank?
         description.category = clean(text: explanation["TC"])
+      end
+
+      if description.changed?
+        # binding.irb
+        description.save
       end
 
       if explanation["Img"].is_a? Hash
@@ -399,11 +409,6 @@ def ilref_hash(data)
         end
       end
     end
-  end
-
-  if description.changed?
-    # binding.irb
-    description.save
   end
 end
 
@@ -461,6 +466,11 @@ def ilrdf_image(description:, data:)
       # binding.irb
       description.image3_provider = clean(text: data["Provider"])
     end
+  end
+
+  if description.changed?
+    # binding.irb
+    description.save
   end
 end
 
