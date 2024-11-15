@@ -40,14 +40,35 @@ function saveSettings(newSettings = {}) {
 window.settings = saveSettings();
 // 辭典設定初始化 END
 
-document.addEventListener( "turbo:load", function() {
-  var currentPath = window.location.pathname;
+// GA 初始化 START
+if (window.location.hostname == 'new-amis.moedict.tw') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  // 自動 send_page_view 關閉，拉到 turbo:load 裡面
+  gtag('config', 'G-VMCGN0EBM0', {
+    send_page_view: false
+  });
+}
+// GA 初始化 END
+
+document.addEventListener( "turbo:load", function() {
+  var currentPath = window.location.pathname,
+      currentLocation = window.location.href;
+
+  // 在 /about 頁面時，點字典名稱會跳回首頁，然後自動轉向最後查找的頁面
   if (currentPath.indexOf( "/about") !== -1 ) {
     $( "#select-dictionary-modal" ).on( "click", function() {
       window.location.href = "/";
     });
   }
+
+  // GA 的 send_page_view，放這邊切換字詞時才會送
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: currentLocation
+  });
 
   if (
       (currentPath.indexOf( "/terms") !== -1 ) ||
