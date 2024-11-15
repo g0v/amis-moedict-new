@@ -58,7 +58,7 @@ document.addEventListener( "turbo:load", function() {
       currentLocation = window.location.href;
 
   // 在 /about 頁面時，點字典名稱會跳回首頁，然後自動轉向最後查找的頁面
-  if (currentPath.indexOf( "/about") !== -1 ) {
+  if ( currentPath.indexOf( "/about") !== -1 ) {
     $( "#select-dictionary-modal" ).on( "click", function() {
       window.location.href = "/";
     });
@@ -70,12 +70,14 @@ document.addEventListener( "turbo:load", function() {
     page_location: currentLocation
   });
 
+  // 根據 settings 設定辭典畫面 START
+  // 如果是 /terms/:name，依據辭典白名單，把不顯示的 hide
+  // 如果是 /dictionaries/:id/terms/:name，一律顯示內容
   if (
-      (currentPath.indexOf( "/terms") !== -1 ) ||
-      (currentPath.indexOf( "/bookmarks") !== -1 )
+      ( currentPath.indexOf( "/terms")         !== -1 ) &&
+      ( currentPath.indexOf( "/dictionaries" ) === -1 )
      ) {
 
-    // 根據 settings 設定辭典畫面 START
     $( "#dictionary-name" ).html( DICTIONARY[settings.mainDictionary] );
     Object.keys(DICTIONARY).forEach(function(el){
       if (!settings.displayList.includes(el)) {
@@ -88,7 +90,13 @@ document.addEventListener( "turbo:load", function() {
       $(this).prop( { checked: settings.displayList.includes($(this).val()) } );
     })
     $( `#display-dictionary input[value="${settings.mainDictionary}"]` ).prop( { checked: "checked", disabled: "disabled"} );
-    // 根據 settings 設定辭典畫面 END
+  }
+  // 根據 settings 設定辭典畫面 END
+
+  if (
+      ( currentPath.indexOf( "/terms") !== -1 ) ||
+      ( currentPath.indexOf( "/bookmarks") !== -1 )
+     ) {
 
     // 搜尋功能 START
     $( "#search" ).autocomplete({
