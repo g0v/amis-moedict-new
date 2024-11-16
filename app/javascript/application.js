@@ -70,6 +70,22 @@ document.addEventListener( "turbo:load", function() {
     page_location: currentLocation
   });
 
+  // 送 GA 事件，紀錄單本字典的瀏覽狀況 START
+  if ( currentPath.indexOf( "/dictionaries") === 0 ) {
+    var dictionaryId = $( ".dictionaries ")[0].id.split('-')[1],
+        termName = currentPath.split('/').pop();
+
+    gtag('event', 'dictionary_term', {
+      page_title: document.title,
+      page_location: currentLocation,
+      dictionary: dictionaryId,
+      term: termName
+    });
+
+    console.log(`GA custom event "dictionary_term" >>>> { dictionary: ${dictionaryId}, term: "${termName}"}`)
+  }
+  // 送 GA 事件，紀錄單本字典的瀏覽狀況 END
+
   // 根據 settings 設定辭典畫面 START
   // 如果是 /terms/:name，依據辭典白名單，把不顯示的 hide
   // 如果是 /dictionaries/:id/terms/:name，一律顯示內容

@@ -53,7 +53,7 @@
   <div class="mt-4 space-y-4">
     <% @terms.each do |term| %>
       <% dictionary = term.dictionary %>
-      <div id="dictionary-<%= dictionary.id %>">
+      <div id="dictionary-<%= dictionary.id %>" class="dictionaries">
         <div class="bg-<%= term.dictionary.color %>-600 text-white p-2"><%= term.dictionary.name %></div>
 
         <div class="term-into">
