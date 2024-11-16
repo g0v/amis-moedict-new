@@ -78,8 +78,6 @@ document.addEventListener( "turbo:load", function() {
         dictionary: dictionaryId,
         term: termName
       });
-
-      console.log(`GA custom event "dictionary_term" >>>> { dictionary: ${dictionaryId}, term: "${termName}"}`)
     }
     // 送 GA 事件，紀錄單本字典的瀏覽狀況 END
 
@@ -96,8 +94,6 @@ document.addEventListener( "turbo:load", function() {
             dictionary: dictionaryId,
             term: termName
           });
-
-          console.log(`GA custom event "dictionary_term" >>>> { dictionary: ${dictionaryId}, term: "${termName}"}`)
         }
       });
     }
