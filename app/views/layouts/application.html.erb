@@ -23,6 +23,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontawesome-free-6.2.1@6.2.1/css/all.min.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VMCGN0EBM0"></script>
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
@@ -119,15 +120,5 @@
     </div>
 
     <div id="overlay" class="hidden opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen"></div>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VMCGN0EBM0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-VMCGN0EBM0');
-    </script>
   </body>
 </html>

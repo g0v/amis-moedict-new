@@ -40,21 +40,81 @@ function saveSettings(newSettings = {}) {
 window.settings = saveSettings();
 // 辭典設定初始化 END
 
-document.addEventListener( "turbo:load", function() {
-  var currentPath = window.location.pathname;
+// GA 初始化 START
+var hostnameForGA = 'new-amis.moedict.tw';
+// hostnameForGA = 'new-amis.moedict.test'; // 開發端測試時拿掉這行註解
 
-  if (currentPath.indexOf( "/about") !== -1 ) {
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+if (window.location.hostname == hostnameForGA) {
+  // 關閉自動 send_page_view，拉到 turbo:load 裡面
+  gtag('config', 'G-VMCGN0EBM0', {
+    send_page_view: false
+  });
+}
+// GA 初始化 END
+
+document.addEventListener( "turbo:load", function() {
+  var currentPath = window.location.pathname,
+      currentLocation = window.location.href;
+
+  if (window.location.hostname == hostnameForGA) {
+    // GA 的 send_page_view，放 turbo:load 事件內，切換字詞時才會送
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: currentLocation
+    });
+
+    // 送 GA 事件，紀錄單本字典的瀏覽狀況 START
+    if ( currentPath.indexOf( "/dictionaries") === 0 ) {
+      var dictionaryId = $( ".dictionaries ")[0].id.split('-')[1],
+          termName = currentPath.split('/').pop();
+
+      gtag('event', 'dictionary_term', {
+        page_title: document.title,
+        page_location: currentLocation,
+        dictionary: dictionaryId,
+        term: termName
+      });
+    }
+    // 送 GA 事件，紀錄單本字典的瀏覽狀況 END
+
+    // 送 GA 事件，紀錄單詞的瀏覽狀況，且排除不顯示的字典 START
+    if ( currentPath.indexOf( "/terms") === 0 ) {
+      $( ".dictionaries ").each(function(_, el) {
+        var dictionaryId = el.id.split('-')[1],
+            termName = currentPath.split('/').pop();
+
+        if (settings.displayList.includes(dictionaryId)) {
+          gtag('event', 'dictionary_term', {
+            page_title: document.title,
+            page_location: currentLocation,
+            dictionary: dictionaryId,
+            term: termName
+          });
+        }
+      });
+    }
+    // 送 GA 事件，紀錄單詞的瀏覽狀況，且排除不顯示的字典 START
+  }
+
+  // 在 /about 頁面時，點字典名稱會跳回首頁，然後自動轉向最後查找的頁面
+  if ( currentPath.indexOf( "/about") !== -1 ) {
     $( "#select-dictionary-modal" ).on( "click", function() {
       window.location.href = "/";
     });
   }
 
+  // 根據 settings 設定辭典畫面 START
+  // 如果是 /terms/:name，依據辭典白名單，把不顯示的 hide
+  // 如果是 /dictionaries/:id/terms/:name，一律顯示內容
   if (
-      (currentPath.indexOf( "/terms") !== -1 ) ||
-      (currentPath.indexOf( "/bookmarks") !== -1 )
+      ( currentPath.indexOf( "/terms")         !== -1 ) &&
+      ( currentPath.indexOf( "/dictionaries" ) === -1 )
      ) {
 
-    // 根據 settings 設定辭典畫面 START
     $( "#dictionary-name" ).html( DICTIONARY[settings.mainDictionary] );
     Object.keys(DICTIONARY).forEach(function(el){
       if (!settings.displayList.includes(el)) {
@@ -67,7 +127,13 @@ document.addEventListener( "turbo:load", function() {
       $(this).prop( { checked: settings.displayList.includes($(this).val()) } );
     })
     $( `#display-dictionary input[value="${settings.mainDictionary}"]` ).prop( { checked: "checked", disabled: "disabled"} );
-    // 根據 settings 設定辭典畫面 END
+  }
+  // 根據 settings 設定辭典畫面 END
+
+  if (
+      ( currentPath.indexOf( "/terms") !== -1 ) ||
+      ( currentPath.indexOf( "/bookmarks") !== -1 )
+     ) {
 
     // 搜尋功能 START
     $( "#search" ).autocomplete({
