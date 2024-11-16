@@ -82,6 +82,26 @@ document.addEventListener( "turbo:load", function() {
       console.log(`GA custom event "dictionary_term" >>>> { dictionary: ${dictionaryId}, term: "${termName}"}`)
     }
     // 送 GA 事件，紀錄單本字典的瀏覽狀況 END
+
+    // 送 GA 事件，紀錄單詞的瀏覽狀況，且排除不顯示的字典 START
+    if ( currentPath.indexOf( "/terms") === 0 ) {
+      $( ".dictionaries ").each(function(_, el) {
+        var dictionaryId = el.id.split('-')[1],
+            termName = currentPath.split('/').pop();
+
+        if (settings.displayList.includes(dictionaryId)) {
+          gtag('event', 'dictionary_term', {
+            page_title: document.title,
+            page_location: currentLocation,
+            dictionary: dictionaryId,
+            term: termName
+          });
+
+          console.log(`GA custom event "dictionary_term" >>>> { dictionary: ${dictionaryId}, term: "${termName}"}`)
+        }
+      });
+    }
+    // 送 GA 事件，紀錄單詞的瀏覽狀況，且排除不顯示的字典 START
   }
 
   // 在 /about 頁面時，點字典名稱會跳回首頁，然後自動轉向最後查找的頁面
