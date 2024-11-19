@@ -76,6 +76,7 @@ document.addEventListener( "turbo:load", function() {
         page_title: document.title,
         page_location: currentLocation,
         dictionary: dictionaryId,
+        dict_name: DICTIONARY[dictionaryId],
         term: termName
       });
     }
@@ -92,6 +93,7 @@ document.addEventListener( "turbo:load", function() {
             page_title: document.title,
             page_location: currentLocation,
             dictionary: dictionaryId,
+            dict_name: DICTIONARY[dictionaryId],
             term: termName
           });
         }
