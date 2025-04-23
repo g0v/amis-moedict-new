@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export LANG="C.UTF-8"
-export RUBY_VERSION="3.3.4" # $RUBY_VERSION 應該要跟 Gemfile 同步
-export BUNDLER_VERSION="2.5.16" # $BUNDLER_VERSION 應該要跟 Gemfile.lock 同步
+export RUBY_VERSION="3.4.3" # $RUBY_VERSION 應該要跟 Gemfile 同步
+export BUNDLER_VERSION="2.6.8" # $BUNDLER_VERSION 應該要跟 Gemfile.lock 同步
 export PATH="/opt/rubies/ruby-$RUBY_VERSION/bin:$PATH"
 
 # 確認 Ruby 版本，如果不是 $RUBY_VERSION，就用 ruby-build 安裝
