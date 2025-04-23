@@ -30,6 +30,7 @@ gem "csv"
 
 gem 'activeadmin'
 gem 'devise'
+gem 'devise-i18n'
 
 # sql LIKE search
 gem "ransack"
