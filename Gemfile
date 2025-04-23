@@ -28,6 +28,9 @@ gem "jbuilder"
 
 gem "csv"
 
+gem 'activeadmin'
+gem 'devise'
+
 # sql LIKE search
 gem "ransack"
 
