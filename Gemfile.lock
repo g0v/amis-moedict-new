@@ -414,6 +414,7 @@ DEPENDENCIES
   jbuilder
   puma (>= 5.0)
   rails (~> 7.2)
+  rails-i18n
   ransack
   rubocop-rails-omakase
   selenium-webdriver
