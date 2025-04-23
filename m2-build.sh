@@ -57,12 +57,18 @@ if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
     set -eux; \
       /tmp/ruby-build/bin/ruby-build "$RUBY_VERSION" "/opt/rubies/ruby-$RUBY_VERSION"
   fi
-else
-  echo "Ruby version is already $RUBY_VERSION."
-fi
 
-# middle2 不知道怎麼設定 PATH，因此把 ruby 的執行檔 symlink 到 /usr/local/bin
-if [ ! -e /usr/local/bin/gem ]; then
+  # middle2 不知道怎麼設定 PATH，因此把 ruby 的執行檔 symlink 到 /usr/local/bin
+  set -eux; \
+    unlink /usr/local/bin/bundle; \
+    unlink /usr/local/bin/bundler; \
+    unlink /usr/local/bin/erb; \
+    unlink /usr/local/bin/gem; \
+    unlink /usr/local/bin/irb; \
+    unlink /usr/local/bin/racc; \
+    unlink /usr/local/bin/rake; \
+    unlink /usr/local/bin/ruby
+
   set -eux; \
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundle"  /usr/local/bin/; \
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundler" /usr/local/bin/; \
@@ -72,6 +78,8 @@ if [ ! -e /usr/local/bin/gem ]; then
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/racc"    /usr/local/bin/; \
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/rake"    /usr/local/bin/; \
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/ruby"    /usr/local/bin/
+else
+  echo "Ruby version is already $RUBY_VERSION."
 fi
 
 # 確認 bundler 版本並安裝
