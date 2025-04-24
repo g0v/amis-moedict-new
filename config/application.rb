@@ -3,6 +3,7 @@
 require_relative "boot"
 
 require "rails/all"
+require_relative "../lib/devise_locale_middleware"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -25,5 +26,7 @@ module AmisMoedict
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.middleware.use ::DeviseLocaleMiddleware
   end
 end

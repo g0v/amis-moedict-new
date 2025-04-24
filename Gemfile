@@ -26,10 +26,13 @@ gem "dartsass-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem 'rails-i18n'
+
 gem "csv"
 
 gem 'activeadmin'
 gem 'devise'
+gem 'devise-i18n'
 
 # sql LIKE search
 gem "ransack"

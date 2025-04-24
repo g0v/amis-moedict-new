@@ -128,6 +128,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.13.0)
+      devise (>= 4.9.0)
+      rails-i18n
     drb (2.2.1)
     dry-core (1.1.0)
       concurrent-ruby (~> 1.0)
@@ -282,6 +285,9 @@ GEM
     rails-html-sanitizer (1.6.2)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+    rails-i18n (7.0.10)
+      i18n (>= 0.7, < 2)
+      railties (>= 6.0.0, < 8)
     railties (7.2.2.1)
       actionpack (= 7.2.2.1)
       activesupport (= 7.2.2.1)
@@ -402,11 +408,13 @@ DEPENDENCIES
   dartsass-rails
   debug
   devise
+  devise-i18n
   grape
   importmap-rails
   jbuilder
   puma (>= 5.0)
   rails (~> 7.2)
+  rails-i18n
   ransack
   rubocop-rails-omakase
   selenium-webdriver
