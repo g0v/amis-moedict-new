@@ -30,8 +30,15 @@ class Description < ApplicationRecord
 
   before_save :clean_content
 
+  def self.ransackable_associations(auth_object = nil)
+    %w[examples synonyms term]
+  end
+
   def self.ransackable_attributes(auth_object = nil)
-    %w[content]
+    %w[id term_id content description_type created_at updated_at glossary_serial glossary_level
+       customized_text content_zh content_en content_fr
+       image1 image1_alt image1_provider image2 image2_alt image2_provider
+       image3 image3_alt image3_provider focus category]
   end
 
   def image1_url
