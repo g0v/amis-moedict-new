@@ -26,8 +26,13 @@ class Term < ApplicationRecord
 
   before_save :clean_name_and_set_lower_name, :set_is_stem
 
+  def self.ransackable_associations(auth_object = nil)
+    %w[descriptions dictionary stem]
+  end
+
   def self.ransackable_attributes(auth_object = nil)
-    %w[lower_name]
+    %w[lower_name name dictionary_id stem_id created_at updated_at is_stem id customized_text
+       repetition audio frequency variant note]
   end
 
   def short_description

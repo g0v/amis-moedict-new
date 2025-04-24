@@ -22,6 +22,14 @@ class Synonym < ApplicationRecord
 
   before_save :clean_content
 
+  def self.ransackable_associations(auth_object = nil)
+    %w[description]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[content created_at description_id id id_value term_type updated_at]
+  end
+
   private
 
     def clean_content

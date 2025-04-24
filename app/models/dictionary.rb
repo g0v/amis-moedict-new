@@ -25,6 +25,10 @@ class Dictionary < ApplicationRecord
     "原住民族語言線上辭典"  => "indigo"
   }.freeze
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[created_at dialect id id_value name updated_at]
+  end
+
   def color
     COLOR[name]
   end
