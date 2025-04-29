@@ -228,6 +228,124 @@ namespace :import do
       end
     end
   end
+
+  desc "從 tmp/dict/pourrias-poinsot.txt 檔案匯入博利亞潘世光阿漢字典"
+  task pourrias_poinsot: :environment do
+    dictionary = Dictionary.find_or_create_by(name: "博利亞潘世光阿漢字典")
+
+    file_path = "tmp/dict/pourrias-poinsot.txt"
+    unless File.exist?(file_path)
+      puts "找不到檔案: #{file_path}"
+      exit
+    end
+
+    puts "開始匯入博利亞潘世光阿漢字典..."
+
+    # 方言代碼對照表
+    dialect_codes = {
+      "Ch" => "國語",
+      "S" => "南方話",
+      "F" => "鳳林話",
+      "T" => "富田語",
+      "J" => "日語",
+      "Tw" => "閩南語",
+      "N" => "北方話",
+      "Z" => "撒奇萊雅語"
+    }
+
+    current_term = nil
+    current_term_record = nil
+    current_description = nil
+    line_count = 0
+    term_count = 0
+
+    File.foreach(file_path) do |line|
+      line_count += 1
+      line = clean(text: line)
+      next if line.blank?
+
+      if line.match?(/^[\p{L}''ʼ^ ]+[:：]/) # 如果行以字母開頭並包含冒號（包括全形冒號），視為新詞條
+        # 提取詞條名稱
+        term_name = line.split(/[:：]/).first.strip
+
+        # 如果先前的詞條資料還沒處理完，先處理掉
+        if current_term && current_description
+          current_description.save if current_description.changed?
+        end
+
+        # 建立新詞條
+        current_term = term_name
+        current_term_record = dictionary.terms.find_or_create_by(name: current_term)
+        term_count += 1
+
+        # 提取描述部分
+        description_content = line.split(/[:：]/, 2)[1].to_s.strip
+        current_description = current_term_record.descriptions.create(content: description_content)
+
+        # 識別方言標記並處理
+        dialect_codes.each do |code, dialect_name|
+          if description_content.include?("{#{code}}") || description_content.include?("(#{code})")
+            current_description.description_type = dialect_name
+            break
+          end
+        end
+
+        puts "處理詞條 #{term_count}: #{current_term}" if (term_count % 100).zero?
+      elsif line.include?("=") || line.include?("＝") # 如果行包含等號，視為同義詞
+        # 處理同義詞
+        parts = line.split(/=|＝/)
+        if parts.size >= 2
+          synonym_content = parts[1].strip
+          # 清理可能的其他標記、註釋
+          synonym_content = synonym_content.split(/[;；-]/).first.strip
+          synonym_content = synonym_content.gsub(/[\(\{\[（【].*?[\)\}\]）】]/, "").strip
+
+          if synonym_content.present? && current_description
+            current_description.synonyms.create(content: synonym_content, term_type: "同")
+          end
+        end
+      elsif (line.include?("-") || line.include?("；")) && current_description # 如果行包含分隔符號，視為例句或額外資訊
+        parts = line.split(/[-；]/)
+        if parts.size >= 2
+          example_content = parts[1].strip
+          if example_content.present?
+            current_description.examples.create(content: example_content)
+          end
+        end
+      elsif current_description # 其他行視為描述的延續
+        # 檢查是否包含方言標記
+        has_dialect = false
+        dialect_codes.each do |code, dialect_name|
+          if line.include?("{#{code}}")||line.include?("(#{code})")
+            has_dialect = true
+            # 如果找到方言標記且不是延續當前描述，建立新描述
+            if current_description.description_type != dialect_name
+              current_description = current_term_record.descriptions.create(
+                content: line,
+                description_type: dialect_name
+              )
+            else
+              # 延續當前描述
+              current_description.content += "\n#{line}"
+            end
+            break
+          end
+        end
+
+        # 如果沒有方言標記，則簡單地延續當前描述
+        unless has_dialect
+          current_description.content += "\n#{line}"
+        end
+      end
+    end
+
+    # 處理最後一個詞條
+    if current_term && current_description
+      current_description.save if current_description.changed?
+    end
+
+    puts "匯入完成。總共處理 #{line_count} 行，匯入 #{term_count} 個詞條。"
+  end
 end
 
 def clean(text:)
