@@ -60,14 +60,14 @@ if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
 
   # middle2 不知道怎麼設定 PATH，因此把 ruby 的執行檔 symlink 到 /usr/local/bin
   set -eux; \
-    unlink /usr/local/bin/bundle; \
-    unlink /usr/local/bin/bundler; \
-    unlink /usr/local/bin/erb; \
-    unlink /usr/local/bin/gem; \
-    unlink /usr/local/bin/irb; \
-    unlink /usr/local/bin/racc; \
-    unlink /usr/local/bin/rake; \
-    unlink /usr/local/bin/ruby
+    [ -L "/usr/local/bin/bundle" ] && unlink /usr/local/bin/bundle || echo "No bundle symlink to remove"; \
+    [ -L "/usr/local/bin/bundler" ] && unlink /usr/local/bin/bundler || echo "No bundler symlink to remove"; \
+    [ -L "/usr/local/bin/erb" ] && unlink /usr/local/bin/erb || echo "No erb symlink to remove"; \
+    [ -L "/usr/local/bin/gem" ] && unlink /usr/local/bin/gem || echo "No gem symlink to remove"; \
+    [ -L "/usr/local/bin/irb" ] && unlink /usr/local/bin/irb || echo "No irb symlink to remove"; \
+    [ -L "/usr/local/bin/racc" ] && unlink /usr/local/bin/racc || echo "No racc symlink to remove"; \
+    [ -L "/usr/local/bin/rake" ] && unlink /usr/local/bin/rake || echo "No rake symlink to remove"; \
+    [ -L "/usr/local/bin/ruby" ] && unlink /usr/local/bin/ruby || echo "No ruby symlink to remove";
 
   set -eux; \
     ln -s "/opt/rubies/ruby-$RUBY_VERSION/bin/bundle"  /usr/local/bin/; \
