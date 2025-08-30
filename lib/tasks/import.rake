@@ -349,7 +349,7 @@ namespace :import do
 end
 
 def clean(text:)
-  text.gsub(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "").strip
+  text.gsub(/\xEF\xBB\xBF/, "").strip
 end
 
 def ilref_hash(data)
