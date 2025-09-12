@@ -2,7 +2,12 @@ module TermsHelper
   def linked_term(record:, dictionary:)
     html = ""
 
-    record.content.split(/(\s)/).each_with_index do |term, i|
+    content = case record
+              when Synonym then record.content
+              when Example then record.content_amis
+              end
+
+    content.split(/(\s)/).each_with_index do |term, i|
       linked_terms = term.scan(/`([^`~]+)~/).flatten
       pattern = Regexp.union(linked_terms)
 
@@ -51,6 +56,12 @@ module TermsHelper
           end
         end
       end
+    end
+
+    if record.class == Example
+      html += "<br>#{record.content_zh}" if record.content_zh.present?
+      html += "<br>#{record.content_en}" if record.content_en.present?
+      html += "<br>#{record.content_fr}" if record.content_fr.present?
     end
 
     html

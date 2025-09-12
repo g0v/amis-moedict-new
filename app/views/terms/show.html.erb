@@ -115,7 +115,12 @@
                 <% if description.category.present? %>
                   <span class="text-gray-500 text-sm">(範疇分類：<%= description.category %>)</span>
                 <% end %>
-                <%= simple_format(description.content) %>
+                
+                <% case dictionary.name %>
+                <% when '博利亞潘世光阿法字典' %>
+                  <%= simple_format(description.content_fr) %>
+                <% end %>
+                
                 <% if description.image1.present? %>
                   <p>
                     <% providers = [description.image1_provider] %>
@@ -136,7 +141,7 @@
                   </p>
                 <% end %>
                 <% if description.examples.present? %>
-                  <ul class="list-disc list-inside space-y-1">
+                  <ul class="list-disc list-outside space-y-1">
                     <% description.examples.each do |example| %>
                       <li>
                         <% if example.audio.present? %>
