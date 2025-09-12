@@ -122,6 +122,12 @@
                 <% when '方敏英字典' %>
                   <%= simple_format(description.content_zh) %>
                   <%= simple_format(description.content_en) %>
+                <% when '學習詞表－秀姑巒阿美語',
+                        '學習詞表－海岸阿美語',
+                        '學習詞表－馬蘭阿美語',
+                        '學習詞表－恆春阿美語',
+                        '學習詞表－南勢阿美語' %>
+                  <%= simple_format(description.content_zh) %>
                 <% end %>
 
                 <% if description.image1.present? %>
