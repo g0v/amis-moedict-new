@@ -115,12 +115,15 @@
                 <% if description.category.present? %>
                   <span class="text-gray-500 text-sm">(範疇分類：<%= description.category %>)</span>
                 <% end %>
-                
+
                 <% case dictionary.name %>
                 <% when '博利亞潘世光阿法字典' %>
                   <%= simple_format(description.content_fr) %>
+                <% when '方敏英字典' %>
+                  <%= simple_format(description.content_zh) %>
+                  <%= simple_format(description.content_en) %>
                 <% end %>
-                
+
                 <% if description.image1.present? %>
                   <p>
                     <% providers = [description.image1_provider] %>
