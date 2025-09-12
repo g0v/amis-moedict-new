@@ -111,13 +111,20 @@ namespace :import do
       heteronym["d"].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content:          clean(text: description_hash["f"]),
+        # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
+        description.update(content_fr:       description_hash["f"],
                            description_type: description_hash["type"])
 
         if description_hash["e"].present?
           description_hash["e"].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
-            example.update(content: clean(text: example_content))
+
+            # 確認 example_content 含有 U+FFF9,B
+            parsed_example = parse_multilingual(example_content)
+            example.update(
+              content_amis: parsed_example[:amis],
+              content_fr:   parsed_example[:chinese]
+            )
           end
         end
 
@@ -125,7 +132,9 @@ namespace :import do
 
         description_hash["s"].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
-          synonym.update(content: clean(text: synonym_content), term_type: "同")
+
+          # 確認 synonym_content 不含 U+FFF8,9,A,B,F
+          synonym.update(content: synonym_content, term_type: "同")
         end
       end
     end
