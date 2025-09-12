@@ -209,16 +209,13 @@ namespace :import do
 
       CSV.foreach("tmp/dict/2022學習詞表-0#{i+1}#{dict_name}.csv") do |row|
         id, serial, description_content, term_names, note_content, level = row
-        next if clean(text: id) == "類別"
-
-        serial              = clean(text: serial)
-        description_content = clean(text: description_content)
-        term_names          = clean(text: term_names)
-        note_content        = clean(text: note_content) if note_content.present?
-        level               = clean(text: level)
+        next if id == "類別"
 
         term_names.split("/").each do |term_name|
           term_name.strip!
+          next if term_name == '無此詞彙'
+
+          term_name.gsub!("’", "'")
           term = dictionary.terms.find_or_create_by(name: term_name)
 
           description = term.descriptions.find_or_create_by(glossary_serial: serial)
@@ -227,7 +224,7 @@ namespace :import do
                     else
                       description_content
                     end
-          description.update(content: content, glossary_level: level)
+          description.update(content_zh: content, glossary_level: level)
         end
       end
     end
