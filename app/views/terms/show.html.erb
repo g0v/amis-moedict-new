@@ -144,9 +144,9 @@
                   </p>
                 <% end %>
                 <% if description.examples.present? %>
-                  <ul class="list-disc list-outside space-y-1">
+                  <ul>
                     <% description.examples.each do |example| %>
-                      <li>
+                      <li class="inline-block bg-gray-200 p-1">
                         <% if example.audio.present? %>
                           <button>
                             <i class="fa-solid fa-volume-high text-sm" onclick="document.getElementById('audio-example-<%= example.id %>').play()"></i>
