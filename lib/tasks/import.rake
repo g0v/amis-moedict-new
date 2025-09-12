@@ -348,6 +348,60 @@ namespace :import do
   end
 end
 
+# https://github.com/miaoski/amis-safolu/blob/master/generate-moedict-json.rb#L37-L41
+# 根據萌典說明U+FFF9,A,B，拆分不同語言
+def parse_multilingual(text)
+  return { amis: nil, english: nil, chinese: nil } if text.blank?
+
+  amis_marker = "\ufff9"
+  english_marker = "\ufffa"
+  chinese_marker = "\ufffb"
+
+  result = { amis: nil, english: nil, chinese: nil }
+
+  # Split by any language marker to get segments
+  segments = text.split(/[\ufff9\ufffa\ufffb]/)
+
+  amis_pos = text.index(amis_marker)
+  english_pos = text.index(english_marker)
+  chinese_pos = text.index(chinese_marker)
+
+  if amis_pos
+    next_pos = [english_pos, chinese_pos].compact.select { |p| p > amis_pos }.min || text.length
+    result[:amis] = text[(amis_pos + 1)...next_pos].strip
+  end
+
+  if english_pos
+    next_pos = [amis_pos, chinese_pos].compact.select { |p| p > english_pos }.min || text.length
+    result[:english] = text[(english_pos + 1)...next_pos].strip
+  end
+
+  if chinese_pos
+    next_pos = [amis_pos, english_pos].compact.select { |p| p > chinese_pos }.min || text.length
+    result[:chinese] = text[(chinese_pos + 1)...next_pos].strip
+  end
+
+  # 都找不到時，以 amis 返回原文
+  if !amis_pos && !english_pos && !chinese_pos
+    puts "找不到 U+FFF9,A,B"
+    result[:amis] = text
+  end
+
+  # Clean up any remaining markers from the extracted content
+  result.each do |key, value|
+    if value
+      puts "U+FFF8: #{value}" if value.include?("\ufff8")
+      puts "U+FFF9: #{value}" if value.include?("\ufff9")
+      puts "U+FFFA: #{value}" if value.include?("\ufffa")
+      puts "U+FFFB: #{value}" if value.include?("\ufffb")
+      result[key] = value.gsub(/[\ufff9\ufffa\ufffb]/, '').strip
+      result[key] = nil if result[key].blank?
+    end
+  end
+
+  result
+end
+
 def clean(text:)
   text.gsub(/\xEF\xBB\xBF/, "").strip
 end
