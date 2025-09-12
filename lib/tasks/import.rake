@@ -63,22 +63,32 @@ namespace :import do
         json_object["h"].each { |h| json_object["descriptions"] += h["d"] }
         json_object["descriptions"].each_with_index do |description_hash, i|
           description = term.descriptions[i].presence || term.descriptions.create
-          description.update(content: clean(text: description_hash["f"]))
+
+          # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
+          description.update(content_zh: description_hash["f"])
 
           if description_hash["e"].present?
             description_hash["e"].select! do |example_content|
-              clean(text: example_content).present?
+              example_content.present?
             end
             description_hash["e"].each_with_index do |example_content, j|
               example = description.examples[j].presence || description.examples.create
-              example.update(content: clean(text: example_content))
+
+              # 確認 example_content 含有 U+FFF9,A,B
+              parsed_example = parse_multilingual(example_content)
+              example.update(
+                content_amis: parsed_example[:amis],
+                content_zh:   parsed_example[:chinese]
+              )
             end
           end
 
           if description_hash["r"].present?
             description_hash["r"].each_with_index do |reference_content, x|
               reference = description.synonyms.refs[x].presence || description.synonyms.create
-              reference.update(content: clean(text: reference_content), term_type: "參見")
+
+              # 確認 reference_content 不含 U+FFF8,9,A,B,F
+              reference.update(content: reference_content, term_type: "參見")
             end
           end
 
@@ -86,7 +96,9 @@ namespace :import do
 
           description_hash["s"].each_with_index do |synonym_content, k|
             synonym = description.synonyms.alts[k].presence || description.synonyms.create
-            synonym.update(content: clean(text: synonym_content), term_type: "同")
+
+            # 確認 synonym_content 不含 U+FFF8,9,A,B,F
+            synonym.update(content: synonym_content, term_type: "同")
           end
         end
       end
