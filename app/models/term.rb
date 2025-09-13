@@ -57,7 +57,6 @@ class Term < ApplicationRecord
   private
 
     def clean_name_and_set_lower_name
-      name.gsub!(/\xEF\xBB\xBF/, "")
       name.strip!
 
       self.name = name
