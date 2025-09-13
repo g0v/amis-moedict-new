@@ -246,6 +246,7 @@ namespace :import do
   task ilrdf: :environment do
     file = File.read("tmp/dict/ilrdf.txt").split("\n")
     file.each do |f|
+      # 確認 f 不含 U+FFF8,9,A,B,F
       hash = eval(f)
       data = hash["GenericData"]["DATA"]
 
@@ -292,8 +293,8 @@ namespace :import do
     term_count = 0
 
     File.foreach(file_path) do |line|
+      # 確認 line 不含 U+FFF8,9,A,B,F
       line_count += 1
-      line = clean(text: line)
       next if line.blank?
 
       if line.match?(/^[\p{L}''ʼ^ ]+[:：]/) # 如果行以字母開頭並包含冒號（包括全形冒號），視為新詞條
