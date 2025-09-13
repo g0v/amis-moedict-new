@@ -33,6 +33,6 @@ class Synonym < ApplicationRecord
   private
 
     def clean_content
-      self.content = content.gsub(/\xEF\xBB\xBF/, "").strip
+      self.content = content.strip
     end
 end

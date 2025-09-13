@@ -68,6 +68,9 @@ class Description < ApplicationRecord
   private
 
     def clean_content
-      self.content = content.gsub(/\xEF\xBB\xBF/, "").strip if content.present?
+      self.content = content.strip if content.present?
+      self.content_zh = content_zh.strip if content_zh.present?
+      self.content_en = content_en.strip if content_en.present?
+      self.content_fr = content_fr.strip if content_fr.present?
     end
 end
