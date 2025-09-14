@@ -438,9 +438,9 @@ end
 def ilref_hash(data)
   dictionary = Dictionary.find_by(name: "原住民族語言線上辭典")
 
-  data["Name"] = data["Name"].sub(/1|2/, "")
+  data["Name"] = data["Name"].sub(/1|2/, "").strip
   term = dictionary.terms.find_or_create_by(name: data["Name"])
-  term.variant = data["Variant"] if data["Variant"].present?
+  term.variant = data["Variant"].strip if data["Variant"].present?
 
   if data["Frequency"].present?
     if term.frequency.to_i < data["Frequency"].to_i
@@ -478,6 +478,7 @@ def ilref_hash(data)
   end
 
   if data["Note"].is_a? String
+    data["Note"].strip!
     if term.note.present?
       term.note += "\n#{data["Note"]}" unless term.note.include?(data["Note"])
     else
@@ -487,6 +488,7 @@ def ilref_hash(data)
 
   if data["Note"].is_a?(Hash) && data["Note"]["#text"].present?
     if data["Note"]["#text"].is_a? String
+      data["Note"]["#text"].strip!
       if term.note.present?
         term.note += "\n#{data["Note"]["#text"]}" unless term.note.include?(data["Note"]["#text"])
       else
@@ -495,6 +497,7 @@ def ilref_hash(data)
     end
 
     if data["Note"]["#text"].is_a? Array
+      data["Note"]["#text"].map(&:strip!)
       if term.note.present?
         term.note += "\n#{data["Note"]["#text"].join("\n")}" unless term.note.include?(data["Note"]["#text"][0])
       else
@@ -510,6 +513,7 @@ def ilref_hash(data)
 
   # 字典的詞幹（來源）衝突時，以字數少的為主
   if data["Source"].is_a? String
+    data["Source"].strip!
     # binding.irb unless Stem.exists?(name: data["Source"])
     stem = Stem.find_or_create_by(name: data["Source"])
     if term.stem.blank?
@@ -522,6 +526,7 @@ def ilref_hash(data)
   end
 
   if data["Source"].is_a? Hash
+    data["Source"]["#text"].strip!
     # binding.irb unless Stem.exists?(name: data["Source"]["#text"])
     stem = Stem.find_or_create_by(name: data["Source"]["#text"])
     if term.stem.blank?
@@ -710,8 +715,13 @@ def ilrdf_sentence(description:, data:)
     puts "================"
     return
   end
+
+  data["Original"] = data["Original"].strip
   example = description.examples.find_or_create_by(content_amis: data["Original"])
-  example.content_zh = data["Chinese"] if data["Chinese"].present? && (example.content_zh != data["Chinese"])
+  if data["Chinese"].present?
+    data["Chinese"].strip!
+    example.content_zh = data["Chinese"] if (example.content_zh != data["Chinese"])
+  end
   example.content = "#{example.content_amis}#{example.content_zh}"
   if data["File"].present? && data["File"]["Path"].present?
     if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/anini_{1}_@_1.1.mp3"
