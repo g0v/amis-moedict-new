@@ -4,7 +4,7 @@ module TermsHelper
 
     content = case record
               when Synonym then record.content
-              when Example then record.content_amis
+              when Example then record.content_amis || ''
               end
 
     content.split(/(\s)/).each_with_index do |term, i|
@@ -59,9 +59,15 @@ module TermsHelper
     end
 
     if record.class == Example
-      html += "<br>#{record.content_zh}" if record.content_zh.present?
-      html += "<br>#{record.content_en}" if record.content_en.present?
-      html += "<br>#{record.content_fr}" if record.content_fr.present?
+      if html.present? && (record.content_zh.present? ||
+                           record.content_en.present? ||
+                           record.content_fr.present?)
+        html += "<br>"
+      end
+
+      html += record.content_zh if record.content_zh.present?
+      html += record.content_en if record.content_en.present?
+      html += record.content_fr if record.content_fr.present?
     end
 
     html
