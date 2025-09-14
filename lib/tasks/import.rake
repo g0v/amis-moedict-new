@@ -540,8 +540,8 @@ def ilref_hash(data)
 
   if data["Explanation"].is_a? Hash
     explanation = data["Explanation"]
-    # binding.irb unless term.descriptions.exists?(content: explanation["Chinese"])
-    description = term.descriptions.find_or_create_by(content: explanation["Chinese"])
+    # binding.irb unless term.descriptions.exists?(content_zh: explanation["Chinese"])
+    description = term.descriptions.find_or_create_by(content_zh: explanation["Chinese"])
 
     if explanation["Focus"].present? && description.focus.blank?
       description.focus = explanation["Focus"]
