@@ -273,8 +273,11 @@ namespace :import do
     end
 
     parser = PoinsotDictionaryParser.new
+    total = File.read(file_path).count($/)
 
-    File.foreach(file_path) do |line|
+    File.foreach(file_path).each_with_index do |line, num|
+      puts "#{num}/#{total}" if (num % 500).zero?
+
       # 確認 line 不含 U+FFF8,9,A,B,F
       next if line.blank?
 
