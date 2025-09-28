@@ -105,6 +105,16 @@
           </div>
         <% end %>
 
+        <% if dictionary.name == "博利亞潘世光阿漢字典" %>
+          <div class="pourrias_poinsot-term-info">
+            <% if term.dialects.present? %>
+              <span class="text-sm text-gray-500">
+                來自：<%= term.dialects %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+
         <% if term.descriptions.present? %>
           <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
             <% term.descriptions.each do |description| %>
