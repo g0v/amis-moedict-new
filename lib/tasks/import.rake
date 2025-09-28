@@ -48,7 +48,7 @@ namespace :import do
       [ json, json_with_upper_name ].compact.each do |json_object|
         next if json_object["h"].empty?
 
-        term = dictionary.terms.find_or_create_by(name: clean(text: json_object["t"]))
+        term = dictionary.terms.find_or_create_by(name: json_object["t"])
         if json_object["tag"].present?
           puts filename if json_object["tag"].match(/[疊 ](\d)/).blank?
           repetition = json_object["tag"].match(/[疊 ](\d)/)[1]
@@ -63,22 +63,32 @@ namespace :import do
         json_object["h"].each { |h| json_object["descriptions"] += h["d"] }
         json_object["descriptions"].each_with_index do |description_hash, i|
           description = term.descriptions[i].presence || term.descriptions.create
-          description.update(content: clean(text: description_hash["f"]))
+
+          # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
+          description.update(content_zh: description_hash["f"])
 
           if description_hash["e"].present?
             description_hash["e"].select! do |example_content|
-              clean(text: example_content).present?
+              example_content.present?
             end
             description_hash["e"].each_with_index do |example_content, j|
               example = description.examples[j].presence || description.examples.create
-              example.update(content: clean(text: example_content))
+
+              # 確認 example_content 含有 U+FFF9,A,B
+              parsed_example = parse_multilingual(example_content)
+              example.update(
+                content_amis: parsed_example[:amis],
+                content_zh:   parsed_example[:chinese]
+              )
             end
           end
 
           if description_hash["r"].present?
             description_hash["r"].each_with_index do |reference_content, x|
               reference = description.synonyms.refs[x].presence || description.synonyms.create
-              reference.update(content: clean(text: reference_content), term_type: "參見")
+
+              # 確認 reference_content 不含 U+FFF8,9,A,B,F
+              reference.update(content: reference_content, term_type: "參見")
             end
           end
 
@@ -86,7 +96,9 @@ namespace :import do
 
           description_hash["s"].each_with_index do |synonym_content, k|
             synonym = description.synonyms.alts[k].presence || description.synonyms.create
-            synonym.update(content: clean(text: synonym_content), term_type: "同")
+
+            # 確認 synonym_content 不含 U+FFF8,9,A,B,F
+            synonym.update(content: synonym_content, term_type: "同")
           end
         end
       end
@@ -105,19 +117,26 @@ namespace :import do
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json["t"].blank?
 
-      term = dictionary.terms.find_or_create_by(name: clean(text: json["t"]))
+      term = dictionary.terms.find_or_create_by(name: json["t"])
 
       heteronym = json["h"][0]
       heteronym["d"].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content:          clean(text: description_hash["f"]),
+        # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
+        description.update(content_fr:       description_hash["f"],
                            description_type: description_hash["type"])
 
         if description_hash["e"].present?
           description_hash["e"].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
-            example.update(content: clean(text: example_content))
+
+            # 確認 example_content 含有 U+FFF9,B
+            parsed_example = parse_multilingual(example_content)
+            example.update(
+              content_amis: parsed_example[:amis],
+              content_fr:   parsed_example[:chinese]
+            )
           end
         end
 
@@ -125,7 +144,9 @@ namespace :import do
 
         description_hash["s"].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
-          synonym.update(content: clean(text: synonym_content), term_type: "同")
+
+          # 確認 synonym_content 不含 U+FFF8,9,A,B,F
+          synonym.update(content: synonym_content, term_type: "同")
         end
       end
     end
@@ -143,7 +164,7 @@ namespace :import do
       json = JSON.parse(file)
       next if !json.is_a?(Hash) || json["t"].blank?
 
-      term = dictionary.terms.find_or_create_by(name: clean(text: json["t"]))
+      term = dictionary.terms.find_or_create_by(name: json["t"])
       if json["stem"].present?
         stem = Stem.find_or_create_by(name: json["stem"])
         term.update(stem_id: stem.id)
@@ -153,12 +174,24 @@ namespace :import do
       heteronym["d"].each_with_index do |description_hash, i|
         description = term.descriptions[i].presence || term.descriptions.create
 
-        description.update(content: clean(text: description_hash["f"]))
+        # 確認 description_hash["f"] 含有 U+FFF9,A,B
+        parsed_description = parse_multilingual(description_hash["f"])
+        description.update(
+          content_en: parsed_description[:english],
+          content_zh: parsed_description[:chinese]
+        )
 
         if description_hash["e"].present?
           description_hash["e"].each_with_index do |example_content, j|
             example = description.examples[j].presence || description.examples.create
-            example.update(content: clean(text: example_content))
+
+            # 確認 example_content 含有 U+FFF9,A,B
+            parsed_example = parse_multilingual(example_content)
+            example.update(
+              content_amis: parsed_example[:amis],
+              content_en:   parsed_example[:english],
+              content_zh:   parsed_example[:chinese]
+            )
           end
         end
 
@@ -166,7 +199,9 @@ namespace :import do
 
         description_hash["s"].each_with_index do |synonym_content, k|
           synonym = description.synonyms[k].presence || description.synonyms.create
-          synonym.update(content: clean(text: synonym_content), term_type: "同")
+
+          # 確認 synonym_content 不含 U+FFF8,9,A,B,F
+          synonym.update(content: synonym_content, term_type: "同")
         end
       end
     end
@@ -186,16 +221,13 @@ namespace :import do
 
       CSV.foreach("tmp/dict/2022學習詞表-0#{i+1}#{dict_name}.csv") do |row|
         id, serial, description_content, term_names, note_content, level = row
-        next if clean(text: id) == "類別"
-
-        serial              = clean(text: serial)
-        description_content = clean(text: description_content)
-        term_names          = clean(text: term_names)
-        note_content        = clean(text: note_content) if note_content.present?
-        level               = clean(text: level)
+        next if id == "類別"
 
         term_names.split("/").each do |term_name|
           term_name.strip!
+          next if term_name == '無此詞彙'
+
+          term_name.gsub!("’", "'")
           term = dictionary.terms.find_or_create_by(name: term_name)
 
           description = term.descriptions.find_or_create_by(glossary_serial: serial)
@@ -204,7 +236,7 @@ namespace :import do
                     else
                       description_content
                     end
-          description.update(content: content, glossary_level: level)
+          description.update(content_zh: content, glossary_level: level)
         end
       end
     end
@@ -214,6 +246,7 @@ namespace :import do
   task ilrdf: :environment do
     file = File.read("tmp/dict/ilrdf.txt").split("\n")
     file.each do |f|
+      # 確認 f 不含 U+FFF8,9,A,B,F
       hash = eval(f)
       data = hash["GenericData"]["DATA"]
 
@@ -235,133 +268,132 @@ namespace :import do
 
     file_path = "tmp/dict/pourrias-poinsot.txt"
     unless File.exist?(file_path)
-      puts "找不到檔案: #{file_path}"
+      puts "找不到博利亞潘世光阿漢字典檔案: #{file_path}"
       exit
     end
 
-    puts "開始匯入博利亞潘世光阿漢字典..."
+    parser = PoinsotDictionaryParser.new
+    total = File.read(file_path).count($/)
 
-    # 方言代碼對照表
-    dialect_codes = {
-      "Ch" => "國語",
-      "S" => "南方話",
-      "F" => "鳳林話",
-      "T" => "富田語",
-      "J" => "日語",
-      "Tw" => "閩南語",
-      "N" => "北方話",
-      "Z" => "撒奇萊雅語"
-    }
+    File.foreach(file_path).each_with_index do |line, num|
+      puts "#{num}/#{total}" if (num % 500).zero?
 
-    current_term = nil
-    current_term_record = nil
-    current_description = nil
-    line_count = 0
-    term_count = 0
-
-    File.foreach(file_path) do |line|
-      line_count += 1
-      line = clean(text: line)
+      # 確認 line 不含 U+FFF8,9,A,B,F
       next if line.blank?
 
-      if line.match?(/^[\p{L}''ʼ^ ]+[:：]/) # 如果行以字母開頭並包含冒號（包括全形冒號），視為新詞條
-        # 提取詞條名稱
-        term_name = line.split(/[:：]/).first.strip
+      if line.exclude?("<")
+        # 一個冒號和多個冒號的處理差很多
+        if line.count("：") == 1
+          results = parser.parse_line(line)
 
-        # 如果先前的詞條資料還沒處理完，先處理掉
-        if current_term && current_description
-          current_description.save if current_description.changed?
-        end
+          results.each do |entry|
+            # 先用特殊情況處理，針對開頭是(的 term，把 ()- 都刪除
+            entry[:term].gsub!(/\(|\)|-/, "") if entry[:term][0] == "("
 
-        # 建立新詞條
-        current_term = term_name
-        current_term_record = dictionary.terms.find_or_create_by(name: current_term)
-        term_count += 1
-
-        # 提取描述部分
-        description_content = line.split(/[:：]/, 2)[1].to_s.strip
-        current_description = current_term_record.descriptions.create(content: description_content)
-
-        # 識別方言標記並處理
-        dialect_codes.each do |code, dialect_name|
-          if description_content.include?("{#{code}}") || description_content.include?("(#{code})")
-            current_description.description_type = dialect_name
-            break
-          end
-        end
-
-        puts "處理詞條 #{term_count}: #{current_term}" if (term_count % 100).zero?
-      elsif line.include?("=") || line.include?("＝") # 如果行包含等號，視為同義詞
-        # 處理同義詞
-        parts = line.split(/=|＝/)
-        if parts.size >= 2
-          synonym_content = parts[1].strip
-          # 清理可能的其他標記、註釋
-          synonym_content = synonym_content.split(/[;；-]/).first.strip
-          synonym_content = synonym_content.gsub(/[\(\{\[（【].*?[\)\}\]）】]/, "").strip
-
-          if synonym_content.present? && current_description
-            current_description.synonyms.create(content: synonym_content, term_type: "同")
-          end
-        end
-      elsif (line.include?("-") || line.include?("；")) && current_description # 如果行包含分隔符號，視為例句或額外資訊
-        parts = line.split(/[-；]/)
-        if parts.size >= 2
-          example_content = parts[1].strip
-          if example_content.present?
-            current_description.examples.create(content: example_content)
-          end
-        end
-      elsif current_description # 其他行視為描述的延續
-        # 檢查是否包含方言標記
-        has_dialect = false
-        dialect_codes.each do |code, dialect_name|
-          if line.include?("{#{code}}")||line.include?("(#{code})")
-            has_dialect = true
-            # 如果找到方言標記且不是延續當前描述，建立新描述
-            if current_description.description_type != dialect_name
-              current_description = current_term_record.descriptions.create(
-                content: line,
-                description_type: dialect_name
-              )
-            else
-              # 延續當前描述
-              current_description.content += "\n#{line}"
+            term = dictionary.terms.find_or_create_by(name: entry[:term])
+            if entry[:dialects].present?
+              term.update(dialects: entry[:dialects].join("、"))
             end
-            break
-          end
-        end
 
-        # 如果沒有方言標記，則簡單地延續當前描述
-        unless has_dialect
-          current_description.content += "\n#{line}"
+            if entry[:stem].present?
+              stem = Stem.find_or_create_by(name: entry[:stem])
+              term.update(stem_id: stem.id)
+            end
+
+            if entry[:description].present? ||
+               entry[:examples].present? ||
+               entry[:synonyms].present?
+              description_content = entry[:description].join("；")
+              description = term.descriptions.find_or_create_by(content_zh: description_content)
+
+              if entry[:examples].present?
+                entry[:examples].each_with_index do |example_hash, i|
+                  example = description.examples[i].presence || description.examples.create
+                  example.update(
+                    content_amis: example_hash[:amis],
+                    content_zh:   example_hash[:zh]
+                  )
+                end
+              end
+
+              if entry[:synonyms].present?
+                entry[:synonyms].each_with_index do |synonym_content, j|
+                  synonym = description.synonyms.alts[j].presence || description.synonyms.create
+                  synonym.update(content: synonym_content, term_type: "同")
+                end
+              end
+            end
+          end
         end
       end
     end
-
-    # 處理最後一個詞條
-    if current_term && current_description
-      current_description.save if current_description.changed?
-    end
-
-    puts "匯入完成。總共處理 #{line_count} 行，匯入 #{term_count} 個詞條。"
   end
 end
 
-def clean(text:)
-  text.gsub(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "").strip
+# https://github.com/miaoski/amis-safolu/blob/master/generate-moedict-json.rb#L37-L41
+# 根據萌典說明U+FFF9,A,B，拆分不同語言
+def parse_multilingual(text)
+  return { amis: nil, english: nil, chinese: nil } if text.blank?
+
+  amis_marker = "\ufff9"
+  english_marker = "\ufffa"
+  chinese_marker = "\ufffb"
+
+  result = { amis: nil, english: nil, chinese: nil }
+
+  # Split by any language marker to get segments
+  segments = text.split(/[\ufff9\ufffa\ufffb]/)
+
+  amis_pos = text.index(amis_marker)
+  english_pos = text.index(english_marker)
+  chinese_pos = text.index(chinese_marker)
+
+  if amis_pos
+    next_pos = [english_pos, chinese_pos].compact.select { |p| p > amis_pos }.min || text.length
+    result[:amis] = text[(amis_pos + 1)...next_pos].strip
+  end
+
+  if english_pos
+    next_pos = [amis_pos, chinese_pos].compact.select { |p| p > english_pos }.min || text.length
+    result[:english] = text[(english_pos + 1)...next_pos].strip
+  end
+
+  if chinese_pos
+    next_pos = [amis_pos, english_pos].compact.select { |p| p > chinese_pos }.min || text.length
+    result[:chinese] = text[(chinese_pos + 1)...next_pos].strip
+  end
+
+  # 都找不到時，以 amis 返回原文
+  if !amis_pos && !english_pos && !chinese_pos
+    puts "找不到 U+FFF9,A,B"
+    result[:amis] = text
+  end
+
+  # Clean up any remaining markers from the extracted content
+  result.each do |key, value|
+    if value
+      puts "U+FFF8: #{value}" if value.include?("\ufff8")
+      puts "U+FFF9: #{value}" if value.include?("\ufff9")
+      puts "U+FFFA: #{value}" if value.include?("\ufffa")
+      puts "U+FFFB: #{value}" if value.include?("\ufffb")
+      result[key] = value.gsub(/[\ufff9\ufffa\ufffb]/, '').strip
+      result[key] = nil if result[key].blank?
+    end
+  end
+
+  result
 end
 
 def ilref_hash(data)
   dictionary = Dictionary.find_by(name: "原住民族語言線上辭典")
 
-  data["Name"] = data["Name"].sub(/1|2/, "")
-  term = dictionary.terms.find_or_create_by(name: clean(text: data["Name"]))
-  term.variant   = clean(text: data["Variant"])   if data["Variant"].present?
+  data["Name"] = data["Name"].sub(/1|2/, "").strip
+  term = dictionary.terms.find_or_create_by(name: data["Name"])
+  term.variant = data["Variant"].strip if data["Variant"].present?
 
   if data["Frequency"].present?
-    if term.frequency.to_i < clean(text: data["Frequency"]).to_i
-      term.frequency = clean(text: data["Frequency"])
+    if term.frequency.to_i < data["Frequency"].to_i
+      term.frequency = data["Frequency"]
     end
   end
 
@@ -395,27 +427,30 @@ def ilref_hash(data)
   end
 
   if data["Note"].is_a? String
+    data["Note"].strip!
     if term.note.present?
-      term.note += "\n#{clean(text: data["Note"])}" unless term.note.include?(clean(text: data["Note"]))
+      term.note += "\n#{data["Note"]}" unless term.note.include?(data["Note"])
     else
-      term.note = clean(text: data["Note"])
+      term.note = data["Note"]
     end
   end
 
   if data["Note"].is_a?(Hash) && data["Note"]["#text"].present?
     if data["Note"]["#text"].is_a? String
+      data["Note"]["#text"].strip!
       if term.note.present?
-        term.note += "\n#{clean(text: data["Note"]["#text"])}" unless term.note.include?(clean(text: data["Note"]["#text"]))
+        term.note += "\n#{data["Note"]["#text"]}" unless term.note.include?(data["Note"]["#text"])
       else
-        term.note = clean(text: data["Note"]["#text"])
+        term.note = data["Note"]["#text"]
       end
     end
 
     if data["Note"]["#text"].is_a? Array
+      data["Note"]["#text"].map(&:strip!)
       if term.note.present?
-        term.note += "\n#{data["Note"]["#text"].map { |text| clean(text: text) }.join("\n")}" unless term.note.include?(clean(text: data["Note"]["#text"][0]))
+        term.note += "\n#{data["Note"]["#text"].join("\n")}" unless term.note.include?(data["Note"]["#text"][0])
       else
-        term.note = data["Note"]["#text"].map { |text| clean(text: text) }.join("\n")
+        term.note = data["Note"]["#text"].join("\n")
       end
     end
   end
@@ -427,8 +462,9 @@ def ilref_hash(data)
 
   # 字典的詞幹（來源）衝突時，以字數少的為主
   if data["Source"].is_a? String
-    # binding.irb unless Stem.exists?(name: clean(text: data["Source"]))
-    stem = Stem.find_or_create_by(name: clean(text: data["Source"]))
+    data["Source"].strip!
+    # binding.irb unless Stem.exists?(name: data["Source"])
+    stem = Stem.find_or_create_by(name: data["Source"])
     if term.stem.blank?
       term.update(stem_id: stem.id)
     else
@@ -439,8 +475,9 @@ def ilref_hash(data)
   end
 
   if data["Source"].is_a? Hash
-    # binding.irb unless Stem.exists?(name: clean(text: data["Source"]["#text"]))
-    stem = Stem.find_or_create_by(name: clean(text: data["Source"]["#text"]))
+    data["Source"]["#text"].strip!
+    # binding.irb unless Stem.exists?(name: data["Source"]["#text"])
+    stem = Stem.find_or_create_by(name: data["Source"]["#text"])
     if term.stem.blank?
       term.update(stem_id: stem.id)
     else
@@ -452,15 +489,15 @@ def ilref_hash(data)
 
   if data["Explanation"].is_a? Hash
     explanation = data["Explanation"]
-    # binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
-    description = term.descriptions.find_or_create_by(content: clean(text: explanation["Chinese"]))
+    # binding.irb unless term.descriptions.exists?(content_zh: explanation["Chinese"])
+    description = term.descriptions.find_or_create_by(content_zh: explanation["Chinese"])
 
     if explanation["Focus"].present? && description.focus.blank?
-      description.focus = clean(text: explanation["Focus"])
+      description.focus = explanation["Focus"]
     end
 
     if explanation["TC"].present? && description.category.blank?
-      description.category = clean(text: explanation["TC"])
+      description.category = explanation["TC"]
     end
 
     if explanation["Img"].is_a? Hash
@@ -491,15 +528,15 @@ def ilref_hash(data)
 
   if data["Explanation"].is_a? Array
     data["Explanation"].each_with_index do |explanation, i|
-      # binding.irb unless term.descriptions.exists?(content: clean(text: explanation["Chinese"]))
-      description = term.descriptions.find_or_create_by(content: clean(text: explanation["Chinese"]))
+      # binding.irb unless term.descriptions.exists?(content: explanation["Chinese"])
+      description = term.descriptions.find_or_create_by(content: explanation["Chinese"])
 
       if explanation["Focus"].present? && description.focus.blank?
-        description.focus = clean(text: explanation["Focus"])
+        description.focus = explanation["Focus"]
       end
 
       if explanation["TC"].present? && description.category.blank?
-        description.category = clean(text: explanation["TC"])
+        description.category = explanation["TC"]
       end
 
       if description.changed?
@@ -540,49 +577,49 @@ def ilrdf_image(description:, data:)
   case count
   when 0
     if description.image1.blank?
-      description.image1_alt = clean(text: data["Name"]) if data["Name"].present?
-      description.image1_provider = clean(text: data["Provider"]) if data["Provider"].present?
+      description.image1_alt = data["Name"] if data["Name"].present?
+      description.image1_provider = data["Provider"] if data["Provider"].present?
       description.image1 = data["Src"].sub("https://e-dictionary.ilrdf.org.tw/MultiMedia/Images", "/ilrdf/images")
     elsif description.image2.blank?
-      description.image2_alt = clean(text: data["Name"]) if data["Name"].present?
-      description.image2_provider = clean(text: data["Provider"]) if data["Provider"].present?
+      description.image2_alt = data["Name"] if data["Name"].present?
+      description.image2_provider = data["Provider"] if data["Provider"].present?
       description.image2 = data["Src"].sub("https://e-dictionary.ilrdf.org.tw/MultiMedia/Images", "/ilrdf/images")
     elsif description.image3.blank?
-      description.image3_alt = clean(text: data["Name"]) if data["Name"].present?
-      description.image3_provider = clean(text: data["Provider"]) if data["Provider"].present?
+      description.image3_alt = data["Name"] if data["Name"].present?
+      description.image3_provider = data["Provider"] if data["Provider"].present?
       description.image3 = data["Src"].sub("https://e-dictionary.ilrdf.org.tw/MultiMedia/Images", "/ilrdf/images")
     else
       # binding.irb
     end
   when 1
-    if data["Name"].present? && (description.image1_alt != clean(text: data["Name"]))
+    if data["Name"].present? && (description.image1_alt != data["Name"])
       # binding.irb
-      description.image1_alt = clean(text: data["Name"])
+      description.image1_alt = data["Name"]
     end
 
-    if data["Provider"].present? && (description.image1_provider != clean(text: data["Provider"]))
+    if data["Provider"].present? && (description.image1_provider != data["Provider"])
       # binding.irb
-      description.image1_provider = clean(text: data["Provider"])
+      description.image1_provider = data["Provider"]
     end
   when 2
-    if data["Name"].present? && (description.image2_alt != clean(text: data["Name"]))
+    if data["Name"].present? && (description.image2_alt != data["Name"])
       # binding.irb
-      description.image2_alt = clean(text: data["Name"])
+      description.image2_alt = data["Name"]
     end
 
-    if data["Provider"].present? && (description.image2_provider != clean(text: data["Provider"]))
+    if data["Provider"].present? && (description.image2_provider != data["Provider"])
       # binding.irb
-      description.image2_provider = clean(text: data["Provider"])
+      description.image2_provider = data["Provider"]
     end
   when 3
-    if data["Name"].present? && (description.image3_alt != clean(text: data["Name"]))
+    if data["Name"].present? && (description.image3_alt != data["Name"])
       # binding.irb
-      description.image3_alt = clean(text: data["Name"])
+      description.image3_alt = data["Name"]
     end
 
-    if data["Provider"].present? && (description.image3_provider != clean(text: data["Provider"]))
+    if data["Provider"].present? && (description.image3_provider != data["Provider"])
       # binding.irb
-      description.image3_provider = clean(text: data["Provider"])
+      description.image3_provider = data["Provider"]
     end
   end
 
@@ -612,7 +649,7 @@ def ilrdf_sentence(description:, data:)
         puts "================"
       else
 
-        if clean(text: data["Chinese"]) == "你們要用扁擔平衡扛起豬隻來。"
+        if data["Chinese"] == "你們要用扁擔平衡扛起豬隻來。"
           data["File"] = { "Path" => "https://e-dictionary.ilrdf.org.tw/MultiMedia/audio/ami/35/midadoy_{1}_@_1.1.mp3" }
           data["Original"] = "Pa'onocen a malalilid to fafoy a midadoy."
         end
@@ -627,8 +664,13 @@ def ilrdf_sentence(description:, data:)
     puts "================"
     return
   end
-  example = description.examples.find_or_create_by(content_amis: clean(text: data["Original"]))
-  example.content_zh = clean(text: data["Chinese"]) if data["Chinese"].present? && (example.content_zh != clean(text: data["Chinese"]))
+
+  data["Original"] = data["Original"].strip
+  example = description.examples.find_or_create_by(content_amis: data["Original"])
+  if data["Chinese"].present?
+    data["Chinese"].strip!
+    example.content_zh = data["Chinese"] if (example.content_zh != data["Chinese"])
+  end
   example.content = "#{example.content_amis}#{example.content_zh}"
   if data["File"].present? && data["File"]["Path"].present?
     if data["File"]["Path"] == "https://e-dictionary.ilrdf.org.tw/MultiMedia/Audio/ami/anini_{1}_@_1.1.mp3"

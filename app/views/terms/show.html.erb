@@ -105,6 +105,16 @@
           </div>
         <% end %>
 
+        <% if dictionary.name == "博利亞潘世光阿漢字典" %>
+          <div class="pourrias_poinsot-term-info">
+            <% if term.dialects.present? %>
+              <span class="text-sm text-gray-500">
+                來自：<%= term.dialects %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+
         <% if term.descriptions.present? %>
           <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
             <% term.descriptions.each do |description| %>
@@ -115,7 +125,24 @@
                 <% if description.category.present? %>
                   <span class="text-gray-500 text-sm">(範疇分類：<%= description.category %>)</span>
                 <% end %>
-                <%= simple_format(description.content) %>
+
+                <% case dictionary.name %>
+                <% when '博利亞潘世光阿法字典' %>
+                  <%= simple_format(description.content_fr) %>
+                <% when '方敏英字典' %>
+                  <%= simple_format(description.content_zh) %>
+                  <%= simple_format(description.content_en) %>
+                <% when '蔡中涵大辭典',
+                        '學習詞表－秀姑巒阿美語',
+                        '學習詞表－海岸阿美語',
+                        '學習詞表－馬蘭阿美語',
+                        '學習詞表－恆春阿美語',
+                        '學習詞表－南勢阿美語',
+                        '原住民族語言線上辭典',
+                        '博利亞潘世光阿漢字典' %>
+                  <%= simple_format(description.content_zh) %>
+                <% end %>
+
                 <% if description.image1.present? %>
                   <p>
                     <% providers = [description.image1_provider] %>
@@ -136,9 +163,9 @@
                   </p>
                 <% end %>
                 <% if description.examples.present? %>
-                  <ul class="list-disc list-inside space-y-1">
+                  <ul>
                     <% description.examples.each do |example| %>
-                      <li>
+                      <li class="inline-block bg-gray-200 p-1 my-0.5">
                         <% if example.audio.present? %>
                           <button>
                             <i class="fa-solid fa-volume-high text-sm" onclick="document.getElementById('audio-example-<%= example.id %>').play()"></i>
