@@ -272,41 +272,57 @@ namespace :import do
       exit
     end
 
-    # 方言代碼對照表
-    dialect_codes = {
-      "Ch" => "國語",
-      "S" => "南方話",
-      "F" => "鳳林話",
-      "T" => "富田語",
-      "J" => "日語",
-      "Tw" => "閩南語",
-      "N" => "北方話",
-      "Z" => "撒奇萊雅語",
-      "豐濱" => "豐濱",
-      "英語" => "英語",
-      "玉里" => "玉里",
-      "Tingalaw" => "豐濱豐富部落",
-      "希伯來語" => "希伯來語",
-      "光復鄉" => "光復鄉",
-    }
-
-    current_term = nil
-    current_term_record = nil
-    current_description = nil
+    parser = PoinsotDictionaryParser.new
 
     File.foreach(file_path) do |line|
       # 確認 line 不含 U+FFF8,9,A,B,F
       next if line.blank?
 
-      if line.count("：") == 1
-        # 只有一個冒號的行數暫大部分，且相對不複雜
-        first_part, explanation = line.split("：")
-      end
-    end
+      if line.exclude?("<")
+        # 一個冒號和多個冒號的處理差很多
+        if line.count("：") == 1
+          results = parser.parse_line(line)
 
-    # 處理最後一個詞條
-    if current_term && current_description
-      current_description.save if current_description.changed?
+          results.each do |entry|
+            # 先用特殊情況處理，針對開頭是(的 term，把 ()- 都刪除
+            entry[:term].gsub!(/\(|\)|-/, "") if entry[:term][0] == "("
+
+            term = dictionary.terms.find_or_create_by(name: entry[:term])
+            if entry[:dialects].present?
+              term.update(dialects: entry[:dialects].join("、"))
+            end
+
+            if entry[:stem].present?
+              stem = Stem.find_or_create_by(name: entry[:stem])
+              term.update(stem_id: stem.id)
+            end
+
+            if entry[:description].present? ||
+               entry[:examples].present? ||
+               entry[:synonyms].present?
+              description_content = entry[:description].join("；")
+              description = term.descriptions.find_or_create_by(content_zh: description_content)
+
+              if entry[:examples].present?
+                entry[:examples].each_with_index do |example_hash, i|
+                  example = description.examples[i].presence || description.examples.create
+                  example.update(
+                    content_amis: example_hash[:amis],
+                    content_zh:   example_hash[:zh]
+                  )
+                end
+              end
+
+              if entry[:synonyms].present?
+                entry[:synonyms].each_with_index do |synonym_content, j|
+                  synonym = description.synonyms.alts[j].presence || description.synonyms.create
+                  synonym.update(content: synonym_content, term_type: "同")
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
 end
