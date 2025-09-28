@@ -16,7 +16,7 @@
 #
 
 class Term < ApplicationRecord
-  store :customized_text, accessors: %i[repetition audio frequency variant note]
+  store :customized_text, accessors: %i[repetition audio frequency variant note dialects]
 
   belongs_to :dictionary
   belongs_to :stem, optional: true
@@ -57,7 +57,6 @@ class Term < ApplicationRecord
   private
 
     def clean_name_and_set_lower_name
-      name.gsub!(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "")
       name.strip!
 
       self.name = name

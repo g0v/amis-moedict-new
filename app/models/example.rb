@@ -21,7 +21,7 @@ class Example < ApplicationRecord
 
   belongs_to :description
 
-  validates :content, presence: true
+  validates :content_amis, presence: true
 
   before_save :clean_content
 
@@ -40,7 +40,9 @@ class Example < ApplicationRecord
   private
 
     def clean_content
-      self.content = content.gsub(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "").strip
-      self.content_zh = content_zh.gsub(/\xEF\xBF\xB9|\xEF\xBB\xBF|\xEF\xBF\xBA|\xEF\xBF\xBB/, "").strip if content_zh.present?
+      self.content_amis = content_amis.strip
+      self.content_zh = content_zh.strip if content_zh.present?
+      self.content_en = content_en.strip if content_en.present?
+      self.content_fr = content_fr.strip if content_fr.present?
     end
 end
