@@ -16,7 +16,7 @@
 #
 
 class Term < ApplicationRecord
-  store :customized_text, accessors: %i[repetition audio frequency variant note]
+  store :customized_text, accessors: %i[repetition audio frequency variant note dialects]
 
   belongs_to :dictionary
   belongs_to :stem, optional: true
