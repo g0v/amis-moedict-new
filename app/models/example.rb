@@ -36,6 +36,10 @@ class Example < ApplicationRecord
     "https://g0v.github.io/amis-moedict-static#{audio}" if audio.present?
   end
 
+  def content
+    "#{content_amis}#{content_zh}#{content_en}#{content_fr}"
+  end
+
   private
 
     def clean_content
