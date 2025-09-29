@@ -64,6 +64,10 @@ class Description < ApplicationRecord
     image3_alt.present? ? image3_alt : content
   end
 
+  def content
+    "#{content_zh}#{content_en}#{content_fr}"
+  end
+
   private
 
     def clean_content
