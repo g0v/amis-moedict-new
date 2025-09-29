@@ -6,7 +6,6 @@
 #
 #  id               :integer          not null, primary key
 #  term_id          :integer
-#  content          :string(500)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  description_type :string(3)
