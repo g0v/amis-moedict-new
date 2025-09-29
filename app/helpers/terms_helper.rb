@@ -4,7 +4,7 @@ module TermsHelper
 
     content = case record
               when Synonym then record.content
-              when Example then record.content_amis || ''
+              when Example then record.content_amis || ""
               end
 
     content.split(/(\s)/).each_with_index do |term, i|
