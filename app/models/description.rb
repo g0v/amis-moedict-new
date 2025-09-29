@@ -6,7 +6,6 @@
 #
 #  id               :integer          not null, primary key
 #  term_id          :integer
-#  content          :string(500)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  description_type :string(3)
@@ -65,10 +64,13 @@ class Description < ApplicationRecord
     image3_alt.present? ? image3_alt : content
   end
 
+  def content
+    "#{content_zh}#{content_en}#{content_fr}"
+  end
+
   private
 
     def clean_content
-      self.content = content.strip if content.present?
       self.content_zh = content_zh.strip if content_zh.present?
       self.content_en = content_en.strip if content_en.present?
       self.content_fr = content_fr.strip if content_fr.present?

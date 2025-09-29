@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_23_225533) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_29_031456) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -39,7 +39,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_23_225533) do
 
   create_table "descriptions", force: :cascade do |t|
     t.integer "term_id"
-    t.string "content", limit: 500
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description_type", limit: 3
@@ -63,7 +62,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_23_225533) do
 
   create_table "examples", force: :cascade do |t|
     t.integer "description_id"
-    t.string "content"
     t.string "content_zh"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
