@@ -27,9 +27,12 @@ module V2
             term_hash[:audio] = term.audio_url
 
             term.descriptions.each do |description|
-              description_hash = {
-                content: description.content
-              }
+              description_hash = {}
+
+              description_hash[:content_zh] = description.content_zh
+              description_hash[:content_en] = description.content_en
+              description_hash[:content_fr] = description.content_fr
+
               description_hash[:type] = description.description_type if description.description_type.present?
               description_hash[:glossary_serial] = description.glossary_serial if description.glossary_serial.present?
               description_hash[:glossary_level] = description.glossary_level if description.glossary_level.present?
@@ -38,8 +41,10 @@ module V2
               description_hash[:image3] = description.image3_url
 
               description.examples.each do |example|
-                example_hash = { content: example.content }
-                example_hash[:content_zh] = example.content_zh if example.content_zh.present?
+                example_hash[:content_amis] = example.content_amis
+                example_hash[:content_zh] = example.content_zh
+                example_hash[:content_en] = example.content_en
+                example_hash[:content_fr] = example.content_fr
 
                 description_hash[:examples] ||= []
                 description_hash[:examples] << example_hash

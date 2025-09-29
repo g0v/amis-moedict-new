@@ -6,7 +6,6 @@
 #
 #  id              :integer          not null, primary key
 #  description_id  :integer
-#  content         :string
 #  content_zh      :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -35,6 +34,10 @@ class Example < ApplicationRecord
 
   def audio_url
     "https://g0v.github.io/amis-moedict-static#{audio}" if audio.present?
+  end
+
+  def content
+    "#{content_amis}#{content_zh}#{content_en}#{content_fr}"
   end
 
   private
