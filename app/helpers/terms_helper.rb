@@ -59,15 +59,9 @@ module TermsHelper
     end
 
     if record.class == Example
-      if html.present? && (record.content_zh.present? ||
-                           record.content_en.present? ||
-                           record.content_fr.present?)
-        html += "<br>"
-      end
-
-      html += record.content_zh if record.content_zh.present?
-      html += record.content_en if record.content_en.present?
-      html += record.content_fr if record.content_fr.present?
+      html += "<br>#{record.content_zh}" if record.content_zh.present?
+      html += "<br>#{record.content_en}" if record.content_en.present?
+      html += "<br>#{record.content_fr}" if record.content_fr.present?
     end
 
     html
