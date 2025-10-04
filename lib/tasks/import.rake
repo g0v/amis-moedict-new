@@ -225,7 +225,7 @@ namespace :import do
 
         term_names.split("/").each do |term_name|
           term_name.strip!
-          next if term_name == '無此詞彙'
+          next if term_name == "無此詞彙"
 
           term_name.gsub!("’", "'")
           term = dictionary.terms.find_or_create_by(name: term_name)
@@ -349,17 +349,17 @@ def parse_multilingual(text)
   chinese_pos = text.index(chinese_marker)
 
   if amis_pos
-    next_pos = [english_pos, chinese_pos].compact.select { |p| p > amis_pos }.min || text.length
+    next_pos = [ english_pos, chinese_pos ].compact.select { |p| p > amis_pos }.min || text.length
     result[:amis] = text[(amis_pos + 1)...next_pos].strip
   end
 
   if english_pos
-    next_pos = [amis_pos, chinese_pos].compact.select { |p| p > english_pos }.min || text.length
+    next_pos = [ amis_pos, chinese_pos ].compact.select { |p| p > english_pos }.min || text.length
     result[:english] = text[(english_pos + 1)...next_pos].strip
   end
 
   if chinese_pos
-    next_pos = [amis_pos, english_pos].compact.select { |p| p > chinese_pos }.min || text.length
+    next_pos = [ amis_pos, english_pos ].compact.select { |p| p > chinese_pos }.min || text.length
     result[:chinese] = text[(chinese_pos + 1)...next_pos].strip
   end
 
@@ -376,7 +376,7 @@ def parse_multilingual(text)
       puts "U+FFF9: #{value}" if value.include?("\ufff9")
       puts "U+FFFA: #{value}" if value.include?("\ufffa")
       puts "U+FFFB: #{value}" if value.include?("\ufffb")
-      result[key] = value.gsub(/[\ufff9\ufffa\ufffb]/, '').strip
+      result[key] = value.gsub(/[\ufff9\ufffa\ufffb]/, "").strip
       result[key] = nil if result[key].blank?
     end
   end
@@ -669,7 +669,7 @@ def ilrdf_sentence(description:, data:)
   example = description.examples.find_or_create_by(content_amis: data["Original"])
   if data["Chinese"].present?
     data["Chinese"].strip!
-    example.content_zh = data["Chinese"] if (example.content_zh != data["Chinese"])
+    example.content_zh = data["Chinese"] if example.content_zh != data["Chinese"]
   end
   example.content = "#{example.content_amis}#{example.content_zh}"
   if data["File"].present? && data["File"]["Path"].present?
