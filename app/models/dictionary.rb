@@ -23,7 +23,7 @@ class Dictionary < ApplicationRecord
     "學習詞表－恆春阿美語" => "red",
     "學習詞表－南勢阿美語" => "red",
     "原住民族語言線上辭典" => "indigo",
-    "博利亞潘世光阿漢字典" => "gray",
+    "博利亞潘世光阿漢字典" => "gray"
   }.freeze
 
   def self.ransackable_attributes(auth_object = nil)

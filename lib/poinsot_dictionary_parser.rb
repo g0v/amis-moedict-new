@@ -15,7 +15,7 @@ class PoinsotDictionaryParser
       "Tingalaw" => "豐濱豐富部落",
       "希伯來語" => "希伯來語",
       "光復鄉" => "光復鄉",
-      "希臘文" => "希臘文",
+      "希臘文" => "希臘文"
     }
 
     @results = []
@@ -42,20 +42,20 @@ class PoinsotDictionaryParser
         # 1. Main part contains term structure indicators (= or {})
         # 2. Potential amis is simple (no complex punctuation)
         # 3. Main part doesn't already have a colon
-        if !main_part.include?('：') &&
-           (main_part.include?(' = ') || main_part.include?('{')) &&
-           !potential_amis.include?('=') &&
-           !potential_amis.include?('{') &&
+        if !main_part.include?("：") &&
+           (main_part.include?(" = ") || main_part.include?("{")) &&
+           !potential_amis.include?("=") &&
+           !potential_amis.include?("{") &&
            potential_amis.split.length <= 4 # Simple phrase
 
           extracted_example = { amis: potential_amis, zh: potential_zh }
-          processed_line = main_part + '：' # Add empty description
+          processed_line = main_part + "：" # Add empty description
         end
       end
     end
 
     # Split on the main colon separator
-    parts = processed_line.split('：', 2)
+    parts = processed_line.split("：", 2)
     return [] if parts.length < 2
 
     term_part = parts[0].strip
@@ -71,10 +71,10 @@ class PoinsotDictionaryParser
     # Only apply this logic when:
     # - Description part has = but no - (synonyms, not examples)
     # - Term part has - but no = (stem relationship, not synonyms in term part)
-    if description_part.include?(' = ') && !description_part.include?(' - ') &&
-       term_part.include?(' - ') && !term_part.include?(' = ')
+    if description_part.include?(" = ") && !description_part.include?(" - ") &&
+       term_part.include?(" - ") && !term_part.include?(" = ")
       # Split description part into actual description and synonyms
-      desc_synonym_parts = description_part.split(' = ').map(&:strip)
+      desc_synonym_parts = description_part.split(" = ").map(&:strip)
       actual_description = desc_synonym_parts[0]
       synonym_parts = desc_synonym_parts[1..-1]
 
@@ -90,11 +90,11 @@ class PoinsotDictionaryParser
 
       # Create synonym groups including all terms
       all_terms = term_info[:terms]
-      term_info[:synonyms_groups] = [all_terms] if all_terms.length > 1
+      term_info[:synonyms_groups] = [ all_terms ] if all_terms.length > 1
 
       # Create description info with just the actual description
       desc_info = {
-        descriptions: [actual_description],
+        descriptions: [ actual_description ],
         examples: [],
         parenthetical_part: nil
       }
@@ -118,9 +118,9 @@ class PoinsotDictionaryParser
 
   private
 
-  def parse_term_part(term_part)
-    parse_term_structure(term_part)
-  end
+    def parse_term_part(term_part)
+      parse_term_structure(term_part)
+    end
 
   def parse_term_structure(term_part)
     result = {
@@ -131,11 +131,11 @@ class PoinsotDictionaryParser
       stem_derived_terms: [] # Track which terms are directly derived from stems
     }
 
-    # Split by ' - ' to handle stem relationships and ' = ' for synonyms
+    # Split by " - " to handle stem relationships and " = " for synonyms
     # First handle the case where we have both stems and synonyms
-    if term_part.include?(' - ') && term_part.include?(' = ')
+    if term_part.include?(" - ") && term_part.include?(" = ")
       # Pattern like: "stem - term1 {dialect} = term2" or "stem - {dialect} = term2" or "stem - term - {dialect} = synonym"
-      dash_parts = term_part.split(' - ', 2)
+      dash_parts = term_part.split(" - ", 2)
       stem = dash_parts[0].strip
       rest = dash_parts[1].strip
 
@@ -162,7 +162,7 @@ class PoinsotDictionaryParser
         end
 
         # Create synonym group
-        result[:synonyms_groups] = [result[:terms]] if result[:terms].length > 1
+        result[:synonyms_groups] = [ result[:terms] ] if result[:terms].length > 1
         return result
       end
 
@@ -191,7 +191,7 @@ class PoinsotDictionaryParser
         end
 
         # Create synonym group with derived term and synonym
-        result[:synonyms_groups] = [[term_part_inner, synonym_terms[0]].compact] if synonym_terms.length > 0
+        result[:synonyms_groups] = [ [ term_part_inner, synonym_terms[0] ].compact ] if synonym_terms.length > 0
         return result
       end
 
@@ -220,7 +220,7 @@ class PoinsotDictionaryParser
         end
 
         # Create synonym group with derived term and synonym
-        result[:synonyms_groups] = [[term_part_inner, synonym_terms[0]].compact] if synonym_terms.length > 0
+        result[:synonyms_groups] = [ [ term_part_inner, synonym_terms[0] ].compact ] if synonym_terms.length > 0
         return result
       end
 
@@ -242,11 +242,11 @@ class PoinsotDictionaryParser
           result[:stem_derived_terms] << term
         end
       end
-      result[:synonyms_groups] = [synonym_info[:terms].compact] if synonym_info[:terms].compact.length > 1
+      result[:synonyms_groups] = [ synonym_info[:terms].compact ] if synonym_info[:terms].compact.length > 1
 
-    elsif term_part.include?(' - ')
+    elsif term_part.include?(" - ")
       # Pattern like: "stem - term1 - term2" or "stem - term {dialect}" or "term - {dialect}"
-      parts = term_part.split(' - ')
+      parts = term_part.split(" - ")
       first_part = parts[0].strip
 
       # Check if this is just "term - {dialect}" pattern
@@ -254,7 +254,7 @@ class PoinsotDictionaryParser
         second_part = parts[1].strip
         # If the second part becomes empty after removing dialect codes,
         # then this is a "term - {dialect}" pattern, not a stem-term relationship
-        clean_second_part = second_part.gsub(/\s*\{[^}]+\}/, '').strip
+        clean_second_part = second_part.gsub(/\s*\{[^}]+\}/, "").strip
 
         if clean_second_part.empty?
           # This is "term - {dialect}" pattern
@@ -270,8 +270,8 @@ class PoinsotDictionaryParser
       stem = first_part
       result[:stems] << stem
 
-      terms_part = parts[1..-1].join(' - ')
-      if terms_part.include?(' = ')
+      terms_part = parts[1..-1].join(" - ")
+      if terms_part.include?(" = ")
         # Handle case like "stem - term1 = term2"
         synonym_info = parse_synonyms_and_dialects(terms_part)
         synonym_info[:terms].each_with_index do |term, index|
@@ -286,16 +286,16 @@ class PoinsotDictionaryParser
             result[:stem_derived_terms] << term
           end
         end
-        result[:synonyms_groups] = [synonym_info[:terms].compact] if synonym_info[:terms].compact.length > 1
+        result[:synonyms_groups] = [ synonym_info[:terms].compact ] if synonym_info[:terms].compact.length > 1
       else
         # Multiple terms from same stem: "stem - term1 - term2"
         parts[1..-1].each do |term_with_dialect|
           term_text = term_with_dialect.strip
 
           # Check if this contains comma-separated terms
-          if term_text.include?(',')
+          if term_text.include?(",")
             # Split by comma and process each term
-            comma_separated_terms = term_text.split(',').map(&:strip)
+            comma_separated_terms = term_text.split(",").map(&:strip)
             comma_separated_terms.each do |single_term_text|
               single_term_text = single_term_text.strip
               next if single_term_text.empty?
@@ -307,9 +307,9 @@ class PoinsotDictionaryParser
                 actual_term = stem # The original "stem" is actually the term
 
                 # Clear previous data and set correct structure
-                result[:stems] = [stem_content]
-                result[:terms] = [actual_term]
-                result[:stem_derived_terms] = [actual_term]
+                result[:stems] = [ stem_content ]
+                result[:terms] = [ actual_term ]
+                result[:stem_derived_terms] = [ actual_term ]
               else
                 # Regular term processing
                 term, dialects = extract_term_and_dialects(single_term_text)
@@ -337,9 +337,9 @@ class PoinsotDictionaryParser
             actual_term = stem # The original "stem" is actually the term
 
             # Clear previous data and set correct structure
-            result[:stems] = [stem_content]
-            result[:terms] = [actual_term]
-            result[:stem_derived_terms] = [actual_term]
+            result[:stems] = [ stem_content ]
+            result[:terms] = [ actual_term ]
+            result[:stem_derived_terms] = [ actual_term ]
 
           # Check for parenthetical content with other text: "term (synonym)"
           elsif term_text.match(/^(.+?)\s*\(([^)]+)\)\s*(.*)$/)
@@ -366,7 +366,7 @@ class PoinsotDictionaryParser
               result[:dialects][synonym_term] = synonym_dialects if synonym_dialects && !synonym_dialects.empty?
 
               # Create synonym relationship
-              result[:synonyms_groups] << [main_term, synonym_term]
+              result[:synonyms_groups] << [ main_term, synonym_term ]
             end
           else
             # Original logic
@@ -379,7 +379,7 @@ class PoinsotDictionaryParser
         end
       end
 
-    elsif term_part.include?(' = ')
+    elsif term_part.include?(" = ")
       # Pattern like: "term1 = term2 = term3"
       synonym_info = parse_synonyms_and_dialects(term_part)
       synonym_info[:terms].each_with_index do |term, index|
@@ -389,7 +389,7 @@ class PoinsotDictionaryParser
           result[:dialects][term] = synonym_info[:dialects][index]
         end
       end
-      result[:synonyms_groups] = [synonym_info[:terms].compact] if synonym_info[:terms].compact.length > 1
+      result[:synonyms_groups] = [ synonym_info[:terms].compact ] if synonym_info[:terms].compact.length > 1
 
     else
       # Single term, possibly with dialect
@@ -402,8 +402,8 @@ class PoinsotDictionaryParser
   end
 
   def parse_synonyms_and_dialects(text)
-    # Split by ' = ' and extract dialects from each part
-    parts = text.split(' = ')
+    # Split by " = " and extract dialects from each part
+    parts = text.split(" = ")
     terms = []
     dialects = []
 
@@ -427,7 +427,7 @@ class PoinsotDictionaryParser
         end
 
         # Add the comma-separated terms from parentheses
-        parenthetical_terms = parenthetical_content.split(',').map(&:strip)
+        parenthetical_terms = parenthetical_content.split(",").map(&:strip)
         parenthetical_terms.each do |pterm|
           term, term_dialects = extract_term_and_dialects(pterm)
           terms << term
@@ -450,14 +450,14 @@ class PoinsotDictionaryParser
     dialects = dialect_matches.flatten.map { |code| @dialect_codes[code] }.compact
 
     # Remove dialect codes from term
-    clean_term = text.gsub(/\s*\{[^}]+\}/, '').strip
+    clean_term = text.gsub(/\s*\{[^}]+\}/, "").strip
 
     # If term is empty after removing dialect codes, return nil for term
     if clean_term.empty?
-      return [nil, dialects]
+      return [ nil, dialects ]
     end
 
-    [clean_term, dialects]
+    [ clean_term, dialects ]
   end
 
   def extract_dialects(dialect_part)
@@ -474,9 +474,9 @@ class PoinsotDictionaryParser
 
     # First check for multiple examples with quotes (highest priority)
     # Pattern: "description - "example1" - "example2""
-    if description_part.include?(' - “') && description_part.scan(/“[^“]*”/).length >= 2
+    if description_part.include?(" - “") && description_part.scan(/“[^“]*”/).length >= 2
       # Split by " - " to get parts
-      parts = description_part.split(' - ')
+      parts = description_part.split(" - ")
       desc_text = parts[0].strip
       example_parts = parts[1..-1]
 
@@ -527,7 +527,7 @@ class PoinsotDictionaryParser
 
     # Parse descriptions and check for parenthetical content with dialect
     # Split by ；and check if last part has parenthetical + dialect pattern
-    desc_parts = description_part.split('；').map(&:strip)
+    desc_parts = description_part.split("；").map(&:strip)
 
     # Check if the last part has parenthetical content with dialect
     if desc_parts.length > 1
@@ -561,8 +561,8 @@ class PoinsotDictionaryParser
     end
 
     # No parenthetical content, just regular descriptions
-    if description_part.include?(' = ')
-      result[:descriptions] = description_part.split(' = ').map(&:strip)
+    if description_part.include?(" = ")
+      result[:descriptions] = description_part.split(" = ").map(&:strip)
     else
       result[:descriptions] = desc_parts
     end
@@ -571,11 +571,11 @@ class PoinsotDictionaryParser
   end
 
   def parse_descriptions(desc_text)
-    # Split descriptions by '；' and handle '=' for alternative descriptions
-    if desc_text.include?(' = ')
-      desc_text.split(' = ').map(&:strip)
+    # Split descriptions by "；" and handle "=" for alternative descriptions
+    if desc_text.include?(" = ")
+      desc_text.split(" = ").map(&:strip)
     else
-      desc_text.split('；').map(&:strip)
+      desc_text.split("；").map(&:strip)
     end
   end
 
@@ -589,15 +589,15 @@ class PoinsotDictionaryParser
       if main_term
         # Only assign stem if this term is stem-derived
         stem_to_assign = if term_info[:stem_derived_terms].include?(main_term)
-                          term_info[:stems].first
-                        else
-                          nil
-                        end
+                           term_info[:stems].first
+                         else
+                           nil
+                         end
 
         results << create_entry(
           term: main_term,
           dialects: term_info[:parenthetical][:dialects],
-          descriptions: [term_info[:parenthetical][:description]],
+          descriptions: [ term_info[:parenthetical][:description] ],
           stem: stem_to_assign
         )
       end
@@ -609,10 +609,10 @@ class PoinsotDictionaryParser
 
         # Only assign stem if this term is stem-derived
         stem_to_assign = if term_info[:stem_derived_terms].include?(term)
-                          term_info[:stems].first
-                        else
-                          nil
-                        end
+                           term_info[:stems].first
+                         else
+                           nil
+                         end
 
         results << create_entry(
           term: term,
@@ -632,10 +632,10 @@ class PoinsotDictionaryParser
           if !desc_info[:descriptions].empty?
             # Only assign stem if this term is stem-derived
             stem_to_assign = if term_info[:stem_derived_terms].include?(term)
-                              term_info[:stems].first
-                            else
-                              nil
-                            end
+                               term_info[:stems].first
+                             else
+                               nil
+                             end
 
             entry = create_entry(
               term: term,
@@ -650,14 +650,14 @@ class PoinsotDictionaryParser
 
           # Create separate entry for parenthetical part
           stem_to_assign = if term_info[:stem_derived_terms].include?(term)
-                            term_info[:stems].first
-                          else
-                            nil
-                          end
+                             term_info[:stems].first
+                           else
+                             nil
+                           end
 
           parenthetical_entry = create_entry(
             term: term,
-            descriptions: [desc_info[:parenthetical_part][:description]],
+            descriptions: [ desc_info[:parenthetical_part][:description] ],
             dialects: desc_info[:parenthetical_part][:dialects],
             stem: stem_to_assign
           )
@@ -670,10 +670,10 @@ class PoinsotDictionaryParser
 
           # Only assign stem if this term is stem-derived
           stem_to_assign = if term_info[:stem_derived_terms].include?(term)
-                            term_info[:stems].first
-                          else
-                            nil
-                          end
+                             term_info[:stems].first
+                           else
+                             nil
+                           end
 
           entry = create_entry(
             term: term,
@@ -704,13 +704,13 @@ class PoinsotDictionaryParser
 
     # Handle descriptions - set to empty string if no meaningful description
     if !descriptions.first.nil? && !descriptions.first.strip.empty?
-      entry[:description] = descriptions.map{|d| d.gsub("’", "'")}
+      entry[:description] = descriptions.map { |d| d.gsub("’", "'") }
     else
-      entry[:description] = [""]
+      entry[:description] = [ "" ]
     end
 
-    entry[:examples] = examples.map{|e| {amis: e[:amis].gsub("’", "'"), zh: e[:zh]}} if examples && !examples.empty?
-    entry[:synonyms] = synonyms.map{|s| s.gsub("’", "'")} if synonyms && !synonyms.empty?
+    entry[:examples] = examples.map { |e| { amis: e[:amis].gsub("’", "'"), zh: e[:zh] } } if examples && !examples.empty?
+    entry[:synonyms] = synonyms.map { |s| s.gsub("’", "'") } if synonyms && !synonyms.empty?
 
     entry
   end

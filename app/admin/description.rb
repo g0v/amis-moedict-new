@@ -9,7 +9,7 @@ ActiveAdmin.register Description do
     selectable_column
     id_column
     Description.column_names.each do |column|
-      column column.to_sym unless column == 'id'
+      column column.to_sym unless column == "id"
     end
     actions
   end
@@ -27,7 +27,7 @@ ActiveAdmin.register Description do
   form do |f|
     f.inputs do
       Description.column_names.each do |column|
-        f.input column.to_sym unless column == 'id' || column.end_with?('_at') || column == 'created_at' || column == 'updated_at'
+        f.input column.to_sym unless column == "id" || column.end_with?("_at") || column == "created_at" || column == "updated_at"
       end
     end
     f.actions
