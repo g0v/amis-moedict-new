@@ -41,6 +41,8 @@ module V2
               description_hash[:image3] = description.image3_url
 
               description.examples.each do |example|
+                example_hash = {}
+
                 example_hash[:content_amis] = example.content_amis
                 example_hash[:content_zh] = example.content_zh
                 example_hash[:content_en] = example.content_en
