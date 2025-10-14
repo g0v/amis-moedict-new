@@ -28,6 +28,7 @@ def parse_docx(filename)
         para_text = ""
         current_bold = false
         chinese_encountered = false  # Track if we've seen Chinese or certain punctuation in this paragraph
+        line_begin = true
 
         para.xpath('.//w:r', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').each do |run|
           text = run.xpath('.//w:t').map(&:text).join
@@ -40,9 +41,6 @@ def parse_docx(filename)
           vert_align = nil
 
           if props
-            # 排除 header 或側邊的浮動文字方塊
-            next if props.xpath('.//w:noProof', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any?
-
             # Check for bold
             is_bold = props.xpath('.//w:b', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any? ||
                       props.xpath('.//w:bCs', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any? ||
@@ -62,7 +60,13 @@ def parse_docx(filename)
                   para_text += "</b>"
                   current_bold = false
                 end
-                para_text += "\n"
+
+                if line_begin
+                  line_begin = false
+                else
+                  para_text += "\n"
+                end
+
                 chinese_encountered = false  # Reset for new line
               end
             end
@@ -104,7 +108,12 @@ def parse_docx(filename)
         # Close any open formatting at end of paragraph
         para_text += "</b>" if current_bold
 
-        text_content += para_text + "\n" unless para_text.strip.empty?
+        unless para_text.strip.empty?
+          text_content += para_text + "\n"
+          line_begin = true
+        else
+          line_begin = false
+        end
       end
     end
   end
