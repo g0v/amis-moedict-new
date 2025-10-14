@@ -6,8 +6,8 @@
 # Encoding.default_internal = Encoding::UTF_8
 # $stdout.set_encoding(Encoding::UTF_8)
 
-require 'zip'
-require 'nokogiri'
+require "zip"
+require "nokogiri"
 
 # Read the docx file
 def parse_docx(filename)
@@ -16,7 +16,7 @@ def parse_docx(filename)
   # Open the docx file (it's a zip archive)
   Zip::File.open(filename) do |zip_file|
     # Find the document.xml file which contains the text
-    entry = zip_file.glob('word/document.xml').first
+    entry = zip_file.glob("word/document.xml").first
 
     if entry
       # Read and parse the XML content
@@ -24,29 +24,29 @@ def parse_docx(filename)
       doc = Nokogiri::XML(xml_content)
 
       # Extract text from main body paragraphs only, excluding text boxes and floating content
-      doc.xpath('//w:body//w:p[not(ancestor::w:txbxContent)]', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').each do |para|
+      doc.xpath("//w:body//w:p[not(ancestor::w:txbxContent)]", "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").each do |para|
         para_text = ""
         current_bold = false
         chinese_encountered = false  # Track if we've seen Chinese or certain punctuation in this paragraph
         line_begin = true
 
-        para.xpath('.//w:r', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').each do |run|
-          text = run.xpath('.//w:t').map(&:text).join
+        para.xpath(".//w:r", "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").each do |run|
+          text = run.xpath(".//w:t").map(&:text).join
           next if text.empty?
 
           # Check for formatting
-          props = run.xpath('.//w:rPr', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').first
+          props = run.xpath(".//w:rPr", "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").first
 
           is_bold = false
           vert_align = nil
 
           if props
             # Check for bold
-            is_bold = props.xpath('.//w:b', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any? ||
-                      props.xpath('.//w:bCs', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any? ||
-                      props.xpath('.//w:rStyle[@w:val="afa"]', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any? ||
-                      props.xpath('.//w:rStyle[@w:val="afb"]', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').any?
-            vert_align = props.xpath('.//w:vertAlign', 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main').first
+            is_bold = props.xpath(".//w:b", "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").any? ||
+                      props.xpath(".//w:bCs", "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").any? ||
+                      props.xpath('.//w:rStyle[@w:val="afa"]', "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").any? ||
+                      props.xpath('.//w:rStyle[@w:val="afb"]', "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").any?
+            vert_align = props.xpath(".//w:vertAlign", "w" => "http://schemas.openxmlformats.org/wordprocessingml/2006/main").first
           end
 
           # Process text character by character
@@ -95,7 +95,7 @@ def parse_docx(filename)
                 end
 
                 # Apply vertical alignment (only superscript)
-                if vert_align && vert_align['w:val'] == 'superscript'
+                if vert_align && vert_align["w:val"] == "superscript"
                   para_text += "<sup>#{char}</sup>"
                 else
                   para_text += char
