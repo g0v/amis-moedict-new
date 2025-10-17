@@ -144,7 +144,10 @@ FILENAME_MAPPING = {
   "3-19 阿美族語辭典[S]-頁661-736" => "namoh-S",
   "3-20 阿美族語辭典[T]-頁737-856" => "namoh-T",
   "3-21 阿美族語辭典[U]-頁857" => "namoh-U",
-  "3-22 阿美族語辭典[W]-頁858-865" => "namoh-W"
+  "3-22 阿美族語辭典[W]-頁858-865" => "namoh-W",
+  "3-23 阿美族語辭典[X]-頁866-870" => "namoh-X",
+  "3-23 阿美族語辭典[Y]" => "namoh-Y",
+  "3-23 阿美族語辭典[Z]" => "namoh-Z"
 }
 
 FILENAME_MAPPING.keys.each do |filename|
