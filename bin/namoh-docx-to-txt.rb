@@ -118,6 +118,7 @@ def parse_docx(filename)
     end
   end
 
+  text_content.gsub!("<sup> </sup>", "")
   text_content
 end
 
