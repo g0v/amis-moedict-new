@@ -72,7 +72,7 @@ def parse_docx(filename)
             end
 
             # Check if this is a Chinese character or double quote
-            if char.match?(/[\u4e00-\u9fff\u3400-\u4dbf]/) || char == '“'
+            if char.match?(/[\u4e00-\u9fff\u3400-\u4dbf]/) || char == "“" || char == "（"
               # Close bold if it's open
               if current_bold
                 para_text += "</b>"
