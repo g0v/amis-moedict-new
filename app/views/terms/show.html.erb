@@ -115,6 +115,16 @@
           </div>
         <% end %>
 
+        <% if dictionary.name == "吳明義阿美族語辭典" %>
+          <div class="namoh-term_source">
+            <% if term.term_source.present? %>
+              <span class="text-sm text-gray-500">
+                <%= term.term_source %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+
         <% if term.descriptions.present? %>
           <ol class="list-decimal list-outside space-y-2 mt-2 ml-5">
             <% term.descriptions.each do |description| %>
@@ -139,7 +149,8 @@
                         '學習詞表－恆春阿美語',
                         '學習詞表－南勢阿美語',
                         '原住民族語言線上辭典',
-                        '博利亞潘世光阿漢字典' %>
+                        '博利亞潘世光阿漢字典',
+                        '吳明義阿美族語辭典' %>
                   <%= simple_format(description.content_zh) %>
                 <% end %>
 
