@@ -10,6 +10,7 @@
 #  content        :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  term_source    :string(50)
 #
 
 class Synonym < ApplicationRecord
