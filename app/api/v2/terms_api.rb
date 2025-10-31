@@ -29,6 +29,7 @@ module V2
             term.descriptions.each do |description|
               description_hash = {}
 
+              description_hash[:content]    = description.content
               description_hash[:content_zh] = description.content_zh
               description_hash[:content_en] = description.content_en
               description_hash[:content_fr] = description.content_fr
