@@ -118,9 +118,12 @@
         <% if dictionary.name == "吳明義阿美族語辭典" %>
           <div class="namoh-term_source">
             <% if term.term_source.present? %>
-              <span class="text-sm text-gray-500">
-                <%= term.term_source %>
-              </span>
+              <% term.term_source.split("|").each do |term_source| %>
+                <span class="text-sm text-gray-500 block">
+                  <%= Term::TERM_SOURCE_MAP[term_source] %>
+                  <%= term_source if Term::TERM_SOURCE_MAP[term_source].nil? %>
+                </span>
+              <% end %>
             <% end %>
           </div>
         <% end %>
