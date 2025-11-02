@@ -328,6 +328,49 @@ namespace :import do
       end
     end
   end
+
+  desc "從 tmp/dict/namoh-json 檔案匯入吳明義阿美族語辭典"
+  task namoh: :environment do
+    dictionary = Dictionary.find_or_create_by(name: "吳明義阿美族語辭典")
+
+    total = Dir.glob("tmp/dict/namoh-json/*.json").size
+    Dir.glob("tmp/dict/namoh-json/*.json").each_with_index do |filename, num|
+      puts "#{num}/#{total}" if (num % 5000).zero?
+
+      file = File.read(filename)
+      json_object = JSON.parse(file)
+      json_object["term_source"] = json_object["term_source"].split(".").map(&:strip).compact.join("|") if json_object["term_source"].present?
+
+      term = get_namoh_term(json_object)
+
+      json_object["h"].each do |heteronym|
+        heteronym["d"].each do |description_hash|
+          description = term.descriptions.find_or_create_by(content_zh: description_hash["f"])
+
+          if description_hash["e"].present?
+            description_hash["e"].select! do |example_content|
+              example_content.present?
+            end
+            description_hash["e"].each do |example_content|
+              example = description.examples.find_or_create_by(content_amis: example_content["amis"], content_zh: example_content["zh"])
+            end
+          end
+
+          next if description_hash["s"].blank?
+
+          description_hash["s"].each do |synonym_hash|
+            synonym_hash["term_source"] = synonym_hash["term_source"].split(".").map(&:strip).compact.join("|") if synonym_hash["term_source"].present?
+            synonym = description.synonyms.find_or_create_by(content: synonym_hash["name"], term_source: synonym_hash["term_source"], term_type: "同")
+
+            synonym_hash["t"] = synonym_hash["name"]
+            synonym_term = get_namoh_term(synonym_hash)
+            synonym_description = synonym_term.descriptions.find_or_create_by(content_zh: description_hash["f"])
+            synonym_synonym = synonym_description.synonyms.find_or_create_by(content: term.name, term_source: term.term_source, term_type: "同")
+          end
+        end
+      end
+    end
+  end
 end
 
 # https://github.com/miaoski/amis-safolu/blob/master/generate-moedict-json.rb#L37-L41
@@ -702,4 +745,52 @@ def ilrdf_sentence(description:, data:)
     # binding.irb
     example.save
   end
+end
+
+def get_namoh_term(json_object)
+  dictionary = Dictionary.find_by(name: "吳明義阿美族語辭典")
+
+  stem = Stem.find_or_create_by(name: json_object["t"]) if json_object["is_stem"]
+  stem = Stem.find_or_create_by(name: json_object["stem"]) if json_object["stem"].present?
+  stem = Stem.find_by(name: json_object["t"]) if stem.blank?
+
+  if dictionary.terms.exists?(name: json_object["t"])
+    if stem.present? && json_object["term_source"].present?
+      term = dictionary.terms.where(name: json_object["t"], stem_id: stem.id).select{ |t| t.term_source == json_object["term_source"] }.first
+      if term.blank?
+        term = dictionary.terms.create(name: json_object["t"], stem_id: stem.id, is_stem: json_object["is_stem"], term_source: json_object["term_source"])
+      end
+    elsif stem.blank? && json_object["term_source"].blank?
+      term = dictionary.terms.where(name: json_object["t"], stem_id: nil).select{ |t| t.term_source.blank? }.first
+      if term.blank?
+        term = dictionary.terms.create(name: json_object["t"], is_stem: json_object["is_stem"])
+      end
+    else
+      if stem.present?
+        term = dictionary.terms.where(name: json_object["t"], stem_id: stem.id).select{ |t| t.term_source.blank? }.first
+        if term.blank?
+          term = dictionary.terms.create(name: json_object["t"], stem_id: stem.id, is_stem: json_object["is_stem"])
+        end
+      end
+
+      if json_object["term_source"].present?
+        term = dictionary.terms.where(name: json_object["t"], stem_id: nil).select{ |t| t.term_source == json_object["term_source"] }.first
+        if term.blank?
+          term = dictionary.terms.create(name: json_object["t"], is_stem: json_object["is_stem"], term_source: json_object["term_source"])
+        end
+      end
+    end
+  else
+    term = dictionary.terms.create(name: json_object["t"], is_stem: json_object["is_stem"])
+
+    if stem.present?
+      term.update(stem_id: stem.id)
+    end
+
+    if json_object["term_source"].present?
+      term.update(term_source: json_object["term_source"])
+    end
+  end
+
+  term
 end
