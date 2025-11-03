@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_22_060749) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_03_114903) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_060749) do
     t.string "content_en"
     t.string "content_fr"
     t.string "customized_text", limit: 500
+    t.string "content_amis_raw"
     t.index ["description_id"], name: "index_examples_on_description_id"
   end
 
@@ -86,6 +87,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_060749) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "term_source", limit: 50
+    t.string "content_raw"
     t.index ["description_id"], name: "index_synonyms_on_description_id"
   end
 

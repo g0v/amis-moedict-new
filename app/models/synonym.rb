@@ -11,6 +11,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  term_source    :string(50)
+#  content_raw    :string
 #
 
 class Synonym < ApplicationRecord
