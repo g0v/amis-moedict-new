@@ -27,7 +27,10 @@ FILENAMES = [
   "namoh-S.txt",
   "namoh-T.txt",
   "namoh-U.txt",
-  "namoh-W.txt"
+  "namoh-W.txt",
+  "namoh-X.txt",
+  "namoh-Y.txt",
+  "namoh-Z.txt"
 ]
 
 stems = Set.new
