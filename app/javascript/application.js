@@ -136,6 +136,13 @@ document.addEventListener( "turbo:load", function() {
       $(this).prop( { checked: settings.displayList.includes($(this).val()) } );
     })
     $( `#display-dictionary input[value="${settings.mainDictionary}"]` ).prop( { checked: "checked", disabled: "disabled"} );
+
+    if ($("#terms-content div:visible").length === 0) {
+      $("#no-dictionary-display ul").html(
+        $(".dictionaries > div:first-child").toArray().map(el => `<li>${el.textContent}</li>`).join("")
+      );
+      $("#no-dictionary-display").show();
+    }
   }
   // 根據 settings 設定辭典畫面 END
 
