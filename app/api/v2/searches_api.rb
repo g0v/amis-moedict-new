@@ -7,6 +7,7 @@ module V2
       get ":q", requirements: { q: /.*/ } do
         result = []
 
+        params[:q] = params[:q].force_encoding('UTF-8')
         if params[:q].match?(/\A[a-zA-Z'’ʼ^ ,….:;\-\(\)]+\z/) # 族語搜尋
           case params[:q].size
           when 1, 2, 3
