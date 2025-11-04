@@ -14,15 +14,16 @@ const DICTIONARY = {
   "7": "學習詞表－恆春阿美語",
   "8": "學習詞表－南勢阿美語",
   "9": "原住民族語言線上辭典",
-  "10": "吳明義阿美族語辭典",
+  "10": "博利亞潘世光阿漢字典",
+  "11": "吳明義阿美族語辭典",
 }
 
 // 辭典設定初始化 START
 function saveSettings(newSettings = {}) {
   var defaultSettings = {
         mainDictionary: "1", // 預設主辭典為蔡中涵大辭典
-        displayList:   ["1", "10", "2", "3", "4", "5", "6", "7", "8", "9"], // 預設顯示所有字典
-        displayOrder:  ["1", "10", "3", "9", "2", "4", "5", "6", "7", "8"] // 預設字典顯示排序
+        displayList:   ["1", "11", "2", "3", "4", "5", "6", "7", "8", "9", "10"], // 預設顯示所有字典
+        displayOrder:  ["1", "11", "3", "9", "10", "2", "4", "5", "6", "7", "8"] // 預設字典顯示排序
       };
 
   var settings = {
@@ -31,9 +32,14 @@ function saveSettings(newSettings = {}) {
         displayOrder:   newSettings.displayOrder   || JSON.parse(localStorage.getItem('displayOrder')) || defaultSettings.displayOrder
       };
 
+  // 確保字典前兩本一定是蔡中涵和吳明義
+  var displayList = [...new Set(settings.displayList)];
+  displayList = displayList.filter(item => item !== '1' && item !== '11');
+  displayList = ['1', '11', ...displayList];
+
   localStorage.setItem('mainDictionary', settings.mainDictionary);
-  localStorage.setItem('displayList',    JSON.stringify(settings.displayList));
-  localStorage.setItem('displayOrder',   JSON.stringify(settings.displayOrder));
+  localStorage.setItem('displayList',    JSON.stringify(displayList));
+  localStorage.setItem('displayOrder',   JSON.stringify(defaultSettings.displayOrder));
 
   return settings;
 }
