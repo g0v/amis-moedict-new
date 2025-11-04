@@ -50,7 +50,10 @@
       <i class="fa-regular fa-copy text-gray-500 mr-2 pt-1"></i>
     </button>
   </div>
-  <div class="mt-4 space-y-4">
+  <div id="terms-content" class="mt-4 space-y-4">
+    <div id="no-dictionary-display" style="display:none;">
+      <div class="p-2">請到辭典設定勾選顯示：<ul class="list-disc list-inside"></ul></div>
+    </div>
     <% @dictionaries.each do |dictionary| %>
       <div id="dictionary-<%= dictionary.id %>" class="dictionaries">
         <div class="bg-<%= dictionary.color %>-600 text-white p-2"><%= dictionary.name %></div>
