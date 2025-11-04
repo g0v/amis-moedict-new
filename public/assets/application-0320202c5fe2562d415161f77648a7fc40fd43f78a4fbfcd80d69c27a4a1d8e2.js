@@ -13,15 +13,17 @@ const DICTIONARY = {
   "6": "學習詞表－馬蘭阿美語",
   "7": "學習詞表－恆春阿美語",
   "8": "學習詞表－南勢阿美語",
-  "9": "原住民族語言線上辭典"
+  "9": "原住民族語言線上辭典",
+  "10": "博利亞潘世光阿漢字典",
+  "11": "吳明義阿美族語辭典",
 }
 
 // 辭典設定初始化 START
 function saveSettings(newSettings = {}) {
   var defaultSettings = {
         mainDictionary: "1", // 預設主辭典為蔡中涵大辭典
-        displayList:   ["1", "2", "3", "4", "5", "6", "7", "8", "9"], // 預設顯示所有字典
-        displayOrder:  ["1", "3", "9", "2", "4", "5", "6", "7", "8"] // 預設字典顯示排序
+        displayList:   ["1", "11", "2", "3", "4", "5", "6", "7", "8", "9", "10"], // 預設顯示所有字典
+        displayOrder:  ["1", "11", "3", "9", "10", "2", "4", "5", "6", "7", "8"] // 預設字典顯示排序
       };
 
   var settings = {
@@ -30,9 +32,14 @@ function saveSettings(newSettings = {}) {
         displayOrder:   newSettings.displayOrder   || JSON.parse(localStorage.getItem('displayOrder')) || defaultSettings.displayOrder
       };
 
+  // 確保字典前兩本一定是蔡中涵和吳明義
+  var displayList = [...new Set(settings.displayList)];
+  displayList = displayList.filter(item => item !== '1' && item !== '11');
+  displayList = ['1', '11', ...displayList];
+
   localStorage.setItem('mainDictionary', settings.mainDictionary);
-  localStorage.setItem('displayList',    JSON.stringify(settings.displayList));
-  localStorage.setItem('displayOrder',   JSON.stringify(settings.displayOrder));
+  localStorage.setItem('displayList',    JSON.stringify(displayList));
+  localStorage.setItem('displayOrder',   JSON.stringify(defaultSettings.displayOrder));
 
   return settings;
 }
@@ -129,6 +136,13 @@ document.addEventListener( "turbo:load", function() {
       $(this).prop( { checked: settings.displayList.includes($(this).val()) } );
     })
     $( `#display-dictionary input[value="${settings.mainDictionary}"]` ).prop( { checked: "checked", disabled: "disabled"} );
+
+    if ($("#terms-content div:visible").length === 0) {
+      $("#no-dictionary-display ul").html(
+        $(".dictionaries > div:first-child").toArray().map(el => `<li>${el.textContent}</li>`).join("")
+      );
+      $("#no-dictionary-display").show();
+    }
   }
   // 根據 settings 設定辭典畫面 END
 
