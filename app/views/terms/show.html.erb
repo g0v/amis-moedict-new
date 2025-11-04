@@ -69,7 +69,9 @@
             <% stem = term.stem %>
             <% if stem.present? %>
               <span class="text-gray-500">
-                （詞幹: <%= link_to(stem.name, term_path(stem.name)) %>）
+                （詞幹: <%= link_to_if((stem.name != term.name) && stem.has_term,
+                                      stem.name,
+                                      term_path(stem.name)) %>）
               </span>
             <% end %>
 
