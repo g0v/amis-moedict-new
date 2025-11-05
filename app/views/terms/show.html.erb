@@ -125,10 +125,10 @@
           <% if dictionary.name == "吳明義阿美族語辭典" %>
             <div class="namoh-term_source">
               <% if term.term_source.present? %>
-                <% term.term_source.split("|").each do |term_source| %>
+                <% term.term_source.split("|").each do |source| %>
                   <span class="text-sm text-gray-500 block">
-                    <%= Term::TERM_SOURCE_MAP[term_source] %>
-                    <%= term_source if Term::TERM_SOURCE_MAP[term_source].nil? %>
+                    <%= Term::TERM_SOURCE_MAP[source] %>
+                    <%= source if Term::TERM_SOURCE_MAP[source].nil? %>
                   </span>
                 <% end %>
               <% end %>
@@ -210,12 +210,9 @@
                           <% end %>
 
                           <% if synonym_alt.term_source.present? %>
-                            <% if Term::TERM_SOURCE_MAP[synonym_alt.term_source].present? %>
-                              <%= linked_term(record: synonym_alt, dictionary: @dictionary).html_safe %>
-                              <span class="bg-slate-400 text-white text-sm p-0.5 pl-2"><%= Term::TERM_SOURCE_MAP[synonym_alt.term_source] %></span>
-                            <% else %>
-                              <%= linked_term(record: synonym_alt, dictionary: @dictionary).html_safe %>
-                              <span class="bg-slate-400 text-white text-sm p-0.5 pl-2"><%= synonym_alt.term_source %></span>
+                            <%= linked_term(record: synonym_alt, dictionary: @dictionary).html_safe %>
+                            <% synonym_alt.term_source.split("|").each do |source| %>
+                              <span class="bg-slate-400 text-white text-sm p-0.5 pl-2"><%= Term::TERM_SOURCE_MAP[source] || source %></span>
                             <% end %>
                           <% else %>
                             <%= linked_term(record: synonym_alt, dictionary: @dictionary).html_safe %>
