@@ -18,7 +18,7 @@
 class Term < ApplicationRecord
   store :customized_text, accessors: %i[repetition audio frequency variant note dialects term_source]
 
-  belongs_to :dictionary
+  belongs_to :dictionary, counter_cache: true
   belongs_to :stem, optional: true
   has_many   :descriptions, dependent: :destroy
 
