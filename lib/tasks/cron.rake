@@ -21,7 +21,11 @@ namespace :cron do
       puts "Example: #{batch_size*(i+1)}/#{total_examples}"
       Example.transaction do
         examples.each do |example|
-          next if example.content_amis_raw.blank?
+          if example.content_amis.present?
+            example.update(content_amis_raw: example.content_amis.gsub(/`|~/, ""))
+          else
+            next
+          end
 
           content_amis = create_link(example.content_amis_raw, terms_hash)
           example.update(content_amis: content_amis)
@@ -34,7 +38,11 @@ namespace :cron do
       puts "Synonym: #{batch_size*(i+1)}/#{total_synonyms}"
       Synonym.transaction do
         synonyms.each do |synonym|
-          next if synonym.content_raw.blank?
+          if synonym.content.present?
+            synonym.update(content_raw: synonym.content.gsub(/`|~/, ""))
+          else
+            next
+          end
 
           content = create_link(synonym.content_raw, terms_hash)
           synonym.update(content: content)
