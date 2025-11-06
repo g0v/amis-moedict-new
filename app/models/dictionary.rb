@@ -4,11 +4,12 @@
 #
 # Table name: dictionaries
 #
-#  id         :integer          not null, primary key
-#  name       :string(50)
-#  dialect    :string(15)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  name        :string(50)
+#  dialect     :string(15)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  terms_count :integer          default(0)
 #
 class Dictionary < ApplicationRecord
   has_many :terms
