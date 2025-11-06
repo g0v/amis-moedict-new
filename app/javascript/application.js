@@ -110,7 +110,9 @@ document.addEventListener( "turbo:load", function() {
   }
 
   // 在 /about 頁面時，點字典名稱會跳回首頁，然後自動轉向最後查找的頁面
-  if ( currentPath.indexOf( "/about") !== -1 ) {
+  if ( currentPath.includes("/about") ||
+       currentPath.includes("/statistics") ||
+       currentPath.startsWith("/info/") ) {
     $( "#select-dictionary-modal" ).on( "click", function() {
       window.location.href = "/";
     });
