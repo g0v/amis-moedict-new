@@ -1,0 +1,174 @@
+<div id="main-content" class="mt-[75px] p-4 sm:mt-0 sm:w-3/4 bg-gray-50 mx-auto">
+  <div class="w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">網站統計資料</h1>
+    </div>
+
+    <!-- 總計統計卡片 -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+      <!-- 辭典總數 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">辭典總數</dt>
+                <dd class="text-2xl font-semibold text-gray-900"><%= @dictionaries.count %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 詞條總數 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">詞條總數</dt>
+                <dd class="text-2xl font-semibold text-gray-900"><%= number_with_delimiter(@total_terms) %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 例句總數 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">例句總數</dt>
+                <dd class="text-2xl font-semibold text-gray-900"><%= number_with_delimiter(@total_examples) %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 同義詞總數 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">同義詞總數</dt>
+                <dd class="text-2xl font-semibold text-gray-900"><%= number_with_delimiter(@total_synonyms) %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 辭典詳細統計表格 -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">各辭典詳細統計</h3>
+        <p class="mt-1 text-sm text-gray-500">每本辭典的詞條、例句與同義詞數量</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider w-2/5">
+                辭典名稱
+              </th>
+              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-500 uppercase tracking-wider w-1/5">
+                詞條數
+              </th>
+              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-500 uppercase tracking-wider w-1/5">
+                例句數
+              </th>
+              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-500 uppercase tracking-wider w-1/5">
+                同義詞數
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @dictionaries.each_with_index do |dictionary, index| %>
+              <% terms_count = dictionary.terms.size %>
+              <% examples_count = @examples_by_dict[dictionary.id] || 0 %>
+              <% synonyms_count = @synonyms_by_dict[dictionary.id] || 0 %>
+              <% 
+                # 根據辭典名稱取得對應顏色
+                color_classes = case dictionary.color
+                when "blue" then { bg: "bg-blue-100", text: "text-blue-700" }
+                when "gray" then { bg: "bg-gray-100", text: "text-gray-700" }
+                when "green" then { bg: "bg-green-100", text: "text-green-700" }
+                when "red" then { bg: "bg-red-100", text: "text-red-700" }
+                when "indigo" then { bg: "bg-indigo-100", text: "text-indigo-700" }
+                when "yellow" then { bg: "bg-yellow-100", text: "text-yellow-700" }
+                else { bg: "bg-purple-100", text: "text-purple-700" }
+                end
+              %>
+              
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <span class="inline-flex items-center justify-center h-10 w-10 rounded-full <%= color_classes[:bg] %>">
+                        <span class="text-sm font-medium leading-none <%= color_classes[:text] %>"><%= dictionary.name[0] %></span>
+                      </span>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900"><%= dictionary.name %></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 font-medium">
+                  <%= number_with_delimiter(terms_count) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
+                  <%= number_with_delimiter(examples_count) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
+                  <%= number_with_delimiter(synonyms_count) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot class="bg-gray-50">
+            <tr class="font-semibold">
+              <td class="px-6 py-4 text-sm text-gray-900">
+                總計
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
+                <%= number_with_delimiter(@total_terms) %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
+                <%= number_with_delimiter(@total_examples) %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
+                <%= number_with_delimiter(@total_synonyms) %>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
