@@ -37,47 +37,70 @@
   </head>
 
   <body class="bg-white font-sans leading-normal tracking-normal">
-    <div id="navbar" class="h-[42px] bg-gray-800 text-slate-300 flex items-center justify-between px-4 py-2">
-      <div class="flex items-center space-x-4">
-        <div>
-          <a href="/" class="logo ebas mr-2"> 阿美語萌典</a>
-        </div>
-        <div id="select-dictionary-modal" class="cursor-pointer mr-5">
-          <i class="fa-solid fa-book">&nbsp;</i>
-          <h2 id="dictionary-name" class="inline">
-            <span class="sm:hidden">蔡</span>
-            <span class="hidden sm:inline">蔡中涵大辭典</span>
-          </h2>
-          <i class="fa-solid fa-caret-down ml-1 mr-2 hidden sm:inline"></i>
-        </div>
-        <div>
-          <a href="/bookmarks" class="mr-2">
-            <i class="fa-solid fa-bookmark text-lg sm:text-base">&nbsp;</i>
-            <span class="hidden sm:inline">字詞紀錄簿</span>
-          </a>
-        </div>
-        <div class="hidden sm:block">
-          <a href="/info" class="mr-2">
-            <i class="fa-solid fa-file text-lg sm:text-base">&nbsp;</i>
-            <span class="inline">相關資訊</span>
-          </a>
-        </div>
-      </div>
-      <div>
-        <div class="flex items-center space-x-2">
-          <div class="hidden sm:block">
-            <%= link_to(statistics_path, class: "bg-lime-900 rounded px-2 py-1 text-xs mr-2") do %>
-              <i class="fa-solid fa-chart-simple"></i>
-            <% end %>
+    <div id="navbar" class="h-[42px] bg-gray-800 text-slate-300 relative z-50">
+      <!-- 隱藏的 checkbox -->
+      <input type="checkbox" id="mobile-menu-toggle" class="hidden peer" />
+
+      <!-- 主導航欄 -->
+      <div class="h-[42px] flex items-center justify-between px-4 py-2">
+        <div class="flex items-center space-x-4">
+          <div>
+            <a href="/" class="logo ebas mr-2"> 阿美語萌典</a>
+          </div>
+          <div id="select-dictionary-modal" class="cursor-pointer mr-5">
+            <i class="fa-solid fa-book">&nbsp;</i>
+            <h2 id="dictionary-name" class="inline">
+              <span class="sm:hidden">原</span>
+              <span class="hidden sm:inline">原住民族語言線上辭典</span>
+            </h2>
+            <i class="fa-solid fa-caret-down ml-1 mr-2 hidden sm:inline"></i>
           </div>
           <div>
-            <%= link_to(about_path, class: "bg-lime-600 rounded px-2 py-1 text-xs") do %>
-              <i class="fa-solid fa-info"></i>
-            <% end %>
+            <a href="/bookmarks" class="mr-2">
+              <i class="fa-solid fa-bookmark text-lg sm:text-base">&nbsp;</i>
+              <span class="hidden sm:inline">字詞紀錄簿</span>
+            </a>
           </div>
-          <div class="block sm:hidden">
-            <i class="fa-solid fa-caret-down"></i>
+          <div class="hidden sm:block">
+            <a href="/info" class="mr-2">
+              <i class="fa-solid fa-file text-lg sm:text-base">&nbsp;</i>
+              <span class="inline">相關資訊</span>
+            </a>
           </div>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <div class="hidden sm:block">
+              <a class="bg-lime-900 rounded px-2 py-1 text-xs mr-2" href="/statistics">
+                <i class="fa-solid fa-chart-simple"></i>
+              </a>
+            </div>
+            <div>
+              <a class="bg-lime-600 rounded px-2 py-1 text-xs" href="/about">
+                <i class="fa-solid fa-info"></i>
+              </a>
+            </div>
+            <!-- label 控制 checkbox -->
+            <label for="mobile-menu-toggle" class="block sm:hidden cursor-pointer">
+              <i class="fa-solid fa-caret-down peer-checked:rotate-180 transition-transform"></i>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 手機版展開選單 - 使用 peer-checked 控制顯示 -->
+      <div class="hidden peer-checked:block sm:hidden bg-gray-700 px-4 py-3 space-y-3">
+        <div>
+          <a href="/info" class="flex items-center">
+            <i class="fa-solid fa-file text-lg mr-3">&nbsp;</i>
+            <span>相關資訊</span>
+          </a>
+        </div>
+        <div>
+          <a href="/statistics" class="flex items-center">
+            <i class="fa-solid fa-chart-simple text-lg mr-3"></i>
+            <span>統計資料</span>
+          </a>
         </div>
       </div>
     </div>
