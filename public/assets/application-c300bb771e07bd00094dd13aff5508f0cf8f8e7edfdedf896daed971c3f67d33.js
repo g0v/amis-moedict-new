@@ -110,11 +110,16 @@ document.addEventListener( "turbo:load", function() {
   }
 
   // 在 /about 頁面時，點字典名稱會跳回首頁，然後自動轉向最後查找的頁面
-  if ( currentPath.indexOf( "/about") !== -1 ) {
+  if ( currentPath.includes("/about") ||
+       currentPath.includes("/statistics") ||
+       currentPath.startsWith("/info") ) {
     $( "#select-dictionary-modal" ).on( "click", function() {
       window.location.href = "/";
     });
   }
+
+  // 設定 navbar 辭典名稱
+  $( "#dictionary-name" ).html(`<span class="sm:hidden">${DICTIONARY[settings.mainDictionary][0]}</span><span class="hidden sm:inline">${DICTIONARY[settings.mainDictionary]}</span>`);
 
   // 根據 settings 設定辭典畫面 START
   // 如果是 /terms/:name，依據辭典白名單，把不顯示的 hide
@@ -124,7 +129,6 @@ document.addEventListener( "turbo:load", function() {
       ( currentPath.indexOf( "/dictionaries" ) === -1 )
      ) {
 
-    $( "#dictionary-name" ).html( DICTIONARY[settings.mainDictionary] );
     Object.keys(DICTIONARY).forEach(function(el){
       if (!settings.displayList.includes(el)) {
         $( `#dictionary-${el}` ).hide();
