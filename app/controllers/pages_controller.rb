@@ -2,7 +2,7 @@
 
 class PagesController < ApplicationController
   def statistics
-    @dictionaries = Dictionary.includes(:terms).all.sort_by { |d| -d.terms.size }
+    @dictionaries = Dictionary.includes(:terms).order(:terms_count)
 
     @examples_by_dict = Example.joins(description: { term: :dictionary })
                                .group('dictionaries.id')
