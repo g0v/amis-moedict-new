@@ -55,17 +55,20 @@
         </div>
       </div>
       <div>
+        <%= link_to(statistics_path, class: "bg-lime-900 rounded px-2 py-1 text-xs mr-2") do %>
+          <i class="fa-solid fa-chart-simple"></i>
+        <% end %>
         <%= link_to(about_path, class: "bg-lime-600 rounded px-2 py-1 text-xs") do %>
           <i class="fa-solid fa-info"></i>
         <% end %>
       </div>
     </div>
-    
+
     <div>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
     </div>
-    
+
     <div class="flex flex-col sm:flex-row">
       <%= yield %>
     </div>
