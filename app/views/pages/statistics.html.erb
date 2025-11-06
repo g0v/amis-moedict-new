@@ -110,7 +110,6 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <% @dictionaries.each_with_index do |dictionary, index| %>
-              <% terms_count = dictionary.terms.size %>
               <% examples_count = @examples_by_dict[dictionary.id] || 0 %>
               <% synonyms_count = @synonyms_by_dict[dictionary.id] || 0 %>
               <% 
@@ -140,7 +139,7 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 font-medium">
-                  <%= number_with_delimiter(terms_count) %>
+                  <%= number_with_delimiter(dictionary.terms_count) %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
                   <%= number_with_delimiter(examples_count) %>
