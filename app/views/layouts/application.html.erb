@@ -56,20 +56,29 @@
             <span class="hidden sm:inline">字詞紀錄簿</span>
           </a>
         </div>
-        <div>
+        <div class="hidden sm:block">
           <a href="/info" class="mr-2">
             <i class="fa-solid fa-file text-lg sm:text-base">&nbsp;</i>
-            <span class="hidden sm:inline">相關資訊</span>
+            <span class="inline">相關資訊</span>
           </a>
         </div>
       </div>
       <div>
-        <%= link_to(statistics_path, class: "bg-lime-900 rounded px-2 py-1 text-xs mr-2") do %>
-          <i class="fa-solid fa-chart-simple"></i>
-        <% end %>
-        <%= link_to(about_path, class: "bg-lime-600 rounded px-2 py-1 text-xs") do %>
-          <i class="fa-solid fa-info"></i>
-        <% end %>
+        <div class="flex items-center space-x-2">
+          <div class="hidden sm:block">
+            <%= link_to(statistics_path, class: "bg-lime-900 rounded px-2 py-1 text-xs mr-2") do %>
+              <i class="fa-solid fa-chart-simple"></i>
+            <% end %>
+          </div>
+          <div>
+            <%= link_to(about_path, class: "bg-lime-600 rounded px-2 py-1 text-xs") do %>
+              <i class="fa-solid fa-info"></i>
+            <% end %>
+          </div>
+          <div class="block sm:hidden">
+            <i class="fa-solid fa-caret-down"></i>
+          </div>
+        </div>
       </div>
     </div>
 
