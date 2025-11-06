@@ -15,8 +15,9 @@ Rails.application.routes.draw do
     get "terms/:id" => "dictionary_terms#show", as: :term, constraints: { id: /.*/ }
   end
 
-  get "bookmarks" => "pages#bookmarks", as: :bookmarks
-  get "about"     => "pages#about",     as: :about
+  get "bookmarks"  => "pages#bookmarks",  as: :bookmarks
+  get "about"      => "pages#about",      as: :about
+  get "statistics" => "pages#statistics", as: :statistics
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
