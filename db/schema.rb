@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_04_050615) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_06_154253) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -58,6 +58,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_04_050615) do
     t.string "dialect", limit: 15
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "terms_count", default: 0
+    t.index ["terms_count"], name: "index_dictionaries_on_terms_count"
   end
 
   create_table "examples", force: :cascade do |t|
