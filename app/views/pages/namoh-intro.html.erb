@@ -1,10 +1,103 @@
+<% content_for(:head) do %>
+  <style>
+    /* 收合狀態：顯示「展開完整內容」，隱藏「收起完整內容」 */
+    .toggle-details .when-closed {
+      display: inline;
+    }
+    .toggle-details .when-open {
+      display: none;
+    }
+
+    /* 展開狀態：隱藏「展開完整內容」，顯示「收起完整內容」 */
+    .toggle-details[open] .when-closed {
+      display: none;
+    }
+    .toggle-details[open] .when-open {
+      display: inline;
+    }
+
+    /* 箭頭旋轉效果 */
+    .toggle-details .arrow-icon {
+      transition: transform 0.2s ease;
+    }
+    .toggle-details[open] .arrow-icon {
+      transform: rotate(180deg);
+    }
+  </style>
+<% end %>
+
 <div id="main-content" class="mt-[75px] p-4 sm:mt-0 sm:w-3/4 bg-gray-50 mx-auto">
   <div class="bg-white rounded-lg shadow-md p-6 sm:p-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">阿美族語言書寫系統 - 原住民族委員會</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">吳明義阿美族語辭典 - 緒論</h1>
 
     <!-- 文件資訊說明 -->
     <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
-      <div class="space-y-2 text-gray-700">
+      <div class="space-y-1 text-gray-700 text-sm">
+        <p class="font-semibold text-base mb-2">目錄</p>
+
+        <p>1. 阿美族概述</p>
+        <p class="ml-4">1.1 阿美族的源流</p>
+        <p class="ml-8">1.1.1 伊伯利安和孟古人種的混血後裔說</p>
+        <p class="ml-8">1.1.2 大陸發祥說</p>
+        <p class="ml-8">1.1.3. 本地發祥說</p>
+
+        <!-- 使用 details 標籤實現展開/收合 -->
+        <details class="mt-2 toggle-details">
+          <summary class="cursor-pointer text-blue-600 hover:text-blue-800 font-semibold list-none flex items-center gap-1">
+            <span class="when-closed">展開完整內容</span>
+            <span class="when-open hidden">收起完整內容</span>
+            <svg class="w-4 h-4 arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+
+          <div class="mt-2">
+            <p class="ml-4">1.2 阿美族由點而面的擴散</p>
+            <p class="ml-8">1.2.1 祖源神話傳說的起源說</p>
+            <p class="ml-8">1.2.2 語言的分化與族群的擴散</p>
+            <p class="ml-4">1.3 阿美族部落的形成</p>
+            <p class="ml-8">1.3.1 氏族與氏族之間或部落與部落之間的戰爭</p>
+            <p class="ml-8">1.3.2 與其他族群之間的戰爭</p>
+            <p class="ml-8">1.3.3 對外來政權的反抗所引起的流血事件</p>
+            <p class="ml-4">1.4 阿美族的亞群分佈與人口</p>
+            <p class="ml-4">1.5 社會制度</p>
+            <p class="ml-8">1.5.1 部落政治</p>
+            <p class="ml-8">1.5.2 家庭制度</p>
+            <p class="ml-4">1.6 重要祭典</p>
+            <p class="ml-8">1.6.1 漁撈祭</p>
+            <p class="ml-8">1.6.2 豐年祭 "<a href="/terms/ilisin" class="text-blue-600 hover:text-blue-800 underline break-all">ilisin (一般用語)</a> / <a href="/terms/malalikid" class="text-blue-600 hover:text-blue-800 underline break-all">malalikid (北部阿美語)</a> / <a href="/terms/kiloma'an" class="text-blue-600 hover:text-blue-800 underline break-all">kiloma'an (南部阿美語)</a>"</p>
+            <p>2. 阿美族語的語音符號與書寫系統的發展</p>
+            <p class="ml-4">2.1 書寫系統的沿革</p>
+            <p class="ml-8">2.1.1 1990前的舊語音符號與書寫系統</p>
+            <p class="ml-8">2.1.2 1991年至2005年間的書寫系統</p>
+            <p class="ml-4">2.2 現行書寫系統與拼音範例</p>
+            <p class="ml-8">2.2.1 阿美族五亞群的書寫系統</p>
+            <p class="ml-8">2.2.2 阿美族語書寫系統暨拼音範例</p>
+            <p class="ml-4">2.3 喉塞音書寫的省略原則（採參朱清義阿美族語講座講義）</p>
+            <p>3. 阿美族語的詞彙及語法結構</p>
+            <p class="ml-4">3.1 阿美族語的詞彙結構</p>
+            <p class="ml-8">3.1.1 阿美族語的詞形模式、音節與重音</p>
+            <p class="ml-8">3.1.2 構詞與詞綴</p>
+            <p class="ml-8">3.1.3 外來借詞</p>
+            <p class="ml-8">3.1.4 新創詞</p>
+            <p class="ml-8">3.1.5 結合詞</p>
+            <p class="ml-8">3.1.6 時代新詞</p>
+            <p class="ml-4">3.2 阿美族語的語法結構</p>
+            <p class="ml-8">3.2.1 詞序</p>
+            <p class="ml-8">3.2.2 格符號系統</p>
+            <p class="ml-8">3.2.3 名詞</p>
+            <p class="ml-8">3.2.4 代名詞</p>
+            <p class="ml-8">3.2.5 阿美族的數詞概念</p>
+            <p class="ml-8">3.2.6 形容詞</p>
+            <p class="ml-8">3.2.7 動詞</p>
+            <p class="ml-8">3.2.8 動名詞</p>
+            <p class="ml-8">3.2.9 副詞</p>
+            <p class="ml-8">3.2.10 助詞</p>
+            <p class="ml-8">3.2.11 連接詞</p>
+            <p class="ml-8">3.2.12 前置詞</p>
+            <p class="ml-8">3.2.13 感嘆詞</p>
+          </div>
+        </details>
       </div>
     </div>
 
