@@ -28,7 +28,7 @@ class Stem < ApplicationRecord
 
   private
 
-  def assign_has_term
-    self.has_term = Term.exists?(name: name)
-  end
+    def assign_has_term
+      self.has_term = Term.exists?(name: name)
+    end
 end

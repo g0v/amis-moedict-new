@@ -5,11 +5,11 @@ class PagesController < ApplicationController
     @dictionaries = Dictionary.order(terms_count: :desc)
 
     @examples_by_dict = Example.joins(description: { term: :dictionary })
-                               .group('dictionaries.id')
+                               .group("dictionaries.id")
                                .count
 
     @synonyms_by_dict = Synonym.joins(description: { term: :dictionary })
-                               .group('dictionaries.id')
+                               .group("dictionaries.id")
                                .count
 
     @total_terms = Term.count

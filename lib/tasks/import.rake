@@ -756,25 +756,25 @@ def get_namoh_term(json_object)
 
   if dictionary.terms.exists?(name: json_object["t"])
     if stem.present? && json_object["term_source"].present?
-      term = dictionary.terms.where(name: json_object["t"], stem_id: stem.id).select{ |t| t.term_source == json_object["term_source"] }.first
+      term = dictionary.terms.where(name: json_object["t"], stem_id: stem.id).select { |t| t.term_source == json_object["term_source"] }.first
       if term.blank?
         term = dictionary.terms.create(name: json_object["t"], stem_id: stem.id, is_stem: json_object["is_stem"], term_source: json_object["term_source"])
       end
     elsif stem.blank? && json_object["term_source"].blank?
-      term = dictionary.terms.where(name: json_object["t"], stem_id: nil).select{ |t| t.term_source.blank? }.first
+      term = dictionary.terms.where(name: json_object["t"], stem_id: nil).select { |t| t.term_source.blank? }.first
       if term.blank?
         term = dictionary.terms.create(name: json_object["t"], is_stem: json_object["is_stem"])
       end
     else
       if stem.present?
-        term = dictionary.terms.where(name: json_object["t"], stem_id: stem.id).select{ |t| t.term_source.blank? }.first
+        term = dictionary.terms.where(name: json_object["t"], stem_id: stem.id).select { |t| t.term_source.blank? }.first
         if term.blank?
           term = dictionary.terms.create(name: json_object["t"], stem_id: stem.id, is_stem: json_object["is_stem"])
         end
       end
 
       if json_object["term_source"].present?
-        term = dictionary.terms.where(name: json_object["t"], stem_id: nil).select{ |t| t.term_source == json_object["term_source"] }.first
+        term = dictionary.terms.where(name: json_object["t"], stem_id: nil).select { |t| t.term_source == json_object["term_source"] }.first
         if term.blank?
           term = dictionary.terms.create(name: json_object["t"], is_stem: json_object["is_stem"], term_source: json_object["term_source"])
         end
