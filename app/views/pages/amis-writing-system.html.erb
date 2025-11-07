@@ -1,0 +1,74 @@
+<div id="main-content" class="mt-[75px] p-4 sm:mt-0 sm:w-3/4 bg-gray-50 mx-auto">
+  <div class="bg-white rounded-lg shadow-md p-6 sm:p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">阿美族語言書寫系統 - 原住民族委員會</h1>
+
+    <!-- 文件資訊說明 -->
+    <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+      <div class="space-y-2 text-gray-700">
+        <p>
+          <span class="font-semibold">公告網址：</span>
+          <%= link_to "https://www.cip.gov.tw/zh-tw/news/data-list/964B9BFAAA44B32A/B2B42DBDE795CEE4F1902311059684DE-info.html",
+                      "https://www.cip.gov.tw/zh-tw/news/data-list/964B9BFAAA44B32A/B2B42DBDE795CEE4F1902311059684DE-info.html",
+                      class: "text-blue-600 hover:text-blue-800 underline break-all",
+                      target: "_blank",
+                      rel: "noopener noreferrer" %>
+        </p>
+        <p>
+          <span class="font-semibold">版本：</span>
+          民國113年10月21日原民教字第11300502531號，修正「原住民族語言書寫系統」。
+        </p>
+        <p>
+          <span class="font-semibold">第2-4頁：</span>阿美語書寫系統修正說明
+        </p>
+        <p>
+          <span class="font-semibold">第38-39頁：</span>阿美語書寫系統
+        </p>
+      </div>
+    </div>
+
+    <!-- PDF 顯示區域 -->
+    <div class="mt-6">
+      <div class="border border-gray-300 rounded-lg overflow-hidden bg-gray-100">
+        <object
+          data="<%= "/files/【核定】「原住民族語言書寫系統」含113年修正總說明及對照表.pdf" %>#toolbar=1&navpanes=1&scrollbar=1"
+          type="application/pdf"
+          class="w-full h-[800px] sm:h-[900px]">
+          <!-- 如果瀏覽器不支援 object 標籤，顯示替代內容 -->
+          <div class="flex flex-col items-center justify-center h-full p-8">
+            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+            <p class="text-gray-600 mb-4">您的瀏覽器無法顯示 PDF 檔案</p>
+            <%= link_to "點擊此處下載 PDF",
+                        "/files/【核定】「原住民族語言書寫系統」含113年修正總說明及對照表.pdf",
+                        class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg",
+                        target: "_blank" %>
+          </div>
+        </object>
+      </div>
+
+      <!-- 下載按鈕 -->
+      <div class="mt-4 flex justify-center gap-4">
+        <%= link_to "/files/【核定】「原住民族語言書寫系統」含113年修正總說明及對照表.pdf",
+                    class: "inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200",
+                    target: "_blank" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+          在新視窗開啟
+        <% end %>
+
+        <%= link_to "/files/【核定】「原住民族語言書寫系統」含113年修正總說明及對照表.pdf",
+                    class: "inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-200",
+                    download: true do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          下載 PDF
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

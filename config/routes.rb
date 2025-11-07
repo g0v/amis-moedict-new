@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get "about"      => "pages#about",      as: :about
   get "statistics" => "pages#statistics", as: :statistics
   get "info"       => "pages#info",       as: :info
+  get "amis-writing-system" => "pages#amis-writing-system", as: :amis_writing_system
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
