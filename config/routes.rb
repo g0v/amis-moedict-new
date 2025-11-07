@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get "pourrias-poinsot-amis-han-intro" => "pages#pourrias-poinsot-amis-han-intro", as: :pourrias_poinsot_amis_han_intro
   get "namoh-intro" => "pages#namoh-intro", as: :namoh_intro
   get "namoh-recommendation" => "pages#namoh-recommendation", as: :namoh_recommendation
+  get "namoh-how-to-use" => "pages#namoh-how-to-use", as: :namoh_how_to_use
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
