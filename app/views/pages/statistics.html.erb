@@ -112,25 +112,13 @@
             <% @dictionaries.each_with_index do |dictionary, index| %>
               <% examples_count = @examples_by_dict[dictionary.id] || 0 %>
               <% synonyms_count = @synonyms_by_dict[dictionary.id] || 0 %>
-              <% 
-                # 根據辭典名稱取得對應顏色
-                color_classes = case dictionary.color
-                when "blue" then { bg: "bg-blue-100", text: "text-blue-700" }
-                when "gray" then { bg: "bg-gray-100", text: "text-gray-700" }
-                when "green" then { bg: "bg-green-100", text: "text-green-700" }
-                when "red" then { bg: "bg-red-100", text: "text-red-700" }
-                when "indigo" then { bg: "bg-indigo-100", text: "text-indigo-700" }
-                when "yellow" then { bg: "bg-yellow-100", text: "text-yellow-700" }
-                else { bg: "bg-purple-100", text: "text-purple-700" }
-                end
-              %>
               
               <tr class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-10 w-10">
-                      <span class="inline-flex items-center justify-center h-10 w-10 rounded-full <%= color_classes[:bg] %>">
-                        <span class="text-sm font-medium leading-none <%= color_classes[:text] %>"><%= dictionary.name[0] %></span>
+                      <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-<%= dictionary.color %>-600 text-white">
+                        <span class="text-sm font-medium leading-none text-white"><%= dictionary.name[0] %></span>
                       </span>
                     </div>
                     <div class="ml-4">
