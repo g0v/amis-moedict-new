@@ -220,9 +220,9 @@
                         <% end %>
                       <% else %>
                         <span class="bg-stone-500 text-white text-sm p-0.5 ml-5 mr-2">同</span>
-                        <% description.synonyms.alts.each do |synonym_alt| %>
-                          <%= linked_term(record: synonym_alt, dictionary: @dictionary).html_safe %>
-                        <% end %>
+                        <%= description.synonyms.alts.map { |synonym_alt|
+                          linked_term(record: synonym_alt, dictionary: @dictionary)
+                        }.join('、').html_safe %>
                       <% end %>
                     </p>
                   <% end %>
