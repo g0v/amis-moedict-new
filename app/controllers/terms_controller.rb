@@ -16,7 +16,7 @@ class TermsController < ApplicationController
 
     arel_dictionary = Dictionary.arel_table
     id_case_statement = Arel::Nodes::Case.new(arel_dictionary[:id])
-    [1, 11, 2, 3, 4, 5, 6, 7, 8, 9, 10].each_with_index do |id, i|
+    [ 1, 11, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].each_with_index do |id, i|
       id_case_statement.when(id).then(i+1)
     end
     id_case_statement.else(10000)
