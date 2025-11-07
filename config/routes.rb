@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get "statistics" => "pages#statistics", as: :statistics
   get "info"       => "pages#info",       as: :info
   get "amis-writing-system" => "pages#amis-writing-system", as: :amis_writing_system
+  get "amis-writing-system-pdf" => "pages#amis-writing-system-pdf", as: :amis_writing_system_pdf
   get "pourrias-poinsot-amis-han-intro" => "pages#pourrias-poinsot-amis-han-intro", as: :pourrias_poinsot_amis_han_intro
   get "namoh-intro" => "pages#namoh-intro", as: :namoh_intro
   get "namoh-recommendation" => "pages#namoh-recommendation", as: :namoh_recommendation
