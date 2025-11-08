@@ -44,9 +44,10 @@ class Example < ApplicationRecord
   private
 
     def clean_content
-      self.content_amis = content_amis.strip
-      self.content_zh = content_zh.strip if content_zh.present?
-      self.content_en = content_en.strip if content_en.present?
-      self.content_fr = content_fr.strip if content_fr.present?
+      self.content_amis     = content_amis.strip
+      self.content_amis_raw = content_amis.gsub(/`|~/, "").strip
+      self.content_zh       = content_zh.gsub(/`|~/, "").strip if content_zh.present?
+      self.content_en       = content_en.gsub(/`|~/, "").strip if content_en.present?
+      self.content_fr       = content_fr.gsub(/`|~/, "").strip if content_fr.present?
     end
 end
