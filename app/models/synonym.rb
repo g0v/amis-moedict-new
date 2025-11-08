@@ -35,6 +35,7 @@ class Synonym < ApplicationRecord
   private
 
     def clean_content
-      self.content = content.strip
+      self.content     = content.strip
+      self.content_raw = content.gsub(/`|~/, "").strip
     end
 end
