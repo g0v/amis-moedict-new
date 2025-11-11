@@ -15,10 +15,11 @@ Rails.application.routes.draw do
     get "terms/:id" => "dictionary_terms#show", as: :term, constraints: { id: /.*/ }
   end
 
-  get "bookmarks"  => "pages#bookmarks",  as: :bookmarks
-  get "about"      => "pages#about",      as: :about
+  get "bookmarks" => "pages#bookmarks", as: :bookmarks
+  get "about" => "pages#about", as: :about
   get "statistics" => "pages#statistics", as: :statistics
-  get "info"       => "pages#info",       as: :info
+  get "how-to-use" => "pages#how-to-use", as: :how_to_use
+  get "info" => "pages#info", as: :info
   get "amis-writing-system" => "pages#amis-writing-system", as: :amis_writing_system
   get "amis-writing-system-pdf" => "pages#amis-writing-system-pdf", as: :amis_writing_system_pdf
   get "pourrias-poinsot-amis-han-intro" => "pages#pourrias-poinsot-amis-han-intro", as: :pourrias_poinsot_amis_han_intro
