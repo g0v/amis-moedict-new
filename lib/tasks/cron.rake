@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "open3"
 
 namespace :cron do
   desc "匯出所有的 Term#name 到 tmp/terms.txt"
@@ -49,6 +50,20 @@ namespace :cron do
         end
       end
     end
+  end
+
+  desc "更新蔡中涵大辭典"
+  task update_safolu_from_old_amis_moedict: :environment do
+    system("rm -rf tmp/dict/s;cd /tmp;rm master.zip;rm -rf amis-moedict-master;curl -L -O https://github.com/g0v/amis-moedict/archive/refs/heads/master.zip;unzip -q master.zip 'amis-moedict-master/docs/s/*' -d .;mkdir -p /srv/web/tmp/dict/;mv amis-moedict-master/docs/s /srv/web/tmp/dict/")
+
+    # 確認舊版 amis-moedict 蔡中涵大辭典的檔案數量
+    command = "cd /srv/web;ls tmp/dict/s|wc -l"
+    stdout, stderr, status = Open3.capture3(command)
+    puts "#{command} #=> #{stdout}"
+
+    Rake::Task["import:safolu"].invoke
+    Rake::Task["cron:export_terms_txt"].invoke
+    Rake::Task["cron:update_linked_terms_to_examples_and_synonyms"].invoke
   end
 end
 
