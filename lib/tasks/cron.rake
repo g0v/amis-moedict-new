@@ -23,7 +23,7 @@ namespace :cron do
       Example.transaction do
         examples.each do |example|
           if example.content_amis.present?
-            example.update(content_amis_raw: example.content_amis.gsub(/`|~/, ""))
+            example.update(content_amis_raw: example.content_amis.gsub(/`|~/, "")) if example.content_amis_raw.blank?
           else
             next
           end
@@ -40,7 +40,7 @@ namespace :cron do
       Synonym.transaction do
         synonyms.each do |synonym|
           if synonym.content.present?
-            synonym.update(content_raw: synonym.content.gsub(/`|~/, ""))
+            synonym.update(content_raw: synonym.content.gsub(/`|~/, "")) if synonym.content_raw.blank?
           else
             next
           end
