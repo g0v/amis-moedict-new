@@ -76,9 +76,10 @@ namespace :import do
 
               # 確認 example_content 含有 U+FFF9,A,B
               parsed_example = parse_multilingual(example_content)
+              parsed_example[:amis] = parsed_example[:amis].gsub(/`|~/, "").strip if parsed_example[:amis].present?
               example.update(
-                content_amis: parsed_example[:amis],
-                content_zh:   parsed_example[:chinese]
+                content_amis_raw: parsed_example[:amis],
+                content_zh: parsed_example[:chinese]
               )
             end
           end
@@ -88,7 +89,8 @@ namespace :import do
               reference = description.synonyms.refs[x].presence || description.synonyms.create
 
               # 確認 reference_content 不含 U+FFF8,9,A,B,F
-              reference.update(content: reference_content, term_type: "參見")
+              reference_content = reference_content.gsub(/`|~/, "").strip
+              reference.update(content_raw: reference_content, term_type: "參見")
             end
           end
 
@@ -98,7 +100,8 @@ namespace :import do
             synonym = description.synonyms.alts[k].presence || description.synonyms.create
 
             # 確認 synonym_content 不含 U+FFF8,9,A,B,F
-            synonym.update(content: synonym_content, term_type: "同")
+            synonym_content = synonym_content.gsub(/`|~/, "").strip
+            synonym.update(content_raw: synonym_content, term_type: "同")
           end
         end
       end

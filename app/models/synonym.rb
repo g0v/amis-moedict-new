@@ -35,7 +35,9 @@ class Synonym < ApplicationRecord
   private
 
     def clean_content
-      self.content     = content.strip
-      self.content_raw = content.gsub(/`|~/, "").strip
+      if content_changed?
+        self.content     = content.strip
+        self.content_raw = content.gsub(/`|~/, "").strip
+      end
     end
 end
