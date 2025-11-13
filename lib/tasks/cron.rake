@@ -68,9 +68,13 @@ namespace :cron do
 end
 
 def create_link(content, terms_hash)
-  words = content.scan(/[^".,:;?!\/ -]+/)
+  # Capture both words and the punctuation/spaces between them
+  content_parts = content.scan(/[^".,:?!\/ -]+|[".,:?!\/ -]+/)
 
-  words.map do |word|
+  content_parts.map do |content_part|
+    next content_part if content_part.match?(/^[".,:?!\/ -]+$/)
+
+    word = content_part
     linked_word = ""
 
     terms = terms_hash[word.size.to_s]
@@ -102,7 +106,7 @@ def create_link(content, terms_hash)
             part
           else
             terms = terms_hash[part.size.to_s]
-            if terms.include?(part) || terms.include?(part.downcase)
+            if terms.present? && (terms.include?(part) || terms.include?(part.downcase))
               "`#{part}~"
             else
               part
@@ -113,5 +117,5 @@ def create_link(content, terms_hash)
     end
 
     linked_word.present? ? linked_word : word
-  end.join(" ")
+  end.join
 end
