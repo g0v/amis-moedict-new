@@ -29,7 +29,7 @@ class Synonym < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[content created_at description_id id id_value term_type updated_at]
+    %w[content content_raw created_at description_id id id_value term_type updated_at]
   end
 
   private
