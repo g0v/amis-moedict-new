@@ -50,14 +50,18 @@ namespace :import do
         next if json_object["h"].empty?
 
         term = dictionary.terms.find_or_create_by(name: json_object["t"])
+        # binding.irb if term.id > 111126
         if json_object["tag"].present?
           puts filename if json_object["tag"].match(/[疊 ](\d)/).blank?
           repetition = json_object["tag"].match(/[疊 ](\d)/)[1]
           term.update(repetition: repetition)
+          # binding.irb if term.saved_changes.present?
         end
         if json_object["stem"].present?
           stem = Stem.find_or_create_by(name: json_object["stem"])
+          # binding.irb if stem.id > 10211
           term.update(stem_id: stem.id)
+          # binding.irb if term.saved_changes.present?
         end
 
         json_object["descriptions"] = []
@@ -67,6 +71,8 @@ namespace :import do
 
           # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
           description.update(content_zh: description_hash["f"])
+          # binding.irb if description.id > 146340
+          # binding.irb if description.saved_changes.present?
 
           if description_hash["e"].present?
             description_hash["e"].select! do |example_content|
@@ -82,6 +88,8 @@ namespace :import do
                 content_amis_raw: parsed_example[:amis],
                 content_zh: parsed_example[:chinese]
               )
+              # binding.irb if example.errors.blank? && example.id > 90196
+              # binding.irb if example.saved_changes.present?
             end
           end
 
@@ -92,6 +100,8 @@ namespace :import do
               # 確認 reference_content 不含 U+FFF8,9,A,B,F
               reference_content = reference_content.gsub(/`|~/, "").strip
               reference.update(content_raw: reference_content, term_type: "參見")
+              # binding.irb if reference.id > 54988
+              # binding.irb if reference.saved_changes.present?
             end
           end
 
@@ -103,6 +113,8 @@ namespace :import do
             # 確認 synonym_content 不含 U+FFF8,9,A,B,F
             synonym_content = synonym_content.gsub(/`|~/, "").strip
             synonym.update(content_raw: synonym_content, term_type: "同")
+            # binding.irb if synonym.id > 54988
+            # binding.irb if synonym.saved_changes.present?
           end
         end
       end
