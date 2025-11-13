@@ -23,12 +23,14 @@ namespace :cron do
       Example.transaction do
         examples.each do |example|
           if example.content_amis.present?
+            # binding.irb if example.content_amis_raw != example.content_amis.gsub(/`|~/, "")
             example.update(content_amis_raw: example.content_amis.gsub(/`|~/, "")) if example.content_amis_raw.blank?
           else
             next
           end
 
           content_amis = create_link(example.content_amis_raw, terms_hash)
+          # binding.irb if example.content_amis != content_amis
           example.update(content_amis: content_amis)
         end
       end
@@ -40,12 +42,14 @@ namespace :cron do
       Synonym.transaction do
         synonyms.each do |synonym|
           if synonym.content.present?
+            # binding.irb if synonym.content_raw != synonym.content.gsub(/`|~/, "")
             synonym.update(content_raw: synonym.content.gsub(/`|~/, "")) if synonym.content_raw.blank?
           else
             next
           end
 
           content = create_link(synonym.content_raw, terms_hash)
+          # binding.irb if synonym.content != content
           synonym.update(content: content)
         end
       end
