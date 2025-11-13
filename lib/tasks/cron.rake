@@ -4,6 +4,8 @@ require "open3"
 namespace :cron do
   desc "匯出所有的 Term#name 到 tmp/terms.txt"
   task export_terms_txt: :environment do
+    puts Time.now.to_s + "\tcron:export_terms_txt"
+
     terms = Term.distinct
                 .pluck(:name)
                 .reject { |name| name.match?(/\s|\(|\)/) }
@@ -13,6 +15,8 @@ namespace :cron do
 
   desc "Example 和 Synonym 更新 linked term"
   task update_linked_terms_to_examples_and_synonyms: :environment do
+    puts Time.now.to_s + "\tcron:update_linked_terms_to_examples_and_synonyms START"
+
     terms_txt = File.read("tmp/terms.txt")
     terms_hash = JSON.parse(terms_txt)
 
@@ -54,10 +58,14 @@ namespace :cron do
         end
       end
     end
+
+    puts Time.now.to_s + "\tcron:update_linked_terms_to_examples_and_synonyms END"
   end
 
   desc "更新蔡中涵大辭典"
   task update_safolu_from_old_amis_moedict: :environment do
+    puts Time.now.to_s + "\tcron:update_safolu_from_old_amis_moedict START"
+
     system("rm -rf tmp/dict/s;cd /tmp;rm master.zip;rm -rf amis-moedict-master;curl -L -O https://github.com/g0v/amis-moedict/archive/refs/heads/master.zip;unzip -q master.zip 'amis-moedict-master/docs/s/*' -d .;mkdir -p /srv/web/tmp/dict/;mv amis-moedict-master/docs/s /srv/web/tmp/dict/")
 
     # 確認舊版 amis-moedict 蔡中涵大辭典的檔案數量
@@ -68,6 +76,8 @@ namespace :cron do
     Rake::Task["import:safolu"].invoke
     Rake::Task["cron:export_terms_txt"].invoke
     Rake::Task["cron:update_linked_terms_to_examples_and_synonyms"].invoke
+
+    puts Time.now.to_s + "\tcron:update_safolu_from_old_amis_moedict END"
   end
 end
 
