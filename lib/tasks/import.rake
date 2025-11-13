@@ -34,6 +34,7 @@ namespace :import do
 
       json["h"].each { |el| el.delete("name") if el["name"].blank? }
 
+      json["t"] = json["t"].strip
       term_upper_name = json["h"].pluck("name").uniq.join
       if term_upper_name.present?
         json_with_upper_name = {}
