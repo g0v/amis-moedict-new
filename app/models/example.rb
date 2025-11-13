@@ -30,7 +30,7 @@ class Example < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[content content_zh content_amis content_en content_fr id description_id created_at updated_at customized_text]
+    %w[content_zh content_amis content_amis_raw content_en content_fr id description_id created_at updated_at customized_text]
   end
 
   def audio_url
