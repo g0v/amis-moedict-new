@@ -84,14 +84,24 @@ namespace :import do
 
               # 確認 example_content 含有 U+FFF9,A,B
               parsed_example = parse_multilingual(example_content)
-              parsed_example[:amis] = parsed_example[:amis].gsub(/`|~/, "").strip if parsed_example[:amis].present?
-              example.update(
-                content_amis_raw: parsed_example[:amis],
-                content_zh: parsed_example[:chinese]
-              )
-              puts example.errors.inspect if example.errors.present?
-              # binding.irb if example.errors.blank? && example.id > 90196
-              # binding.irb if example.saved_changes.present?
+              if parsed_example[:amis].present?
+                parsed_example[:amis] = parsed_example[:amis].gsub(/`|~/, "").strip
+                if example.content_amis.present?
+                  example.update(
+                    content_amis_raw: parsed_example[:amis],
+                    content_zh: parsed_example[:chinese]
+                  )
+                else
+                  example.update(
+                    content_amis: parsed_example[:amis],
+                    content_amis_raw: parsed_example[:amis],
+                    content_zh: parsed_example[:chinese]
+                  )
+                end
+                puts example.errors.inspect if example.errors.present?
+                # binding.irb if example.errors.blank? && example.id > 90196
+                # binding.irb if example.saved_changes.present?
+              end
             end
           end
 
@@ -101,10 +111,19 @@ namespace :import do
 
               # 確認 reference_content 不含 U+FFF8,9,A,B,F
               reference_content = reference_content.gsub(/`|~/, "").strip
-              reference.update(content_raw: reference_content, term_type: "參見")
-              puts reference.errors.inspect if reference.errors.present?
-              # binding.irb if reference.id > 54988
-              # binding.irb if reference.saved_changes.present?
+              if reference_content.present?
+                if reference.content.present?
+                  reference.update(content_raw: reference_content,
+                                   term_type: "參見")
+                else
+                  reference.update(content_raw: reference_content,
+                                   content: reference_content,
+                                   term_type: "參見")
+                end
+                puts reference.errors.inspect if reference.errors.present?
+                # binding.irb if reference.id > 54988
+                # binding.irb if reference.saved_changes.present?
+              end
             end
           end
 
@@ -115,10 +134,19 @@ namespace :import do
 
             # 確認 synonym_content 不含 U+FFF8,9,A,B,F
             synonym_content = synonym_content.gsub(/`|~/, "").strip
-            synonym.update(content_raw: synonym_content, term_type: "同")
-            puts synonym.errors.inspect if synonym.errors.present?
-            # binding.irb if synonym.id > 54988
-            # binding.irb if synonym.saved_changes.present?
+            if synonym_content.present?
+              if synonym.content.present?
+                synonym.update(content_raw: synonym_content,
+                               term_type: "同")
+              else
+                synonym.update(content_raw: synonym_content,
+                               content: synonym_content,
+                               term_type: "同")
+              end
+              puts synonym.errors.inspect if synonym.errors.present?
+              # binding.irb if synonym.id > 54988
+              # binding.irb if synonym.saved_changes.present?
+            end
           end
         end
       end
