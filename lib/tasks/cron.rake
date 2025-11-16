@@ -66,7 +66,7 @@ namespace :cron do
   task update_safolu_from_old_amis_moedict: :environment do
     puts Time.now.to_s + "\tcron:update_safolu_from_old_amis_moedict START"
 
-    exit unless Time.now.utc.hour == 4
+    exit if Rails.env.production? && Time.now.utc.hour != 20
 
     system("rm -rf tmp/dict/s;cd /tmp;rm master.zip;rm -rf amis-moedict-master;curl -L -O https://github.com/g0v/amis-moedict/archive/refs/heads/master.zip;unzip -q master.zip 'amis-moedict-master/docs/s/*' -d .;mkdir -p /srv/web/tmp/dict/;mv amis-moedict-master/docs/s /srv/web/tmp/dict/")
 
