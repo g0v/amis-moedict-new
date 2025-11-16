@@ -71,6 +71,7 @@ namespace :import do
 
           # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
           description.update(content_zh: description_hash["f"])
+          puts description.errors.inspect if description.errors.present?
           # binding.irb if description.id > 146340
           # binding.irb if description.saved_changes.present?
 
@@ -88,6 +89,7 @@ namespace :import do
                 content_amis_raw: parsed_example[:amis],
                 content_zh: parsed_example[:chinese]
               )
+              puts example.errors.inspect if example.errors.present?
               # binding.irb if example.errors.blank? && example.id > 90196
               # binding.irb if example.saved_changes.present?
             end
@@ -100,6 +102,7 @@ namespace :import do
               # 確認 reference_content 不含 U+FFF8,9,A,B,F
               reference_content = reference_content.gsub(/`|~/, "").strip
               reference.update(content_raw: reference_content, term_type: "參見")
+              puts reference.errors.inspect if reference.errors.present?
               # binding.irb if reference.id > 54988
               # binding.irb if reference.saved_changes.present?
             end
@@ -113,6 +116,7 @@ namespace :import do
             # 確認 synonym_content 不含 U+FFF8,9,A,B,F
             synonym_content = synonym_content.gsub(/`|~/, "").strip
             synonym.update(content_raw: synonym_content, term_type: "同")
+            puts synonym.errors.inspect if synonym.errors.present?
             # binding.irb if synonym.id > 54988
             # binding.irb if synonym.saved_changes.present?
           end
