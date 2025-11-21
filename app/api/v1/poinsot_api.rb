@@ -17,8 +17,8 @@ module V1
           result[:h][0][:name] = term.name if term.lower_name != term.name
           term.descriptions.each do |description|
             description_hash = { f: description.content }
-            description_hash[:e] = description.examples.map(&:content) if description.examples.present?
-            description_hash[:s] = description.synonyms.alts.map(&:content) if description.synonyms.alts.present?
+            description_hash[:e] = description.examples.pluck(&:content) if description.examples.present?
+            description_hash[:s] = description.synonyms.alts.pluck(&:content) if description.synonyms.alts.present?
             description_hash[:type] = description.description_type if description.description_type.present?
             result[:h][0][:d] << description_hash
           end
