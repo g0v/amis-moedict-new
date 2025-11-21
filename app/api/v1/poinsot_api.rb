@@ -7,7 +7,7 @@ module V1
       get ":name" do
         dictionary = Dictionary.find_by(name: "博利亞潘世光阿法字典")
         term = dictionary.terms.includes(:stem, descriptions: %i[examples synonyms]).find_by(name: params[:name])
-        console
+
         if term.present?
           result = { t: term.lower_name }
           result[:stem] = term.stem.name if term.stem.present?
