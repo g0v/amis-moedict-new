@@ -71,7 +71,7 @@ class Term < ApplicationRecord
 
   def short_description
     Rails.cache.fetch("term-#{name}-#{Date.today}", expires_in: 6.hours) do
-      term_ids = Term.select(:id).where(name: name).order(:dictionary_id).pluck(:id)
+      term_ids = Term.where(name: name).order(:dictionary_id).pluck(:id)
 
       arel_description = Description.arel_table
       case_statement = Arel::Nodes::Case.new(arel_description[:term_id])

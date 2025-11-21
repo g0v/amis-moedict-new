@@ -21,7 +21,7 @@ class TermsController < ApplicationController
     end
     id_case_statement.else(10000)
 
-    @dictionaries = Dictionary.where(id: @terms.map(&:dictionary_id).uniq).order(id_case_statement)
+    @dictionaries = Dictionary.where(id: @terms.pluck(:dictionary_id).uniq).order(id_case_statement)
     session[:last_page] = request.url
   end
 end
