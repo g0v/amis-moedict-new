@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   get "info" => "pages#info", as: :info
   get "amis-writing-system" => "pages#amis-writing-system", as: :amis_writing_system
   get "amis-writing-system-pdf" => "pages#amis-writing-system-pdf", as: :amis_writing_system_pdf
-  get "pourrias-poinsot-amis-han-intro" => "pages#pourrias-poinsot-amis-han-intro", as: :pourrias_poinsot_amis_han_intro
+  get "pourrias-poinsot-amis-han-cover-intro" => "pages#pourrias-poinsot-amis-han-cover-intro", as: :pourrias_poinsot_amis_han_cover_intro
   get "namoh-cover" => "pages#namoh-cover", as: :namoh_cover
   get "namoh-recommendation" => "pages#namoh-recommendation", as: :namoh_recommendation
   get "namoh-how-to-use" => "pages#namoh-how-to-use", as: :namoh_how_to_use
