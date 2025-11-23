@@ -1,0 +1,435 @@
+<div id="main-content" class="mt-[75px] p-4 sm:mt-0 sm:w-3/4 bg-gray-50 mx-auto">
+  <div class="bg-white rounded-lg shadow-md p-6 sm:p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">吳明義阿美族語辭典 - 附錄與參考書目</h1>
+
+    <h2 class="text-2xl font-bold text-gray-700 mb-6 mt-8">附錄</h2>
+
+    <!-- 文件資訊說明 -->
+    <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+      <div class="space-y-1 text-gray-700">
+        <p>I. 人稱代名詞</p>
+        <p>II. 指示代名詞</p>
+        <p>III. 遺留在花蓮縣境古老部落或氏族的舊數字唸法</p>
+        <p>IV. Pinang no sowal no Pangcah（阿美語的標點符號）</p>
+        <p class="ml-4">1. satera' （.）句號（full stop/period）</p>
+        <p class="ml-4">2. sacekis（,）逗點（comma）</p>
+        <p class="ml-4">3. sapela'（;）分號（semicolon）</p>
+        <p class="ml-4">4. salicay（?）問號（question mark）</p>
+        <p class="ml-4">5. safahka'（!）感嘆號（exclamation mark/point）</p>
+        <p class="ml-4">6. sakiting（-）連結號（hyphen）</p>
+        <p class="ml-4">7. salecad（—）破折號（dash）</p>
+        <p class="ml-4">8. sakidat（“ ”）引號（quotation mark）</p>
+        <p class="ml-4">9. saterek（…）（刪號）</p>
+        <p class="ml-4">10. salolop (  )（括號）(parentheses)</p>
+        <p>V. Misatata'ak to cudad (大寫)(Capitalization)</p>
+        <p>VI. 阿美族傳統部落地名一覽</p>
+      </div>
+    </div>
+
+    <!-- PDF 顯示區域 -->
+    <div class="mt-6">
+      <div class="border border-gray-300 rounded-lg overflow-hidden bg-gray-100">
+        <object
+          data="<%= "/files/吳明義阿美族語辭典-附錄.pdf" %>#toolbar=1&navpanes=1&scrollbar=1"
+          type="application/pdf"
+          class="w-full h-[800px] sm:h-[900px]">
+          <!-- 如果瀏覽器不支援 object 標籤，顯示替代內容 -->
+          <div class="flex flex-col items-center justify-center h-full p-8">
+            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+            <p class="text-gray-600 mb-4">您的瀏覽器無法顯示 PDF 檔案</p>
+            <%= link_to "點擊此處下載 PDF",
+                        "/files/吳明義阿美族語辭典-附錄.pdf",
+                        class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg",
+                        target: "_blank" %>
+          </div>
+        </object>
+      </div>
+
+      <!-- 下載按鈕 -->
+      <div class="mt-4 flex justify-center gap-4">
+        <%= link_to "/files/吳明義阿美族語辭典-附錄.pdf",
+                    class: "inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200",
+                    target: "_blank" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+          在新視窗開啟
+        <% end %>
+
+        <%= link_to "/files/吳明義阿美族語辭典-附錄.pdf",
+                    class: "inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-200",
+                    download: true do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          下載 PDF
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 參考書目 -->
+    <div class="mt-12">
+      <h3 class="text-2xl font-bold text-gray-700 mb-4">參考書目</h3>
+      <p class="text-gray-600 italic mb-6">以出版或採集年代順序排列</p>
+
+      <!-- 1. 一般人文參考資料 -->
+      <div class="mb-8">
+        <h4 class="text-xl font-semibold text-gray-700 mb-4">1. 一般人文參考資料</h4>
+
+        <div class="space-y-3 text-gray-700">
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">伊能嘉矩等</p>
+            <p>1899 《臺灣番人事情》,臺灣總督府民政部文書科。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">移川子之藏、馬淵東一、宮本延人</p>
+            <p>1935 《臺灣高砂族系統所屬の研究》,臺北帝國大學土俗人種學研究室。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">衛惠林</p>
+            <p>1953 〈臺灣東部阿美族的年齡階級制度初步研究〉,《考古人類學刊》期1,國立臺灣大學。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">安山德太郎</p>
+            <p>1953 《人間の歷史》,東京:光文社,昭和28年。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">凌純聲</p>
+            <p>1954 〈古代閩越民族與台灣土著群〉,收錄於:林熊祥編,《台灣文化論叢》第一冊。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">衛惠林</p>
+            <p>1954 〈阿美族起源神話與分類〉,收錄於:林熊祥編,《台灣文化論叢》第一冊。</p>
+            <p>1961 〈阿美的母系氏族與母系世系群〉,《中央研究院民族學研究所集刊》期12。台灣:香港,民國50年秋季,頁8–9。係衛惠林教授分別於民國39, 40年調查所得者。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李卉</p>
+            <p>1955 〈台灣及東南亞的同胞配偶型洪水傳說〉,《中國民族學報》期1。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李亦園</p>
+            <p>1957 《南勢阿美族的部落組織》,中央研究院民族所集刊 4:135–167。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Linton, Ralph</p>
+            <p>1957 The Tree of Culture, New York: Alfred A. Knopf.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Karnow, Stanley</p>
+            <p>1962 South East Asia, New York: Time Incorporated, pp. 28–29.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Hsieh, Chiao-min</p>
+            <p>1964 Taiwan-Ilha Formosa — a geography in perspective, New York: The Catholic University of America. 謝覺民原撰,姚國水譯,《台灣寶島—地理學的研究》,中華學術院中國地學研究所,1970。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">劉斌雄等</p>
+            <p>1965 《秀姑巒阿美族的社會組織》,臺北:中央研究院民族學研究所。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Hilton, P.B. & Tate, D.J.</p>
+            <p>1966 South-East Asia in World History, 3rd ed. Kuala Lumpur: Oxford University Press.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">林朝棨</p>
+            <p>1966 〈概說台灣第四紀的地史並討論其自然史和文化史的關係〉,《國立台灣大學考古人類學刊》期28,頁23–28。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">黃貴潮原著、黃宣衛編譯</p>
+            <p>1967 《宜灣阿美族三個儀式活動的記錄》,臺北:中央研究院民族學研究所。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李壬癸</p>
+            <p>1979 〈從語言的證據推論台灣土著民族的來源〉,《大陸雜誌》期59。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Tsuchida, S.</p>
+            <p>1982 "Subclassification of Amis dialects," MS.Univ. of Tokyo, Japan.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">末成道雄著</p>
+            <p>1983 《台灣アミ族の社會組織と變化》。中文版:羅素玫、何姵儀、黃淑芬等譯,《臺灣阿美族之社會組織及其變化》,中央研究院民族學研究所。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Bellwood, Peter</p>
+            <p>1985 Prehistory of the Indo-Malaysian Archipelago, Sydney: The Australian National University, 1985.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李壬癸</p>
+            <p>1991 《臺灣南島語言的語音符號系統》,臺北:教育部教育研究委員會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">黃宣衛編</p>
+            <p>1991 《東部海岸阿美族社會文化之調查研究》,台東:交通部觀光局東部海岸風景特定區管理處。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">吳明義等著</p>
+            <p>1992 《牽源》,台灣:台東交通部觀光局東部海岸風景特定區管理處。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Tsang, Cheng-hwa</p>
+            <p>l992 Archeology of the P'eng–hu Island, Taipei: The Institude of History and Philology, Academia Sinica.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Tryon, Darrel</p>
+            <p>l995 Proto – Austronesian and the major Austronesian subgroups, in Bellwood, P.J., J.F. Fox, & Tryon(ed.), The Austronesian: Historical and comparative perspective.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">許木柱</p>
+            <p>《臺灣省通志》卷3《住民志同冑篇》冊1:第1章〈總論〉第6節。南投:臺灣省文獻委員會。</p>
+            <p>1998 《阿美族的起源與擴散》刊於《臺灣原住民歷史文化學術研討會論文集》,頁255−266。南投:臺灣省文獻委員會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Blust, Robert</p>
+            <p>1999 Elizabeth Zeitoun, and Paul Jen-kuei Li, eds. "Subgrouping, Circularity and Extinction: Some Issues in Austronesian Comparative Linguistics," Selected Papers from the Eighth International Conference on Austronesian Linguistics, Taipei: Academia Sinica, pp. 31−94.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">許木柱、鄧相揚等</p>
+            <p>2000 《臺灣原住民族邵族史篇》,南投:臺灣省文獻委員會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">許木柱、廖守臣、吳明義等</p>
+            <p>2001 《臺灣原住民史—阿美族史篇》,臺灣文獻委員會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Robert., Blust</p>
+            <p>2009 The Austronesian Languages, Canberra: PL 602.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李壬癸</p>
+            <p>2010a 〈台灣東部早期族群來源及遷移史〉,《東華大學:台灣原住民族季刊》卷3期4,2010冬季號。</p>
+            <p>2010b 《珍惜台灣南島語言》,台北:前衛出版。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 語料素材與來源 -->
+      <div class="mb-8">
+        <h4 class="text-xl font-semibold text-gray-700 mb-4">2. 語料素材與來源</h4>
+
+        <div class="space-y-3 text-gray-700">
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">佐山融吉編</p>
+            <p>1913 《蕃族調查報告書》第1、2冊,臺灣總督府臨時臺灣舊慣調查會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">河野喜六、小島由道等編</p>
+            <p>1919 日本帝國學習院編。《番族慣習調查報告書》第2冊,臺灣總督府臨時臺灣舊慣調查會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">安倍明義編</p>
+            <p>1930 《蕃語研究》。蕃語研究會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">佐藤豐明編</p>
+            <p>1930–1935 〈阿眉語錄〉,分六次刊載於《南方土俗》雜誌上。臺北帝國大學土俗人種學研究室—南方土俗學會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">河野喜六編</p>
+            <p>1941 《高砂族慣習法語彙》,日本帝國學習院。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Ferrell, Raleigh</p>
+            <p>1963 The Formosan Tribes: A Preliminary Linguistic, Archaeological and Cultural Synthesis. 〈台灣土著族的考古學語言文化初步綜合研究〉,刊於《中央研究院民族學研究所集刊》期21,頁97–130。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">劉斌雄等田野調查錄音語料</p>
+            <p>1965–1967 約20小時錄音帶存檔(馬太鞍部落Unak Tafong)大頭目口述口傳文學語料。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Ferrell, Raleigh(費羅禮)</p>
+            <p>1969 Taiwan Aboriginal Groups: Problems in Cultural and Linguistic classification.〈臺灣土著的文化,語言分類探究〉,《中央研究院民族學研究所專刊》之十七。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">吳明義田野調查錄音語料</p>
+            <p>1975–2010 約有80小時錄音帶存檔(內容包含神話、傳說、演說、證道等)。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">方敏英、宋正清合編</p>
+            <p>1993 《阿美族文化》(O 'orip no 'Amis),中華民國聖經公會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Batchelor, Mary</p>
+            <p>1993 The Children's Bible in 365 Stories. 'Afo 'Apak 譯成阿美語 "365 a Kakimadan no Fangcalay Cudad." 中華民國聖經公會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">阿美中會</p>
+            <p>1997 《阿美語聖經》(Fangcalay Cudad),中華民國聖經公會。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 語法、詞彙集及詞典類 -->
+      <div class="mb-8">
+        <h4 class="text-xl font-semibold text-gray-700 mb-4">3. 語法、詞彙集及詞典類</h4>
+
+        <div class="space-y-3 text-gray-700">
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">小川尚義</p>
+            <p>1933 《アミ語集》,臺灣總督府。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Scott, N.C.</p>
+            <p>1956 A Dictionary of Sea Dayak, London School of Oriental and African Studies University of London.</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">陳宗明等著</p>
+            <p>1966 《伊華辭典》(Kamus Iban Tionhoa),古晉婆羅洲印務有限公司。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">楊家驊、歐陽君等編著</p>
+            <p>1970 《華英註解國語新辭典》(A New Malay Dictionary),世界書局有限公司。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">何汝芬、曾思奇、田中山、林登仙等編著</p>
+            <p>1986 《族語言簡志(阿眉斯語)》,我族出版所。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Fey, Verginia(方敏英等編著)</p>
+            <p>1986 《阿美語字典》,財團法人中華民國聖經公會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">黃天來編著</p>
+            <p>1988 《台灣阿美語的語法》,偉民印刷有限公司。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">黃亞君</p>
+            <p>1988 《阿美語動詞分類》,輔仁大學語言學研究所碩士論文。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">曾思奇編著</p>
+            <p>1991 《台灣阿眉斯語法》,中央民族學院出版社。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">林生安、陳約翰編著</p>
+            <p>1995 《阿美語圖解實用字典》(O Citing no 'Amis),沈氏藝術印刷股份有限公司。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">蔡中涵、曾思奇編著</p>
+            <p>1997 《阿美族母語語法結構分析》,財團法人台灣原住民文教基基會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">鍾松發、黎煜才共編</p>
+            <p>1999 《最新馬來語大詞典》(Kamus Perdana),聯營出版有限公司。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李壬癸</p>
+            <p>1999 《原住民史語言篇》,南投:臺灣文獻委員會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">吳靜蘭</p>
+            <p>2000 《阿美語參考語法》,遠流出版事業股份有限公司。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Louis Pourrias</p>
+            <p>2002 《阿美語—漢語字典》(O Citing no Amis),製本未。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">朱清義撰</p>
+            <p>2003 《阿美語辭彙結構—人類學語言學的研究》,國立東華大學族群關係與文化研究所碩士論文。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">白思樂隊(Robert Blust)著</p>
+            <p>2003 《邵語詞典》,中央研究院語言學研究所籌備處。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">何德華、董瑪女等編</p>
+            <p>2006 《達悟語:語料、參考語法、及詞彙》,中央研究院語言學研究所。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李壬癸、土田滋編著</p>
+            <p>2006 《巴宰語詞典》,中央研究院語言學研究所籌備處。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">李壬癸、土田滋著</p>
+            <p>2006 《噶瑪蘭語詞典》,中央研究院語言學研究所。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Sing 'Olam 編著</p>
+            <p>2007 《阿美族語實用語法》,台灣族群母語推行委員會。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">曾思奇編著</p>
+            <p>2008 《台灣Amis語常用綴詞與動詞詞根手冊》,中央民族大學出版社。</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">Sing 'Olam編著</p>
+            <p>2011 《阿美語簡明詞典》(O Citing no Pangcah),台灣族群母語推行委員會</p>
+          </div>
+
+          <div class="pl-4 border-l-2 border-gray-200">
+            <p class="font-medium">陳金龍編著</p>
+            <p>2011 《阿美族詞彙與語法結構初探》,行政院原住民族委員會。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
