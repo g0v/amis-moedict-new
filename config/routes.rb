@@ -23,9 +23,11 @@ Rails.application.routes.draw do
   get "amis-writing-system" => "pages#amis-writing-system", as: :amis_writing_system
   get "amis-writing-system-pdf" => "pages#amis-writing-system-pdf", as: :amis_writing_system_pdf
   get "pourrias-poinsot-amis-han-intro" => "pages#pourrias-poinsot-amis-han-intro", as: :pourrias_poinsot_amis_han_intro
-  get "namoh-intro" => "pages#namoh-intro", as: :namoh_intro
+  get "namoh-cover" => "pages#namoh-cover", as: :namoh_cover
   get "namoh-recommendation" => "pages#namoh-recommendation", as: :namoh_recommendation
   get "namoh-how-to-use" => "pages#namoh-how-to-use", as: :namoh_how_to_use
+  get "namoh-intro" => "pages#namoh-intro", as: :namoh_intro
+  get "namoh-appendix-reference" => "pages#namoh-appendix-reference", as: :namoh_appendix_reference
   get "safolu-ch1-1" => "pages#safolu-ch1-1", as: :safolu_ch1_1
   get "safolu-ch1-2" => "pages#safolu-ch1-2", as: :safolu_ch1_2
   get "safolu-ch2-1" => "pages#safolu-ch2-1", as: :safolu_ch2_1
