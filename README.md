@@ -177,8 +177,9 @@ TODO
 ### 辭典授權
 
 * 蔡中涵阿美語大辭典，由蔡中涵博士 (Safulo Arik Cikatopay) 提供，採用 CC BY-NC-SA 3.0 TW 授權。
-* 方敏英阿美語字典（Virginia Fey 編著），由台灣聖經公會提供紙本，並經由鄉民OCR電子化，採用 CC BY-NC 授權。
-* 博利亞潘世光神父阿美語-法語、阿美語-漢語字典，由天主教巴黎外方會的博利亞神父 (Louis Pourrias)、潘世光神父 (Maurice Poinsot) 提供，採用 CC BY-NC 授權。
+* 吳明義阿美族語辭典，由吳明義教授 (Namoh Rata) 家人提供，採用 CC BY-NC-SA 4.0 國際 授權。
+* 方敏英阿美語字典（Virginia Fey 編著），由台灣聖經公會提供紙本，並經由鄉民OCR電子化，採用 CC BY-NC 授權。字典掃描檔案[雲端連結在此](https://drive.google.com/drive/folders/19mHnWh81z-Ah8XhI8w6NwCrnsetkHrns?usp=sharing)
+* 博利亞潘世光神父阿美語-法語、阿美語-漢語字典，由天主教巴黎外方會的博利亞神父 (Louis Pourrias)、潘世光神父 (Maurice Poinsot) 提供，採用 CC BY-NC 授權。阿美語-漢語字典掃描檔案[雲端連結在此](https://drive.google.com/drive/folders/1kHIf5Nl9r9f3wg43lelKFUbrnZg_yzHy?usp=sharing)
 * 原住民族語言線上辭典，由財團法人原住民族語言研究發展基金會授權阿美語萌典網站使用。
 * 學習詞表無版權限制。
 * 以上授權書請見[雲端資料夾](https://drive.google.com/drive/folders/1LChvSXEdMpxv0I4u3JoSRZL-GfiEXKgo?usp=sharing)
