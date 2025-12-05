@@ -20,6 +20,16 @@ namespace :import do
 
   desc "從 g0v/amis-moedict 下的 docs/s 檔案匯入蔡中涵大辭典"
   task safolu: :environment do
+    debug = false
+
+    if debug
+      latest_term_id = Term.last.id
+      latest_stem_id = Stem.last.id
+      latest_description_id = Description.last.id
+      latest_example_id = Example.last.id
+      latest_synonym_id = Synonym.last.id
+    end
+
     dictionary = Dictionary.find_by(name: "蔡中涵大辭典")
 
     total = Dir.glob("tmp/dict/s/*.json").size
@@ -50,18 +60,20 @@ namespace :import do
         next if json_object["h"].empty?
 
         term = dictionary.terms.find_or_create_by(name: json_object["t"])
-        # binding.irb if term.id > 111126
+        binding.irb if debug && term.id > latest_term_id
+
         if json_object["tag"].present?
-          puts filename if json_object["tag"].match(/[疊 ](\d)/).blank?
           repetition = json_object["tag"].match(/[疊 ](\d)/)[1]
           term.update(repetition: repetition)
-          # binding.irb if term.saved_changes.present?
+          binding.irb if debug && term.saved_changes.present?
         end
+
         if json_object["stem"].present?
           stem = Stem.find_or_create_by(name: json_object["stem"])
-          # binding.irb if stem.id > 10211
+          binding.irb if debug && stem.id > latest_stem_id
+
           term.update(stem_id: stem.id)
-          # binding.irb if term.saved_changes.present?
+          binding.irb if debug && term.saved_changes.present?
         end
 
         json_object["descriptions"] = []
@@ -72,8 +84,8 @@ namespace :import do
           # 確認 description_hash["f"] 不含 U+FFF8,9,A,B,F
           description.update(content_zh: description_hash["f"])
           puts description.errors.inspect if description.errors.present?
-          # binding.irb if description.id > 146340
-          # binding.irb if description.saved_changes.present?
+          binding.irb if debug && description.id > latest_description_id
+          binding.irb if debug && description.saved_changes.present?
 
           if description_hash["e"].present?
             description_hash["e"].select! do |example_content|
@@ -99,8 +111,8 @@ namespace :import do
                   )
                 end
                 puts example.errors.inspect if example.errors.present?
-                # binding.irb if example.errors.blank? && example.id > 90196
-                # binding.irb if example.saved_changes.present?
+                binding.irb if debug && example.id > latest_example_id
+                binding.irb if debug && example.saved_changes.present?
               end
             end
           end
@@ -121,8 +133,8 @@ namespace :import do
                                    term_type: "參見")
                 end
                 puts reference.errors.inspect if reference.errors.present?
-                # binding.irb if reference.id > 54988
-                # binding.irb if reference.saved_changes.present?
+                binding.irb if debug && reference.id > latest_synonym_id
+                binding.irb if debug && reference.saved_changes.present?
               end
             end
           end
@@ -144,8 +156,8 @@ namespace :import do
                                term_type: "同")
               end
               puts synonym.errors.inspect if synonym.errors.present?
-              # binding.irb if synonym.id > 54988
-              # binding.irb if synonym.saved_changes.present?
+              binding.irb if debug && synonym.id > latest_synonym_id
+              binding.irb if debug && synonym.saved_changes.present?
             end
           end
         end
