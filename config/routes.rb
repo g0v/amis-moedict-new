@@ -31,6 +31,11 @@ Rails.application.routes.draw do
   get "safolu-ch1-1" => "pages#safolu-ch1-1", as: :safolu_ch1_1
   get "safolu-ch1-2" => "pages#safolu-ch1-2", as: :safolu_ch1_2
   get "safolu-ch2-1" => "pages#safolu-ch2-1", as: :safolu_ch2_1
+  get "fey-cover" => "pages#fey-cover", as: :fey_cover
+  get "fey-how-to-use" => "pages#fey-how-to-use", as: :fey_how_to_use
+  get "fey-appendix" => "pages#fey-appendix", as: :fey_appendix
+  get "fey-references" => "pages#fey-references", as: :fey_references
+  get "fey-pictures-copyright" => "pages#fey-pictures-copyright", as: :fey_pictures_copyright
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
