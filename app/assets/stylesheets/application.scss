@@ -47,3 +47,32 @@
 .ui-tooltip {
   position: absolute;
 }
+
+// pages 收合文件資訊
+/* 收合狀態：顯示「展開完整內容」，隱藏「收起完整內容」 */
+.toggle-details {
+  .when-closed {
+    display: inline;
+  }
+  .when-open {
+    display: none;
+  }
+  /* 箭頭旋轉效果 */
+  .arrow-icon {
+    transition: transform 0.2s ease;
+  }
+}
+
+/* 展開狀態：隱藏「展開完整內容」，顯示「收起完整內容」 */
+.toggle-details[open] {
+  .when-closed {
+    display: none;
+  }
+  .when-open {
+    display: inline;
+  }
+  /* 箭頭旋轉效果 */
+  .arrow-icon {
+    transform: rotate(180deg);
+  }
+}
