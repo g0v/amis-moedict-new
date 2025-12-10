@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_06_154253) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_10_001159) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -81,7 +81,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_06_154253) do
     t.datetime "updated_at", null: false
     t.boolean "has_term", default: false
     t.index ["has_term"], name: "index_stems_on_has_term"
-    t.index ["name"], name: "index_stems_on_name", unique: true
+    t.index ["name"], name: "index_stems_on_name"
   end
 
   create_table "synonyms", force: :cascade do |t|
