@@ -41,18 +41,12 @@ module V2
                   stem_terms.sort!
                   searched_terms -= stem_terms
 
-                  arel_term = Term.arel_table
-                  stem_case_statement = Arel::Nodes::Case.new(arel_term[:name])
-                  stem_terms.each_with_index do |stem_term, i|
-                    stem_case_statement.when(stem_term).then(i+1)
-                  end
-                  stem_case_statement.else(10000)
-
+                  stem_terms_for_field = stem_terms.map { |t| ActiveRecord::Base.connection.quote(t) }.join(',')
                   Term.select(:id, :name)
                       .includes(:descriptions)
                       .where(lower_name: stem_terms)
                       .group(:name)
-                      .order(stem_case_statement)
+                      .order(Arel.sql("FIELD(name,#{stem_terms_for_field})"))
                       .each do |term|
                     result << { term: term.name, description: term.short_description }
                   end
@@ -63,18 +57,12 @@ module V2
             end
 
             searched_terms.sort!
-            arel_term = Term.arel_table
-            searched_case_statement = Arel::Nodes::Case.new(arel_term[:name])
-            searched_terms.each_with_index do |searched_term, i|
-              searched_case_statement.when(searched_term).then(i+1)
-            end
-            searched_case_statement.else(10000)
-
+            searched_terms_for_field = searched_terms.map { |t| ActiveRecord::Base.connection.quote(t) }.join(',')
             Term.select(:id, :name)
                 .includes(:descriptions)
                 .where(name: searched_terms)
                 .group(:name)
-                .order(searched_case_statement)
+                .order(Arel.sql("FIELD(name,#{searched_terms_for_field})"))
                 .each do |term|
               result << { term: term.name, description: term.short_description }
             end
