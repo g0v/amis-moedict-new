@@ -11,7 +11,11 @@ module V2
         if params[:q].match?(/\A[a-zA-Z'’ʼ^ ,….:;\-\(\)]+\z/) # 族語搜尋
           case params[:q].size
           when 1, 2, 3
-            Term.includes(:descriptions).select(:id, :name).where(lower_name: params[:q]).group(:name).each do |term|
+            Term.includes(:descriptions)
+                .select(:id, :name)
+                .where(lower_name: params[:q])
+                .group(:name)
+                .each do |term|
               result << { term: term.name, description: term.short_description }
             end
 
@@ -44,7 +48,12 @@ module V2
                   end
                   stem_case_statement.else(10000)
 
-                  Term.select(:id, :name).includes(:descriptions).where(lower_name: stem_terms).group(:name).order(stem_case_statement).each do |term|
+                  Term.select(:id, :name)
+                      .includes(:descriptions)
+                      .where(lower_name: stem_terms)
+                      .group(:name)
+                      .order(stem_case_statement)
+                      .each do |term|
                     result << { term: term.name, description: term.short_description }
                   end
                 end
@@ -61,13 +70,23 @@ module V2
             end
             searched_case_statement.else(10000)
 
-            Term.select(:id, :name).includes(:descriptions).where(name: searched_terms).group(:name).order(searched_case_statement).each do |term|
+            Term.select(:id, :name)
+                .includes(:descriptions)
+                .where(name: searched_terms)
+                .group(:name)
+                .order(searched_case_statement)
+                .each do |term|
               result << { term: term.name, description: term.short_description }
             end
           end
         else # 漢語搜尋
           term_ids = Description.ransack(content_zh_cont: params[:q]).result.pluck(:term_id)
-          Term.includes(:descriptions).select(:id, :name).where(id: term_ids).group(:name).order(:dictionary_id).each do |term|
+          Term.includes(:descriptions)
+              .select(:id, :name)
+              .where(id: term_ids)
+              .group(:name)
+              .order(:dictionary_id)
+              .each do |term|
             result << { term: term.name, description: term.short_description }
           end
         end
