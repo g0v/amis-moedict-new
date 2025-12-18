@@ -1,5 +1,23 @@
 module V2
   class SearchesAPI < Base
+    helpers do
+      def update_result(result, term_name, description)
+        new_entry = { term: term_name, description: description }
+
+        # 尋找是否已有同名的 term
+        existing_index = result.find_index { |item| item[:term] == term_name }
+
+        if existing_index
+          # 如果已存在，比較 description 長度，如果既有的較短，用新的取代
+          if result[existing_index][:description].length < new_entry[:description].length
+            result[existing_index] = new_entry
+          end
+        else
+          result << new_entry # 如果不存在，直接加入
+        end
+      end
+    end
+
     resources :searches do
       params do
         requires :q, type: String, desc: "搜尋族語/漢語關鍵字，族語 1~3 字使用精確搜尋，超過 3 字用 sql LIKE 搜尋。漢語一律用 sql LIKE 搜尋 Description#content_zh。"
@@ -14,16 +32,12 @@ module V2
             Term.includes(:descriptions)
                 .select(:id, :name)
                 .where(lower_name: params[:q])
-                .group(:name)
                 .each do |term|
-              result << { term: term.name, description: term.short_description }
+              update_result(result, term.name, term.short_description)
             end
 
             if result.blank?
-              result << {
-                term:        "族語長度 4 以下是精確搜尋，結果較少。繼續輸入，開始模糊搜尋。",
-                description: ""
-              }
+              update_result(result, "族語長度 4 以下是精確搜尋，結果較少。繼續輸入，開始模糊搜尋。", "")
             end
           else
             searched_terms = Term.ransack(lower_name_cont: params[:q]).result.distinct.pluck(:name)
@@ -45,14 +59,13 @@ module V2
                   Term.select(:id, :name)
                       .includes(:descriptions)
                       .where(lower_name: stem_terms)
-                      .group(:name)
                       .order(Arel.sql("FIELD(name,#{stem_terms_for_field})"))
                       .each do |term|
-                    result << { term: term.name, description: term.short_description }
+                    update_result(result, term.name, term.short_description)
                   end
                 end
               else
-                result << { term: q_term.name, description: q_term.short_description }
+                update_result(result, q_term.name, q_term.short_description)
               end
             end
 
@@ -61,10 +74,9 @@ module V2
             Term.select(:id, :name)
                 .includes(:descriptions)
                 .where(name: searched_terms)
-                .group(:name)
                 .order(Arel.sql("FIELD(name,#{searched_terms_for_field})"))
                 .each do |term|
-              result << { term: term.name, description: term.short_description }
+              update_result(result, term.name, term.short_description)
             end
           end
         else # 漢語搜尋
@@ -72,10 +84,9 @@ module V2
           Term.includes(:descriptions)
               .select(:id, :name)
               .where(id: term_ids)
-              .group(:name)
               .order(:dictionary_id)
               .each do |term|
-            result << { term: term.name, description: term.short_description }
+            update_result(result, term.name, term.short_description)
           end
         end
 
