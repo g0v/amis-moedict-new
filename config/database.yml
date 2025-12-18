@@ -2,6 +2,8 @@ default: &default
   adapter: trilogy
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch('DATABASE_HOST', 'mysql') %>
+  port: <%= ENV.fetch('DATABASE_PORT', '3306') %>
   username: <%= ENV.fetch('DATABASE_USERNAME', 'root') %>
   password: <%= ENV.fetch('DATABASE_PASSWORD', 'password') %>
 
