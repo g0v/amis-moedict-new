@@ -13,6 +13,7 @@ RUN apt-get update
 RUN apt-get install yarn
 RUN apt-get install -y ruby ruby-dev
 RUN apt-get install -y python3 python3-pip python3-dev libpq-dev gunicorn
+RUN apt-get install -y default-mysql-client default-libmysqlclient-dev
 RUN apt-get install -y sysvinit-core
 RUN update-rc.d -f apache2 remove
 RUN update-rc.d -f php7.4-fpm remove

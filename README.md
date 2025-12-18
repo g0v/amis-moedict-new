@@ -1,4 +1,4 @@
-# 阿美語萌典 2024 開發新版
+# 阿美語萌典新版 2024-至今
 
 阿美語萌典團隊的 [hackfoldr 傳送門](https://beta.hackfoldr.org/11BRa7Ftnni8Q1NRdjwS378BgBz832UY4uIr-d0J0YpM)。
 
@@ -191,6 +191,6 @@ TODO
 
 ### CC0 1.0 公眾領域貢獻宣告
 
-作者 唐鳳、小蟹、Lafin 在法律許可的範圍內，拋棄此著作依著作權法所享有之權利，包括所有相關與鄰接的法律權利，並宣告將該著作貢獻至公眾領域。
+作者：小蟹、Lafin 在法律許可的範圍內，拋棄此著作依著作權法所享有之權利，包括所有相關與鄰接的法律權利，並宣告將該著作貢獻至公眾領域。
 
 https://creativecommons.org/publicdomain/zero/1.0/deed.zh-hant
