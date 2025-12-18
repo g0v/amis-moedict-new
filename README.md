@@ -68,6 +68,20 @@ If local browser shows https cert expired, then
     $ puma-dev -install
     ```
 
+### Create .env
+
+Change username/password by your own.
+
+    ```
+    # Web Application
+    WEB_PORT=8889
+
+    # MySQL Database
+    MYSQL_ROOT_PASSWORD=YOUR_ROOT_PASSWORD
+    MYSQL_USER=USERNAME
+    MYSQL_PASSWORD=PASSWORD
+    ```
+
 ### config/master.key
 
 Fins us to get this file.
@@ -78,76 +92,85 @@ Fins us to get this file.
 
 Remember to run docker-sync before running docker-compose
 
-```shell
-$ gem i docker-sync
-$ docker-sync start
-```
+    ```shell
+    $ gem i docker-sync
+    $ docker-sync start
+    ```
 
 If `docker-sync start` return errors, just retry 2-3 times.
 
 After docker-sync all success, run docker-compose.
 
-```shell
-$ docker-compose up -d
-```
+    ```shell
+    $ docker-compose up -d
+    ```
 
 Enter docker and run `bin/server`.
 
-```shell
-$ docker-compose exec app bash
-$ bin/server # already in docker
-```
+    ```shell
+    $ docker-compose exec app bash
+    $ bin/server # already in docker
+    ```
 
 Open browser https://new-amis.moedict.test/ .
 
 ### Stop Docker
 
-```shell
-$ docker-compose down
-$ docker-sync stop
-```
+    ```shell
+    $ docker-compose down
+    $ docker-sync stop
+    ```
 
 ### Rebuild Docker or update docker
 
-```shell
-$ docker-compose down
-$ docker-compose up --build -d
-```
+    ```shell
+    $ docker-compose down
+    $ docker-compose up --build -d
+    ```
 
 ### Check production and deploy
 
 Enter docker and run precompile.
 
-```shell
-$ docker-compose exec app bash
-$ bin/precompile # already in docker
-$ bin/server production # already in docker
-```
+    ```shell
+    $ docker-compose exec app bash
+    $ export DATABASE_URL="trilogy://USERNAME:PASSWORD@mysql/amis_new_development"
+    $ bin/precompile # already in docker
+    $ bin/server production # already in docker
+    ```
 
 Open browser https://new-amis.moedict.test/ and check everything ok.
 
 Remember to commit precompile assets files and then push to middle2.
 
-```shell
-$ git push m2 main:master && curl https://new-amis.moedict.tw/up
-```
+    ```shell
+    $ git push m2 main:master && curl https://new-amis.moedict.tw/up
+    ```
+
+### Import DB
+
+Get .sql file from us.
+
+    ```
+    docker-compose exec -T mysql mysql -u root -pPASSWORD amis_new_development < tmp/amis-moedict-mysql.sql
+    ```
 
 ### When you need a debugger
 
 You should see those info when starting docker.
 
-```
-DEBUGGER: Debugger can attach via UNIX domain socket (/tmp/rdbg-0/rdbg-NNN)
-```
+    ```
+    DEBUGGER: Debugger can attach via UNIX domain socket (/tmp/rdbg-0/rdbg-NNN)
+    ```
 
 NNN is a 3-digit number that changes every time.
 
 Enter docker and run rdbg command.
 
-```shell
-$ docker-compose exec app bash
-$ bundle exec rdbg -a rdbg-NNN # already in docker
-```
+    ```shell
+    $ docker-compose exec app bash
+    $ bundle exec rdbg -a rdbg-NNN # already in docker
+    ```
 
 Please see https://guides.rubyonrails.org/debugging_rails_applications.html , and https://github.com/ruby/debug for more details.
 
