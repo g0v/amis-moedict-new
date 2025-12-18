@@ -35,7 +35,8 @@ if [ "$current_ruby_version" != "$RUBY_VERSION" ]; then
       libgdbm-dev \
       libdb-dev \
       uuid-dev \
-      libffi-dev
+      libffi-dev \
+      default-libmysqlclient-dev
 
   set -eux; \
     apt-get install -y --no-install-recommends \
