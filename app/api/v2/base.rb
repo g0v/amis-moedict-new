@@ -1,5 +1,7 @@
 module V2
   class Base < ApplicationAPI
+    format :json
+    formatter :json, Grape::Formatter::Json
     version :v2, using: :path
 
     helpers do
