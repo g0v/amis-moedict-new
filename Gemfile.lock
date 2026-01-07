@@ -377,7 +377,8 @@ GEM
     stringio (3.1.7)
     thor (1.4.0)
     timeout (0.4.4)
-    trilogy (2.9.0)
+    trilogy (2.10.0)
+      bigdecimal
     tsort (0.2.0)
     turbo-rails (2.0.20)
       actionpack (>= 7.1.0)
@@ -432,7 +433,7 @@ DEPENDENCIES
   selenium-webdriver
   sprockets-rails
   stimulus-rails
-  trilogy (~> 2.7)
+  trilogy (~> 2.10)
   turbo-rails
   tzinfo-data
   web-console
