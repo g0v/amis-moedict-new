@@ -23,7 +23,7 @@ class Stem < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[created_at id id_value name updated_at]
+    %w[created_at id id_value name updated_at has_term]
   end
 
   private
