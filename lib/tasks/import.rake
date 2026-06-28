@@ -63,9 +63,11 @@ namespace :import do
         binding.irb if debug && term.id > latest_term_id
 
         if json_object["tag"].present?
-          repetition = json_object["tag"].match(/[疊 ](\d)/)[1]
-          term.update(repetition: repetition)
-          binding.irb if debug && term.saved_changes.present?
+          match = json_object["tag"].match(/[疊 ](\d)/)
+          if match
+            term.update(repetition: match[1])
+            binding.irb if debug && term.saved_changes.present?
+          end
         end
 
         if json_object["stem"].present?
