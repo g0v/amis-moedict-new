@@ -132,6 +132,8 @@ Open browser https://new-amis.moedict.test/ .
 
 Enter docker and run precompile.
 
+Before running `bin/server production`, make sure your `config/database.yml` includes a production section.
+
     ```shell
     $ docker-compose exec app bash
     $ export DATABASE_URL="trilogy://USERNAME:PASSWORD@mysql/amis_new_development"
